@@ -1,0 +1,5 @@
+arm,repairs,initial_compiled,final_compiled,best_compiled,initial_strict,final_strict,best_strict,final_compilation_fail,final_detection_fail,final_discrimination_fail,terminal_reason,tokens,model_wall_sec,codeql_runtime_sec,library_lookups,retrieved_skills,c_source_events_arm
+V0_BASELINE_COMPILER_FEEDBACK,4,0,0,0,0,0,0,7,0,0,REPAIR4_EXHAUSTED,138536,284.33239,789.61,0,0,0
+V1_LIBRARY_AWARE_REASONING,4,0,0,0,0,0,0,7,0,0,REPAIR4_EXHAUSTED,450851,454.82188,848.26,8,0,0
+V2_AUTO_SKILL_RETRIEVAL,4,0,0,0,0,0,0,7,0,0,REPAIR4_EXHAUSTED,140073,230.767725,816.29,0,16,0
+V3_LIBRARY_PLUS_AUTO_SKILL,4,0,0,0,0,0,0,7,0,0,REPAIR4_EXHAUSTED,296813,343.212178,984.59,5,16,0

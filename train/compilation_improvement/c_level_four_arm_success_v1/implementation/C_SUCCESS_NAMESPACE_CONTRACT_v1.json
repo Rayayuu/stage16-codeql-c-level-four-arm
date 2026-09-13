@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "test_access": "FORBIDDEN",
+  "evidence_level": "C",
+  "qlpack_root": "train/compilation_improvement/c_level_four_arm_success_v1/c_success_qlpack",
+  "run_root": "train/compilation_improvement/c_level_four_arm_success_v1/c_success_qlpack/c_success_runs_v1",
+  "evaluation_root": "train/compilation_improvement/c_level_four_arm_success_v1/c_success_qlpack/c_success_runs_v1/query_evaluations",
+  "shared_initial_root": "train/compilation_improvement/c_level_four_arm_success_v1/c_success_qlpack/c_success_runs_v1/shared_initial",
+  "arm_root": "train/compilation_improvement/c_level_four_arm_success_v1/c_success_qlpack/c_success_runs_v1/arms",
+  "old_stage16_c_result_reuse": false,
+  "old_replacement_v2_result_reuse": false,
+  "overwrite_existing_scientific_artifacts": false,
+  "max_repairs": 4,
+  "stop_rule": "ALL_TRAIN_PAIRS_STRICT_SUCCESS_OR_REPAIR4"
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "test_access": "FORBIDDEN",
+  "total_train_pairs": 39,
+  "cwes": [
+    "CWE-116",
+    "CWE-284",
+    "CWE-434",
+    "CWE-639"
+  ],
+  "formal_arms_complete": "16/16",
+  "aggregate_json_sha256": "863af6d2063d11a902b981803d636e992b0af8e45c862e556545a03dfe62992f",
+  "per_cwe_csv_sha256": "6f0146683c3a32a12f00b0e07df14b8d0d9458c3f4a7ea40ad2ac75c0d6bae4e",
+  "arm_csv_sha256": "26b819147d8f68fe64aa3fd0655fefdad2774bcdc1e0c4a870da8062cfb3cdc4",
+  "aggregate_md_sha256": "0d85e5657b429d6e91acc9bb01f63b7388df35c711e6a1c117bb394918cf04fb",
+  "cwe_freeze_manifest_sha256": {
+    "CWE-116": "1efaecdcefc7268f71d1d111253635895fd95c4259f772d6bd750d8965cd6024",
+    "CWE-284": "db449ada544031acf12fc2fad895abb8df4726cbc1500e72106662bc163d2279",
+    "CWE-434": "22e8a4de5bb20426ab45fcdb577fba43a51ca7cdae68fed5d99deadfed00e6d0",
+    "CWE-639": "c1270d3a9e21ebc5bca833488f206be0567414a5c78b256df9255064bafaaf65"
+  },
+  "frozen": true,
+  "rerun": "FORBIDDEN"
+}

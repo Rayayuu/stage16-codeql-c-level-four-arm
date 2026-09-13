@@ -1,0 +1,4 @@
+name: local/stage16-compilation-replacement
+version: 0.0.1
+dependencies:
+  codeql/java-all: "9.0.3"

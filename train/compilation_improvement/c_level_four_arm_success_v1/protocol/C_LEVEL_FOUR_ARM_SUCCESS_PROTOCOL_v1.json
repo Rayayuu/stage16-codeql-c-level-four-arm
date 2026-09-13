@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "test_access": "FORBIDDEN",
+  "evidence_level": "C",
+  "target_cwes": {
+    "CWE-116": 7,
+    "CWE-284": 14,
+    "CWE-434": 11,
+    "CWE-639": 7
+  },
+  "total_train_pairs": 39,
+  "arms": [
+    "V0_BASELINE_COMPILER_FEEDBACK",
+    "V1_LIBRARY_AWARE_REASONING",
+    "V2_AUTO_SKILL_RETRIEVAL",
+    "V3_LIBRARY_PLUS_AUTO_SKILL"
+  ],
+  "strict_pair_success": "compile AND vulnerable_hits>=1 AND patched_hits==0",
+  "stop_rule": "ALL_TRAIN_PAIRS_STRICT_SUCCESS_OR_REPAIR4",
+  "max_repairs": 4,
+  "c_exploration": {
+    "scope": "TRAIN_VULNERABLE_SOURCE_ONLY",
+    "max_anchor_searches_per_benchmark": 5,
+    "max_distinct_java_files_per_benchmark": 10,
+    "max_source_lines_per_benchmark": 500,
+    "max_lines_per_read": 50,
+    "exploration_depth": 1,
+    "anchor_source": "FROZEN_A_B_EVIDENCE_ONLY",
+    "patched_source_browsing": "FORBIDDEN_BEYOND_B_PATCH"
+  },
+  "shared_initial": {
+    "fresh_c_level_initial_once_per_cwe": true,
+    "identical_query_sha_across_arms": true,
+    "arm_specific_intervention_visible": false,
+    "clone_post_initial_c_exploration_state": true,
+    "reset_c_budget_per_arm": false
+  },
+  "common_feedback": [
+    "compiled",
+    "vulnerable_hits",
+    "patched_hits",
+    "pair_success",
+    "compiler_feedback"
+  ],
+  "arm_budgets": {
+    "max_library_lookups_per_repair": 2,
+    "max_retrieved_skills_per_repair": 4,
+    "max_model_turns_per_repair": 6
+  },
+  "result_root": "train/compilation_improvement/c_level_four_arm_success_v1",
+  "manual_query_editing": false,
+  "per_cve_tuning": false,
+  "database_rebuild": false
+}

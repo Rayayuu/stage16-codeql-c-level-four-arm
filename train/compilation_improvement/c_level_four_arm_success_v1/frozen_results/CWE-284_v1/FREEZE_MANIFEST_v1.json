@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "test_access": "FORBIDDEN",
+  "cwe": "CWE-284",
+  "shared_initial_sha256": "515c35b687eb2e3d0af70888c7fee3170c6842e84d47d440bd221a03a4998e67",
+  "protocol_sha256": "88ed67909dae2cc01c104f66d1654cb539c03d8a6ba070f3baa255a5ed794793",
+  "runner_sha256": "2578cb73bac0b3312296d0b039bdd31fc35b067afd082300452447f82497867a",
+  "evaluator_sha256": "609ac64447320f3dcafe69717568edeedbafb9c051b2ff8fd7feac9c00136d41",
+  "summary_json_sha256": "a3ef7dd0e79080ca3d1e4c883a0f869f7c8a45afc5bf7299f3719370c0cfadc5",
+  "summary_csv_sha256": "e8eea6b90830f2459d69a75d4577b61c6a91cee816f540cd41554ba6b4623824",
+  "summary_md_sha256": "6b0463fd409f498bffdc2e9d27013868b0fb45689683b425e0aae6d0865df54a",
+  "arm_outcome_sha256": {
+    "V0_BASELINE_COMPILER_FEEDBACK": "a0286cb345c18975bab24b592ee0366f2e87312ccf9873527da2aa7d25c4e5ef",
+    "V1_LIBRARY_AWARE_REASONING": "87dc19c943a7e3c8936ace49d4488c245c04c02f68629a31168c4aa49e342113",
+    "V2_AUTO_SKILL_RETRIEVAL": "c38031b6a813a3854a3852f96c8f5a3c16469432ce78b7f5ee0a61ca2393b1a4",
+    "V3_LIBRARY_PLUS_AUTO_SKILL": "7ed0ccde426e9c70897d59d409b807fd9c2003382293374a9616ae94524e3a78"
+  },
+  "frozen": true,
+  "rerun": "FORBIDDEN"
+}

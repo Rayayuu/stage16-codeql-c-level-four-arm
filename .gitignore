@@ -1,0 +1,13 @@
+.env
+.env.*
+*.db
+*.bqrs
+*.log
+__pycache__/
+*.pyc
+.DS_Store
+train/codeql_pilot_dbs/
+train/codeql_train_dbs/
+train/test*/
+**/query_evaluations/
+**/c_success_runs_v1/

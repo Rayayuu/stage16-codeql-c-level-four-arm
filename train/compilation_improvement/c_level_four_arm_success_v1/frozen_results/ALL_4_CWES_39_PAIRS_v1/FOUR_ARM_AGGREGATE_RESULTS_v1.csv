@@ -1,0 +1,5 @@
+arm,train_pairs,final_compiled,best_compiled,final_strict,best_strict,final_compilation_fail,final_detection_fail,final_discrimination_fail,repairs,tokens,model_wall_sec,codeql_runtime_sec,library_lookups,retrieved_skills,arm_c_source_events,final_compile_rate_pct,best_compile_rate_pct,final_strict_rate_pct,best_strict_rate_pct
+V0_BASELINE_COMPILER_FEEDBACK,39,0,0,0,0,39,0,0,16,760261,930.865739,4273.96,0,0,0,0.0,0.0,0.0,0.0
+V1_LIBRARY_AWARE_REASONING,39,7,7,0,0,32,1,6,16,2333234,1348.092951,4606.47,31,0,0,17.95,17.95,0.0,0.0
+V2_AUTO_SKILL_RETRIEVAL,39,7,7,0,0,32,0,7,16,789671,1034.916679,4618.51,0,64,0,17.95,17.95,0.0,0.0
+V3_LIBRARY_PLUS_AUTO_SKILL,39,0,7,0,0,39,0,0,16,2196846,1427.324713,4890.55,25,60,0,0.0,17.95,0.0,0.0

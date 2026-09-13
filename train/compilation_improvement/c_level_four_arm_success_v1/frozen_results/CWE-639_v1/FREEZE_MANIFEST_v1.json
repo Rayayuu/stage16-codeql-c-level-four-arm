@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "test_access": "FORBIDDEN",
+  "cwe": "CWE-639",
+  "shared_initial_sha256": "8f67e70247c89eabe5404a1dba03277a10b9c9d57603f4da4b3c5a7c7128ce8c",
+  "post_initial_c_state_sha256": "4eb0a5bb880211351082c1b0c117113f51992ec4f2572f9e8384cace81e9239f",
+  "shared_initial_cost_sha256": "45b63ac0ff3a2c8781ba3beca183048196c5e92b10b71c044545656c6dd917d5",
+  "protocol_sha256": "88ed67909dae2cc01c104f66d1654cb539c03d8a6ba070f3baa255a5ed794793",
+  "runner_sha256": "2578cb73bac0b3312296d0b039bdd31fc35b067afd082300452447f82497867a",
+  "evaluator_sha256": "609ac64447320f3dcafe69717568edeedbafb9c051b2ff8fd7feac9c00136d41",
+  "summary_json_sha256": "9cac2d84166dcf791d9087816eea587e81a0ab7982d5a7ff0d5aa96782b184b3",
+  "summary_csv_sha256": "85c516237ceef7cb3731ebbcca37e56c2a8c14a2276d4ff568c6876ba14d2380",
+  "summary_md_sha256": "b63fdd899488afd3127ae7601f278169ec2af3eaf2cdfeab7378822c57c7d667",
+  "arm_outcome_sha256": {
+    "V0_BASELINE_COMPILER_FEEDBACK": "d06973c5adcd30d863ba660d7c81ae58e655c0bb2fdc11f6f35fb7f306ca8427",
+    "V1_LIBRARY_AWARE_REASONING": "12bbfac02a949a7241f2b16fab2900541d8b9650d2ac216f07b0eaf3f41a562d",
+    "V2_AUTO_SKILL_RETRIEVAL": "0c5898c8785d341f417f1dd1f1767a2dce485042a82ba03ede52cc77237b7f9e",
+    "V3_LIBRARY_PLUS_AUTO_SKILL": "0bf05fe6f6f8e55eca6ee770c862c134d26d16d69c5805f9263eccbd27dc2204"
+  },
+  "frozen": true,
+  "rerun": "FORBIDDEN"
+}
