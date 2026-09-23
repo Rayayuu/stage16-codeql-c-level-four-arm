@@ -1,0 +1,102 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "stage": "T2_POST_REPAIR_QUERY_SEMANTIC_TRAJECTORY_AUDIT",
+  "query_artifacts": {
+    "iter0": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter0.ql",
+      "sha256": "0f3188139935f0cec116efab018b3d0035ebd01a9fc0b81d68ae80a194ac1631",
+      "lines": 140,
+      "bytes": 6922,
+      "executable_feature_inventory": {
+        "GENERIC_ID_OR_KEY": true,
+        "GENERIC_SENSITIVE_OPERATION": false,
+        "HTTP_OR_WEB_SOURCE": false,
+        "AUTH_CONTEXT_HEURISTIC": false,
+        "OWNERSHIP_EXECUTABLE_RELATION": false,
+        "SESSION_IDENTITY_EXECUTABLE_RELATION": false,
+        "IDENTITY_EQUALITY_OR_COMPARISON": true,
+        "ORG_OR_TENANT_SCOPE": false,
+        "CERTIFICATE_OR_OID": false,
+        "JDBC_PARAMETER_FILTER": false,
+        "SASL_OR_QUORUM": false,
+        "OPTIONAL_COMPONENT_CONTROL_FLOW": false,
+        "TAINT_FLOW": true
+      }
+    },
+    "iter1": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter1.ql",
+      "sha256": "74ff5b67addc2af5ab90058df97c0f5edad69cb7b3902234c824c8dc9a64b22d",
+      "lines": 135,
+      "bytes": 6272,
+      "executable_feature_inventory": {
+        "GENERIC_ID_OR_KEY": true,
+        "GENERIC_SENSITIVE_OPERATION": false,
+        "HTTP_OR_WEB_SOURCE": true,
+        "AUTH_CONTEXT_HEURISTIC": false,
+        "OWNERSHIP_EXECUTABLE_RELATION": false,
+        "SESSION_IDENTITY_EXECUTABLE_RELATION": false,
+        "IDENTITY_EQUALITY_OR_COMPARISON": true,
+        "ORG_OR_TENANT_SCOPE": false,
+        "CERTIFICATE_OR_OID": false,
+        "JDBC_PARAMETER_FILTER": false,
+        "SASL_OR_QUORUM": false,
+        "OPTIONAL_COMPONENT_CONTROL_FLOW": false,
+        "TAINT_FLOW": true
+      }
+    },
+    "iter2": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter2.ql",
+      "sha256": "1588edf8750d913766c2004e8c25e8ae28e158f99d26a55c305263018a0c88bc",
+      "lines": 141,
+      "bytes": 6665,
+      "executable_feature_inventory": {
+        "GENERIC_ID_OR_KEY": true,
+        "GENERIC_SENSITIVE_OPERATION": false,
+        "HTTP_OR_WEB_SOURCE": true,
+        "AUTH_CONTEXT_HEURISTIC": false,
+        "OWNERSHIP_EXECUTABLE_RELATION": false,
+        "SESSION_IDENTITY_EXECUTABLE_RELATION": false,
+        "IDENTITY_EQUALITY_OR_COMPARISON": true,
+        "ORG_OR_TENANT_SCOPE": false,
+        "CERTIFICATE_OR_OID": false,
+        "JDBC_PARAMETER_FILTER": false,
+        "SASL_OR_QUORUM": false,
+        "OPTIONAL_COMPONENT_CONTROL_FLOW": false,
+        "TAINT_FLOW": true
+      }
+    }
+  },
+  "trajectory": {
+    "iter0_to_iter1_diff_line_count": 111,
+    "iter1_to_iter2_diff_line_count": 49
+  },
+  "final_query_checks": {
+    "decisive_relation_signals": {
+      "ownership_relation": false,
+      "session_identity_relation": false,
+      "org_or_tenant_scope": false,
+      "certificate_or_oid_semantics": false,
+      "jdbc_parameter_filter_semantics": false,
+      "sasl_or_quorum_semantics": false,
+      "optional_component_control_flow": false
+    },
+    "generic_idor_flow_present": false,
+    "auth_context_heuristic_present": false,
+    "any_decisive_mechanism_relation_signal": false
+  },
+  "frozen_operational_outcome": {
+    "compiled": "7/7",
+    "strict_success": "0/7",
+    "detection_failure": "7/7",
+    "discrimination_failure": "0/7"
+  },
+  "semantic_scoring_status": "PENDING_HUMAN_REFERENCE_REVIEW",
+  "controls": {
+    "model_execution": false,
+    "codeql_execution": false,
+    "query_modification": false,
+    "repair_execution": false,
+    "test_access": "FORBIDDEN"
+  }
+}

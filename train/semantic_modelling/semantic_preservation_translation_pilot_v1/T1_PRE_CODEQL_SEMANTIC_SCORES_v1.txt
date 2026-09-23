@@ -1,0 +1,29 @@
+SEMANTIC-PRESERVATION TRANSLATION PILOT — PRE-CODEQL T1 SEMANTIC SCORING
+
+T0 semantic alignment: 0/7
+T1 semantic alignment: 0/7
+Alignment delta T1-T0: 0
+
+T0 semantic mismatches: 7/7
+T1 semantic mismatches: 7/7
+
+T0 generic-template matches: 7/7
+T1 generic-template matches: 7/7
+T0 generic-template collapse: YES
+T1 generic-template collapse: YES
+
+Frozen M1 plan mechanism coverage: 6/7
+T0 plan-to-CodeQL translation losses: 6/7
+T1 plan-to-CodeQL translation losses: 6/7
+Translation-loss delta T1-T0: 0
+
+PRE-CODEQL INTERPRETATION
+The semantic-preservation translation contract did not improve semantic
+alignment relative to frozen T0. The generated T1 query remains a predominantly
+generic identifier/authentication-context -> sensitive-operation / authorization
+decision abstraction rather than preserving the heterogeneous mechanism-specific
+relations and validation semantics from the frozen plan.
+
+IMPORTANT
+No current T1 CodeQL compilation or hit results were viewed or used.
+TRAIN ONLY. TEST not accessed.

@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "stage": "T3_SEMANTIC_VERIFIER_HARNESS_RECOVERY_AMENDMENT_V1_1",
+  "scope": "CWE-639 TRAIN ONLY",
+  "failed_v1_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/compositional_branch_semantic_verifier_pilot_v1/COMPOSITIONAL_BRANCH_SEMANTIC_VERIFIER_RUNNER_v1.py",
+  "failed_v1_sha256": "8dea4a58d3d234620c8875021467fed40db6e456420c8316865f2114962c620d",
+  "failed_v1_preserved": true,
+  "failure_class": "HARNESS_CONSTRUCTION_SYNTAX_AND_TRUNCATION_FAILURE",
+  "failure_detail": "The v1 harness was truncated/corrupted inside build_verifier_prompt before py_compile; no verifier model call occurred.",
+  "recovery_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/compositional_branch_semantic_verifier_pilot_v1/COMPOSITIONAL_BRANCH_SEMANTIC_VERIFIER_RUNNER_v1_1.py",
+  "recovery_sha256": "797d8a1335fe65e9e42fd22284a49f1737e5439eb75ca746843bc544399a6380",
+  "scientific_treatment_changed": false,
+  "preregistered_verifier_logic_changed": false,
+  "initial_verifier_implemented": true,
+  "single_revision_implemented_before_any_verdict": true,
+  "single_reverification_implemented_before_any_verdict": true,
+  "model_execution": false,
+  "semantic_verifier_execution": false,
+  "semantic_revision_execution": false,
+  "reverification_execution": false,
+  "codeql_execution": false,
+  "test_access": "FORBIDDEN"
+}

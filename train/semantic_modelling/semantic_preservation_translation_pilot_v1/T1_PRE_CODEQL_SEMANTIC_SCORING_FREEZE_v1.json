@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "status": "FROZEN_PRE_CODEQL_T1_SEMANTIC_SCORING",
+  "artifacts": {
+    "json": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/semantic_preservation_translation_pilot_v1/T1_PRE_CODEQL_SEMANTIC_SCORES_v1.json",
+      "sha256": "3ceab4db7f64d7623ccb270dccfd42417cc74ff06155dea6771cef374cf8306b"
+    },
+    "csv": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/semantic_preservation_translation_pilot_v1/T1_PRE_CODEQL_SEMANTIC_SCORES_v1.csv",
+      "sha256": "47ac83bcf80c244c76cf9d206e78e6919edbef1e702f5908b373b8dfd7dc86af"
+    },
+    "txt": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/semantic_preservation_translation_pilot_v1/T1_PRE_CODEQL_SEMANTIC_SCORES_v1.txt",
+      "sha256": "4fe4e8c786f4a8477b1510e6074beb8e07c7336d231ed1da4f609cada189874a"
+    }
+  },
+  "inputs": {
+    "rubric_sha256": "8cf6219632742f4310e5ddbd9fdcb61944f23bddb4b3f2eeb1e8bfa4e6e9e96d",
+    "T0_pre_semantic_sha256": "af8714c27e966fb646b2a857d29e26385b13de2c5450275003362dff22184204",
+    "T1_query_sha256": "c7c92c88a4ecd6e91b322ca0b06b7e34dcf099a05a720fa2cb25a71de8fb4450",
+    "T1_metadata_sha256": "d654f1158bcc43bee6ed3e9ec0281960a7012cb112ef176fb6c5063a8b48fb05",
+    "T1_generation_freeze_sha256": "3cb4b337596e69aea5d5d95c8fff91e3d0fc9e3c1eb0e8d255d5cbc076a33025",
+    "preregistration_sha256": "4eb518def34d3011bbe55141bcd029c21b9a64e2ea7c61bcc74238342a77cb71"
+  },
+  "result": {
+    "T0_semantic_alignment": "0/7",
+    "T1_semantic_alignment": "0/7",
+    "T0_generic_template_count": "7/7",
+    "T1_generic_template_count": "7/7",
+    "T0_translation_loss": "6/7",
+    "T1_translation_loss": "6/7",
+    "semantic_preservation_improvement_observed": false
+  },
+  "current_T1_CodeQL_results_visible": false,
+  "model_execution": false,
+  "codeql_execution": false,
+  "test_access": "FORBIDDEN"
+}

@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "checks": {
+    "T2_runner_exists": true,
+    "three_families": true,
+    "one_call_per_branch": true,
+    "output_root_absent": true,
+    "all_inputs_exist": true,
+    "all_inputs_match_family": true,
+    "codeql_mappings_hidden": true,
+    "encoded_status_hidden": true,
+    "test_hidden": true,
+    "T2_runner_importable": true,
+    "original_runner_resolvable": true,
+    "model_loader_resolvable": true,
+    "model_name_resolvable": true,
+    "system_prompt_resolvable": true
+  },
+  "model_execution": false,
+  "codeql_execution": false,
+  "model_call_budget_per_branch": 1,
+  "test_access": "FORBIDDEN"
+}

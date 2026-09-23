@@ -1,0 +1,70 @@
+{
+  "verdict": {
+    "schema_version": "1.0",
+    "mechanism_family_id": "bypass_via_missing_or_optional_identity_component",
+    "verdict": "FAIL_MISSING_DECISIVE_RELATION",
+    "feedback": "The branch models identity-like expressions, presence-test-like calls, auth-check-like calls, and sensitive operations via name heuristics and taint. However, the decisive security relation is not encoded: decisive_security_relation only requires that a presence test and an auth check that both reference the same identity occur within the same enclosing callable. There is no executable control- or path-dependence tying the outcome of the presence test to whether the authorization check is executed or skipped, nor any requirement that the sensitive operation is reached specifically on the path where the identity is missing/optional and the auth check is bypassed. As a result, the core contract condition—authorization branching based on the presence/value of the identity component causing checks to be skipped—is absent from the executable QL logic."
+  },
+  "metadata": {
+    "schema_version": "1.0",
+    "scope": "CWE-639 TRAIN ONLY",
+    "stage": "T3_INITIAL_SEMANTIC_VERIFIER",
+    "mechanism_family_id": "bypass_via_missing_or_optional_identity_component",
+    "model": "openai/gpt-5",
+    "model_call_count": 1,
+    "success_freeze_sha256": "324b068619dc09f0d4a0e8567a235a25c9a1ee916383d09cf2b1e8639fcc8668",
+    "contract_input_sha256": "c57998489a32fb37dcab97c328c94d4d5d7bb9aee83c7bb5a83733bee59a9b13",
+    "input_branch_sha256": "4723d429377956c16a1f86280b55edc043c66fc1b95dc00f7e4d6547ea1a2a45",
+    "input_traceability_canonical_sha256": "ca9bf18d794b0dcb03c342b5c26b09a4c5240f45ec7782dc292068059431b97a",
+    "verdict_sha256": "521d9ba7d24ad413f563e4e4e7018680e79368f710050bb464fe5c398c19e4f3",
+    "usage": {
+      "input_tokens": 3242,
+      "output_tokens": 1806,
+      "total_tokens": 5048,
+      "raw_usage_metadata": {
+        "input_tokens": 3242,
+        "output_tokens": 1806,
+        "total_tokens": 5048,
+        "input_token_details": {
+          "audio": 0,
+          "cache_read": 0
+        },
+        "output_token_details": {
+          "audio": 0,
+          "reasoning": 1600
+        }
+      },
+      "raw_response_metadata": {
+        "token_usage": {
+          "completion_tokens": 1806,
+          "prompt_tokens": 3242,
+          "total_tokens": 5048,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 0,
+            "audio_tokens": 0,
+            "reasoning_tokens": 1600,
+            "rejected_prediction_tokens": 0
+          },
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cached_tokens": 0
+          }
+        },
+        "model_provider": "openai",
+        "model_name": "gpt-5-2025-08-07",
+        "system_fingerprint": null,
+        "id": "chatcmpl-EQ9cJoWl1x8OvWxXQ7tBOKtRPvejK",
+        "service_tier": "default",
+        "finish_reason": "tool_calls",
+        "logprobs": null
+      }
+    },
+    "wall_clock_sec": 20.358675291005056,
+    "compiler_outcome_visible": false,
+    "codeql_hit_results_visible": false,
+    "patched_vulnerable_comparison_visible": false,
+    "manual_query_modification": false,
+    "codeql_execution": false,
+    "test_access": "FORBIDDEN"
+  }
+}

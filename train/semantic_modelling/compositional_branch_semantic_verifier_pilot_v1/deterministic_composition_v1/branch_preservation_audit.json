@@ -1,0 +1,16 @@
+{
+  "accepted_family": "improper_authentication_certificate_reuse",
+  "source_branch_sha256": "d5982d4d72b403c6fa9b481b3b021f1089f760e9419e737b7a0c2637e5a35193",
+  "source_branch_size_bytes": 3130,
+  "source_branch_occurrence_count": 1,
+  "source_branch_first_byte_offset": 289,
+  "byte_for_byte_preserved": true,
+  "semantic_rewriting": false,
+  "manual_query_editing": false,
+  "model_unification": false,
+  "generic_surrogate_inserted": false,
+  "final_query_sha256": "6364a2e74e1973e1bba37ffa0b7f6f478371a3aa7220b13de2d6b9938e3828ae",
+  "final_query_size_bytes": 3589,
+  "prefix_sha256": "fede0ce142c4ddd0684f959a46cd885f456593480c0adf13649d478854aa18a5",
+  "suffix_sha256": "dada467eb785554314ce7821dfd4c975c72766e2aaf68a1fcb77a7f9604e973d"
+}

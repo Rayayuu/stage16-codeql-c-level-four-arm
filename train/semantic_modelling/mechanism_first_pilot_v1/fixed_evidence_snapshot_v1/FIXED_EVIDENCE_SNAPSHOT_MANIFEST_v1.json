@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "pilot_cwe": "CWE-639",
+  "train_case_count": 7,
+  "evidence_level": "A",
+  "source_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/synthesis_inputs/CWE-639_A_LEVEL_INPUT_v1.json",
+  "source_sha256": "c2b12964eab7af408e3ae46b2f2bfe1a5c5f8b4aafbc1a3e38b0e510c3a760cf",
+  "snapshot_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/fixed_evidence_snapshot_v1/CWE-639_A_LEVEL_INPUT_v1.json",
+  "snapshot_sha256": "c2b12964eab7af408e3ae46b2f2bfe1a5c5f8b4aafbc1a3e38b0e510c3a760cf",
+  "identical_bytes": true,
+  "shared_by_arms": [
+    "M0_CONTROL_CWE_FIRST",
+    "M1_MECHANISM_FIRST"
+  ],
+  "excluded_generation_inputs": [
+    "Sept18 human mechanism analysis",
+    "Sept18 root-cause labels",
+    "Sept18 template-collapse judgments",
+    "prior CWE-639 queries",
+    "prior query evaluation results",
+    "prior repair trajectories",
+    "patch/B evidence",
+    "bounded-source/C evidence",
+    "TEST"
+  ],
+  "model_execution": false,
+  "codeql_execution": false,
+  "test_access": "FORBIDDEN"
+}

@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "stage": "T2_PACK_AWARE_INITIAL_EVALUATOR_FREEZE",
+  "status": "FROZEN_READY_FOR_FIRST_T2_CODEQL_EVALUATION",
+  "source_query": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/t2_generation_v1/CWE-639/iter0.ql",
+    "sha256": "0f3188139935f0cec116efab018b3d0035ebd01a9fc0b81d68ae80a194ac1631"
+  },
+  "pack_query": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql",
+    "sha256": "0f3188139935f0cec116efab018b3d0035ebd01a9fc0b81d68ae80a194ac1631",
+    "byte_identical_to_source": true
+  },
+  "base_evaluator": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/semantic_preservation_translation_pilot_v1/SEMANTIC_PRESERVATION_T1_PACK_AWARE_EVALUATOR_v1.py",
+    "sha256": "59339605e3e468291a3e186cb972125b596b6297b1aa0b68915cf418cb795169",
+    "scientific_semantics": "REUSED_VALIDATED_PACK_AWARE_EVALUATION_LOGIC"
+  },
+  "T2_evaluator": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/STRUCTURED_MECHANISM_CONTRACT_T2_PACK_AWARE_EVALUATOR_v1.py",
+    "sha256": "15a2035de87701137c5c397b8c818f09ad580cc5213da0180cc4071279988623"
+  },
+  "run_root": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING",
+  "result_root": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/query_evaluations_t2_valid1",
+  "frozen_pre_CodeQL_results": {
+    "semantic_alignment": "0/7",
+    "semantic_mismatch": "7/7",
+    "translation_loss": "6/7",
+    "unencodable_or_bounded_families": "2/3",
+    "faithfully_encoded_mechanism_families": "0/3"
+  },
+  "controls": {
+    "model_execution": false,
+    "codeql_execution": false,
+    "query_modification": false,
+    "scientific_rerun": false,
+    "test_access": "FORBIDDEN"
+  },
+  "checks": {
+    "source_query_frozen": true,
+    "pack_query_byte_identical": true,
+    "new_run_namespace_present": true,
+    "T2_treatment_namespace_present": true,
+    "T2_result_namespace_present": true,
+    "old_T1_run_namespace_absent": true,
+    "old_T1_result_namespace_absent": true,
+    "result_root_absent": true,
+    "pre_CodeQL_semantic_freeze_unchanged": true,
+    "generation_freeze_unchanged": true,
+    "mapping_audit_unchanged": true
+  }
+}

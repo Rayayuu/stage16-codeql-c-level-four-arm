@@ -1,0 +1,39 @@
+==============================================================================================================
+CWE=CWE-116
+B_QUERY_SECURITY_PROPERTY=Untrusted data from servlet request inputs, environment variables, or system properties must not flow to generic writer/output operations or filesystem-path construction/write operations without appropriate escaping, encoding, or canonicalization.
+HARD_CODED_SOURCES=HttpServletRequest/ServletRequest getters; System.getenv; System.getProperty
+HARD_CODED_SINKS=Writer/PrintWriter/Appendable print/write/append; File/Paths/Files and java.io path-based operations
+HARD_CODED_SECURITY_ASSUMPTION=CWE-116 is approximated as generic untrusted-data-to-output/filesystem taint flow.
+GENERIC_TEMPLATE_STATUS=YES
+TEMPLATE_PATTERN=untrusted input -> writer/output or filesystem path
+HYPOTHESIS_STATUS=CANDIDATE_ONLY: must compare against per-case actual encoding/escaping mechanisms before concluding collapse
+
+==============================================================================================================
+CWE=CWE-284
+B_QUERY_SECURITY_PROPERTY=A public web-exposed endpoint that invokes a name-matched sensitive operation should contain an explicit security annotation or an authorization-check call.
+HARD_CODED_SOURCES=Public Spring/JAX-RS/Micronaut-style mapped methods or HttpServlet doGet/doPost/service
+HARD_CODED_SINKS=Calls with names suggesting delete/create/update user, role/permission changes, execute/eval, credential/secret/token access, upload/download, configure, start/stop, etc.
+HARD_CODED_SECURITY_ASSUMPTION=Improper access control is approximated as missing explicit authorization around sensitive operations in web endpoints.
+GENERIC_TEMPLATE_STATUS=YES
+TEMPLATE_PATTERN=web endpoint -> sensitive operation, with no explicit authorization evidence
+HYPOTHESIS_STATUS=STRONG_CANDIDATE: supervisor specifically hypothesizes this template may collapse heterogeneous CWE-284 mechanisms
+
+==============================================================================================================
+CWE=CWE-434
+B_QUERY_SECURITY_PROPERTY=User-controlled HTTP/request or multipart filename data should not flow into filesystem write, move, transfer, or file-path operations.
+HARD_CODED_SOURCES=HttpServletRequest getters; Part.getSubmittedFileName; MultipartFile.getOriginalFilename; FileItem.getName
+HARD_CODED_SINKS=Files.write/copy/move/createFile/newOutputStream/newBufferedWriter; FileOutputStream/FileWriter/RandomAccessFile; FileUtils writes/moves; renameTo; Part.write; MultipartFile.transferTo
+HARD_CODED_SECURITY_ASSUMPTION=Unrestricted file upload is approximated as user-controlled request/upload data reaching a filesystem destination.
+GENERIC_TEMPLATE_STATUS=YES
+TEMPLATE_PATTERN=request/upload filename -> filesystem write or move
+HYPOTHESIS_STATUS=CANDIDATE_ONLY: must compare against per-case authorization, extension/type/content, path, and sanitizer mechanisms
+
+==============================================================================================================
+CWE=CWE-639
+B_QUERY_SECURITY_PROPERTY=A user-controlled request identifier should not flow into an identifier-like parameter of a resource access or modification method.
+HARD_CODED_SOURCES=HttpServletRequest parameter/header/query inputs; RequestParam/PathVariable/PathParam/QueryParam parameters
+HARD_CODED_SINKS=Arguments mapped to parameters named like id/uuid/guid/key in get/find/select/query/delete/remove/update/edit/set methods
+HARD_CODED_SECURITY_ASSUMPTION=IDOR is approximated as generic taint from user-controlled identifier to an ID-like resource-operation parameter.
+GENERIC_TEMPLATE_STATUS=YES
+TEMPLATE_PATTERN=user-controlled ID -> ID-like resource access/modification parameter
+HYPOTHESIS_STATUS=STRONG_CANDIDATE: relational ownership/authenticated-user context is not represented by the generic taint template

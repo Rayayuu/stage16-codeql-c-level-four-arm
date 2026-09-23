@@ -1,0 +1,115 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "pilot_cwe": "CWE-639",
+  "stage": "PRE_CURRENT_CODEQL_INITIAL_SEMANTIC_SCORING",
+  "current_codeql_outcomes_visible": false,
+  "historical_V3_human_blinding_preserved": false,
+  "semantic_reference": "Frozen Sept18 Actual Vulnerability Mechanism field only.",
+  "cases": [
+    {
+      "cve": "CVE-2020-23449",
+      "m0": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "m0_rationale": "M0 tracks a request-derived user identifier into update/resource operations and heuristically excludes obvious auth signals, but it does not represent the decisive equality/ownership relation between requested target user and authenticated session identity.",
+      "m1": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "m1_rationale": "M1 still models request identifier flow into ID/key-sensitive operations. It does not encode that the selected user must be bound to the authenticated session user.",
+      "m1_plan": "PLAN_REPRESENTS_MECHANISM",
+      "m1_plan_rationale": "The plan explicitly describes ownership/authorization over a resource ID and fixed behavior deriving the ID from authenticated context.",
+      "m1_translation": "LOST_IN_CODEQL_TRANSLATION"
+    },
+    {
+      "cve": "CVE-2021-4142",
+      "m0": "WRONG_VULNERABILITY_MECHANISM",
+      "m0_rationale": "M0 models web/resource identifiers and mutating resource operations, while the actual mechanism is authentication credential type validation using certificate attributes/OIDs.",
+      "m1": "WRONG_VULNERABILITY_MECHANISM",
+      "m1_rationale": "The final M1 query remains a web-input ID/key-to-resource-operation query and contains no certificate-type/OID authentication semantics.",
+      "m1_plan": "PLAN_REPRESENTS_MECHANISM",
+      "m1_plan_rationale": "The mechanism-first plan separately identifies improper certificate authentication, SCA certificate use, certificate attributes, and tightened validation/scoping.",
+      "m1_translation": "LOST_IN_CODEQL_TRANSLATION"
+    },
+    {
+      "cve": "CVE-2023-2260",
+      "m0": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "m0_rationale": "M0 does not represent propagation of the authenticated Principal or the relation among acting subject, organization scope, target, and authorized operation.",
+      "m1": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "m1_rationale": "M1 final CodeQL again reduces the property to request ID/key flow and does not encode Principal propagation or subject-to-scope authorization.",
+      "m1_plan": "PLAN_REPRESENTS_MECHANISM",
+      "m1_plan_rationale": "Although its Alf.io target description is imprecise, the plan substantively identifies authenticated-principal authorization over the target resource as the decisive security relation.",
+      "m1_translation": "LOST_IN_CODEQL_TRANSLATION"
+    },
+    {
+      "cve": "CVE-2023-30216",
+      "m0": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "m0_rationale": "M0 follows an externally influenced ID but does not model the relation between authenticated session user, selected record, and returned user data.",
+      "m1": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "m1_rationale": "M1 final query still lacks the authenticated-session-to-selected-user relation required by the vulnerability.",
+      "m1_plan": "PLAN_REPRESENTS_MECHANISM",
+      "m1_plan_rationale": "The plan explicitly describes fixed behavior deriving IDs from authenticated context and checking principal authorization over the resource.",
+      "m1_translation": "LOST_IN_CODEQL_TRANSLATION"
+    },
+    {
+      "cve": "CVE-2023-32310",
+      "m0": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "m0_rationale": "M0 captures a user-controlled identifier reaching resource mutation but not the decisive requester-to-dashboard/message ownership relation.",
+      "m1": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "m1_rationale": "M1 final query likewise models generic ID/key flow rather than whether the dashboard/message belongs to or is authorized for the requester.",
+      "m1_plan": "PLAN_REPRESENTS_MECHANISM",
+      "m1_plan_rationale": "The plan directly identifies ownership/authorization over the specific resource identified by an ID.",
+      "m1_translation": "LOST_IN_CODEQL_TRANSLATION"
+    },
+    {
+      "cve": "CVE-2023-43668",
+      "m0": "WRONG_VULNERABILITY_MECHANISM",
+      "m0_rationale": "M0 frames the problem as authorization over resource IDs and mutating operations; the actual mechanism is filtering/replacement of security-sensitive JDBC parameter keys.",
+      "m1": "WRONG_VULNERABILITY_MECHANISM",
+      "m1_rationale": "Although M1 accepts generic key names, its final security property is still key/ID flow into resource operations, not sensitive JDBC parameter-key filtering or replacement semantics.",
+      "m1_plan": "PLAN_MISSES_MECHANISM",
+      "m1_plan_rationale": "The plan notices InLong sensitive parameter checks but groups the case with missing/optional identity components and skipped authorization. That materially differs from the actual sensitive-key filtering/replacement mechanism.",
+      "m1_translation": "UPSTREAM_PLAN_FAILURE"
+    },
+    {
+      "cve": "CVE-2023-44981",
+      "m0": "WRONG_VULNERABILITY_MECHANISM",
+      "m0_rationale": "M0 models web-request resource IDs, while the actual mechanism is conditional quorum SASL peer authorization based on the authentication-ID structure.",
+      "m1": "WRONG_VULNERABILITY_MECHANISM",
+      "m1_rationale": "M1 final CodeQL contains no SASL identity-structure, peer-authentication, quorum, or authorization-skip semantics.",
+      "m1_plan": "PLAN_REPRESENTS_MECHANISM",
+      "m1_plan_rationale": "The plan explicitly identifies ZooKeeper SASL instance-part absence, conditional authorization, and the check being skipped when the component is missing.",
+      "m1_translation": "LOST_IN_CODEQL_TRANSLATION"
+    }
+  ],
+  "summary": {
+    "M0_final_query_mechanism_coverage": 0,
+    "M1_final_query_mechanism_coverage": 0,
+    "M0_semantic_mismatch_count": 7,
+    "M1_semantic_mismatch_count": 7,
+    "M0_generic_template_count": 7,
+    "M1_generic_template_count": 7,
+    "M0_generic_template_collapse": "YES",
+    "M1_generic_template_collapse": "YES",
+    "generic_template_binary_threshold": ">=4/7",
+    "M1_plan_mechanism_coverage": 6,
+    "M1_plan_mechanism_miss_count": 1,
+    "M1_plan_to_CodeQL_translation_loss_count": 6,
+    "M1_upstream_plan_failure_count": 1,
+    "initial_semantic_improvement_M1_vs_M0_aligned_cases": 0
+  },
+  "interpretation": "Mechanism-first planning substantially broadened semantic reasoning at the plan stage, but the unified final CodeQL abstraction collapsed back to a generic user-controlled ID/key-to-sensitive-operation template. At initial-query stage, no increase in aligned case coverage is observed. The dominant observed bottleneck is therefore plan/unification/CodeQL semantic preservation rather than absence of mechanism reasoning alone.",
+  "limitations": [
+    "This is one CWE-639 TRAIN pilot and is not evidence of generalization to other CWEs or TEST.",
+    "Step 16A exposed historical V3 diagnostic labels to the human scorer, so historical-V3 blinding is not claimed.",
+    "No current M0/M1 compilation or hit outcomes were available when these semantic scores were frozen."
+  ],
+  "integrity": {
+    "rubric_sha256": "8cf6219632742f4310e5ddbd9fdcb61944f23bddb4b3f2eeb1e8bfa4e6e9e96d",
+    "audit_packet_sha256": "61a7cd1bd94805aa7a792994e7d9ca5eb56b1c97ac0c3067f2fdd1406e0dc447",
+    "deviation_sha256": "0aadf8553de6a3c9736dfa02c709951879da767acad98459b5ec488561152203",
+    "M0_generation_freeze_sha256": "680f4ec27c237e9210d0526b72a1aba90c54d6370f63c7c3b6a3ce76c5cb9e1b",
+    "M1_generation_freeze_sha256": "240b3075c5b920c93d84566bd8b488ff40f3214399f26adc2e5aeb879ce423ca",
+    "M0_initial_query_sha256": "dcd8019966eccd400d875fe33dc62366101ca6815ddff69e6886799b303f5b95",
+    "M1_initial_query_sha256": "5d4afa480a9002eac886791c1beb18bdc064e9d51a45caa299b6b0344afce7bb"
+  },
+  "model_execution": false,
+  "codeql_execution": false,
+  "test_access": "FORBIDDEN"
+}

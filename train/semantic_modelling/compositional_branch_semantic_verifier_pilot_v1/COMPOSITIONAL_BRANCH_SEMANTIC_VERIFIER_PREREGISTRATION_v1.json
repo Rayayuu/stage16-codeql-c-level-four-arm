@@ -1,0 +1,228 @@
+{
+  "schema_version": "1.0",
+  "pilot": "T3_COMPOSITIONAL_BRANCH_GENERATION_PLUS_SEMANTIC_VERIFIER",
+  "scope": "CWE-639 TRAIN ONLY",
+  "status": "PREREGISTERED_BEFORE_ANY_T3_MODEL_OR_CODEQL_EXECUTION",
+  "research_question": "Given the exact frozen T2 mechanism contracts, can independently synthesizing mechanism-specific CodeQL branches, verifying each branch against its semantic contract, and only then deterministically composing the accepted branches reduce mechanism-to-CodeQL semantic loss compared with the frozen T2 unified translation?",
+  "motivation_from_frozen_prior_results": {
+    "T0_post_repair_semantic_alignment": "0/7",
+    "T1_post_repair_semantic_alignment": "0/7",
+    "T2_post_repair_semantic_alignment": "0/7",
+    "T2_translation_loss": "6/7",
+    "T2_initial_compilation": "0/7",
+    "T2_final_compilation": "7/7",
+    "T2_strict_success": "0/7",
+    "T2_detection_failure": "7/7",
+    "T2_failure_transparency_improvement": true,
+    "frozen_interpretation": "Compilation is recoverable, while preservation of decisive security relations during unified CodeQL translation remains the dominant observed bottleneck in the CWE-639 TRAIN pilot."
+  },
+  "frozen_inputs": {
+    "T2_mechanism_contracts": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/t2_generation_v1/CWE-639/structured_contract_mapping.json",
+      "sha256": "65a4b3fd725a646b7300242253a482fbc0a9305fbb5ea8ae1de49dbe202a844b",
+      "generation_visibility": "ONLY mechanism_contracts are visible. T2 codeql_mappings, encoded_status values, generated T2 query, T2 hit results, and T2 semantic scores are hidden."
+    },
+    "M1_mechanism_plan": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/arm_outputs_v1/M1_MECHANISM_FIRST/CWE-639/planning_stage.txt",
+      "sha256": "ea609259a9f8bbed4319249de29915e640fac59cf3631fc664452d092c16368f",
+      "generation_visibility": "VISIBLE only as branch-relevant mechanism context."
+    },
+    "A_level_evidence": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/synthesis_inputs/CWE-639_A_LEVEL_INPUT_v1.json",
+      "sha256": "c2b12964eab7af408e3ae46b2f2bfe1a5c5f8b4aafbc1a3e38b0e510c3a760cf",
+      "generation_visibility": "VISIBLE only for the CVEs preregistered to the current branch."
+    },
+    "semantic_scoring_rubric": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/MECHANISM_FIRST_SEMANTIC_SCORING_RUBRIC_v1.json",
+      "sha256": "8cf6219632742f4310e5ddbd9fdcb61944f23bddb4b3f2eeb1e8bfa4e6e9e96d",
+      "generation_visibility": "HIDDEN from branch generation; used only for independent human semantic scoring."
+    }
+  },
+  "branch_membership": {
+    "idor_user_controlled_identifier_to_resource_operation": [
+      "CVE-2020-23449",
+      "CVE-2023-2260",
+      "CVE-2023-30216",
+      "CVE-2023-32310"
+    ],
+    "bypass_via_missing_or_optional_identity_component": [
+      "CVE-2023-43668",
+      "CVE-2023-44981"
+    ],
+    "improper_authentication_certificate_reuse": [
+      "CVE-2021-4142"
+    ]
+  },
+  "treatment_design": {
+    "unit_of_generation": "ONE MECHANISM FAMILY AT A TIME",
+    "mechanism_family_count": 3,
+    "required_final_artifact": "ONE CWE-LEVEL CODEQL QUERY COVERING ALL CWE-639 TRAIN PAIRS",
+    "branch_generation": {
+      "model_family": "openai/gpt-5",
+      "calls": "EXACTLY_ONE_INITIAL_GENERATION_CALL_PER_MECHANISM_FAMILY",
+      "initial_generation_call_budget": 3,
+      "inputs_per_branch": [
+        "one frozen mechanism_contract object",
+        "branch-relevant excerpt from frozen M1 plan",
+        "A-level evidence restricted to preregistered CVEs for that branch",
+        "fixed branch interface and traceability instructions"
+      ],
+      "forbidden_inputs": [
+        "human semantic labels",
+        "T0/T1/T2 semantic scores",
+        "T0/T1/T2 hit results",
+        "T0/T1/T2 repaired queries",
+        "T0/T1/T2 compiler repair trajectories",
+        "T2 codeql_mappings or encoded_status",
+        "B evidence",
+        "C bounded source evidence",
+        "repository source",
+        "TEST data"
+      ],
+      "required_output": {
+        "branch_code": "CodeQL branch block implementing exactly one mechanism family",
+        "traceability_map": [
+          "security_subject_or_principal",
+          "protected_target_or_security_object",
+          "attacker_controlled_input_or_trigger",
+          "decisive_security_relation",
+          "required_validation_or_authorization_condition",
+          "security_sensitive_effect"
+        ],
+        "branch_interface": "Each branch must expose a fixed result predicate suitable for deterministic composition; comments or select-message text do not count as semantic implementation."
+      }
+    },
+    "semantic_verifier": {
+      "verifier_type": "MODEL-BASED CONTRACT-TO-EXECUTABLE-QL VERIFIER",
+      "initial_verifier_call_budget": 3,
+      "verifier_inputs": [
+        "one frozen mechanism contract",
+        "generated branch code",
+        "branch traceability map"
+      ],
+      "verifier_forbidden_inputs": [
+        "CVE human-reference mechanism labels",
+        "CodeQL hit results",
+        "compiler outcome",
+        "patched/vulnerable result comparison",
+        "TEST data"
+      ],
+      "pass_criteria": [
+        "Every required contract field must map to executable QL logic, not only comments, names, or diagnostic messages.",
+        "The decisive security relation and required validation/authorization condition must be represented explicitly.",
+        "A generic user-controlled-key -> sensitive-operation surrogate does not pass when the contract requires a stronger relational, certificate, filtering, or authentication condition."
+      ],
+      "verdicts": [
+        "PASS",
+        "FAIL_MISSING_DECISIVE_RELATION",
+        "FAIL_MISSING_VALIDATION_CONDITION",
+        "FAIL_GENERIC_SURROGATE",
+        "FAIL_OTHER_SEMANTIC_LOSS"
+      ]
+    },
+    "verifier_guided_revision": {
+      "enabled": true,
+      "maximum_revisions_per_branch": 1,
+      "revision_condition": "ONLY if the first semantic verifier verdict is not PASS",
+      "revision_inputs": [
+        "same frozen mechanism contract",
+        "current branch code",
+        "current traceability map",
+        "verifier feedback"
+      ],
+      "reverification": "EXACTLY_ONE_REVERIFICATION_CALL_AFTER_A_REVISION",
+      "maximum_revision_calls": 3,
+      "maximum_reverification_calls": 3,
+      "maximum_total_precomposition_model_calls": 12
+    },
+    "branch_acceptance": {
+      "accepted": "final semantic verifier verdict == PASS",
+      "rejected": "final semantic verifier verdict != PASS after the single allowed semantic revision",
+      "rejected_branch_policy": "Do not replace with a generic surrogate. Preserve an explicit UNENCODABLE_OR_REJECTED marker and omit that branch from executable composition."
+    },
+    "composition": {
+      "method": "DETERMINISTIC_NO_MODEL_UNIFICATION",
+      "model_calls": 0,
+      "rule": "Accepted branch bodies are preserved without semantic rewriting. A deterministic composer only supplies common imports/interface plumbing and OR-combines accepted branch result predicates into one final CWE-level query.",
+      "semantic_rewriting_during_composition": false,
+      "manual_query_editing": false
+    }
+  },
+  "evaluation_protocol": {
+    "phase_1_pre_CodeQL": [
+      "freeze every branch generation",
+      "freeze every verifier/revision trajectory",
+      "construct deterministic unified query",
+      "audit branch-to-final-query byte/structure preservation",
+      "perform independent human semantic scoring before any T3 CodeQL result is viewed"
+    ],
+    "primary_endpoints": {
+      "final_query_semantic_alignment": "number of 7 TRAIN mechanisms semantically aligned",
+      "plan_to_CodeQL_translation_loss": "number of plan-represented mechanisms lost in final executable QL",
+      "faithfully_encoded_mechanism_families": "number of 3 contracts faithfully encoded",
+      "branch_verifier_pass_rate": "accepted mechanism branches / 3"
+    },
+    "primary_comparator": {
+      "arm": "FROZEN_T2_STRUCTURED_MECHANISM_CONTRACT_MAPPING",
+      "semantic_alignment": "0/7",
+      "translation_loss": "6/7",
+      "faithfully_encoded_mechanism_families": "0/3",
+      "rerun": false
+    },
+    "semantic_improvement_definition": "T3 improves semantic preservation only if independently frozen pre-CodeQL human scoring yields semantic alignment > 0/7 and/or translation loss < 6/7 relative to frozen T2. Verifier PASS alone does not count as human semantic success.",
+    "phase_2_CodeQL": {
+      "run_only_after_pre_CodeQL_semantic_freeze": true,
+      "initial_CodeQL_evaluation": "TRAIN only",
+      "strict_success": "compile AND vulnerable_hits>=1 AND patched_hits=0",
+      "one_CWE_level_query": true,
+      "compiler_repair_if_needed": {
+        "arm": "V3_LIBRARY_PLUS_AUTO_SKILL",
+        "MAX_REPAIRS": 4,
+        "initial_evaluation_rerun": false,
+        "manual_query_editing": false
+      },
+      "post_repair_semantic_scoring": "Required after any compiler repair; operational hits cannot retroactively alter frozen pre-CodeQL semantic scores."
+    }
+  },
+  "cost_tracking": {
+    "record_per_model_call": [
+      "input_tokens",
+      "cached_input_tokens",
+      "uncached_input_tokens",
+      "output_tokens",
+      "reasoning_tokens",
+      "total_tokens",
+      "wall_clock_sec"
+    ],
+    "record_semantic_verifier_cost": true,
+    "record_CodeQL_runtime": true,
+    "record_library_lookup_count": true,
+    "record_skill_retrieval_count": true
+  },
+  "anti_leakage_controls": {
+    "TRAIN_ONLY": true,
+    "TEST_ACCESS": "FORBIDDEN",
+    "human_semantic_reference_visible_to_generation": false,
+    "human_semantic_reference_visible_to_verifier": false,
+    "prior_hit_results_visible_to_generation": false,
+    "prior_hit_results_visible_to_verifier": false,
+    "prior_repair_trajectory_visible": false,
+    "repository_source_visible": false,
+    "B_or_C_evidence_visible": false
+  },
+  "stopping_rules": {
+    "semantic_revision_per_branch": 1,
+    "compiler_MAX_REPAIRS": 4,
+    "no_per_CVE_tuning": true,
+    "no_manual_query_modification": true,
+    "no_TEST_until_explicit_future_authorization": true
+  },
+  "interpretation_rules": [
+    "Verifier PASS is an automated process metric and must not be reported as semantic correctness without independent human scoring.",
+    "Compilation improvement must be reported separately from semantic improvement.",
+    "Strict hit-based success must not be treated as semantic correctness.",
+    "Any improvement is limited to CWE-639 TRAIN until replicated elsewhere."
+  ],
+  "next_stage_if_preregistration_passes": "BUILD_BRANCH_INPUT_SLICES_AND_GENERATION_HARNESS_WITH_NO_MODEL_EXECUTION",
+  "test_access": "FORBIDDEN"
+}

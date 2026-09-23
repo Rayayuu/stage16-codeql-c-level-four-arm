@@ -1,0 +1,61 @@
+{
+  "cwe": "CWE-639",
+  "mechanism_contracts": [
+    {
+      "mechanism_family_id": "idor_user_controlled_identifier_to_resource_operation",
+      "security_subject_or_principal": "Web user (authenticated or unauthenticated) invoking a controller/service endpoint",
+      "protected_target_or_security_object": "Application resource identified by an ID/key (e.g., user profile, dashboard, message, index)",
+      "attacker_controlled_input_or_trigger": "Identifier obtained from HTTP request inputs (query parameter, header, path/body parameter via web frameworks)",
+      "decisive_security_relation": "Ownership/authorization of the current principal over the resource identified by the supplied ID/key",
+      "required_validation_or_authorization_condition": "Server-side must derive/verify the target ID against the authenticated context or perform an explicit ownership/authorization check before the operation",
+      "security_sensitive_effect": "Directly performing a sensitive operation (delete/update/modify/share/etc.) on the resource designated by the attacker-controlled ID/key"
+    },
+    {
+      "mechanism_family_id": "bypass_via_missing_or_optional_identity_component",
+      "security_subject_or_principal": "Peer/client or user presenting identity/configuration keys",
+      "protected_target_or_security_object": "Cluster membership or security-sensitive configuration options",
+      "attacker_controlled_input_or_trigger": "User-controlled identity component (e.g., SASL instance part) or configuration key whose absence/value influences authorization",
+      "decisive_security_relation": "Authorization logic branches based on presence/value of the key; missing/optional component causes checks to be skipped",
+      "required_validation_or_authorization_condition": "Enforce presence and validation of the key/identity component before allowing privileged operation",
+      "security_sensitive_effect": "Join a cluster or toggle sensitive parameters without proper authorization"
+    },
+    {
+      "mechanism_family_id": "improper_authentication_certificate_reuse",
+      "security_subject_or_principal": "Holder of an SCA certificate used to authenticate to the service",
+      "protected_target_or_security_object": "Authenticated session/identity at the service",
+      "attacker_controlled_input_or_trigger": "Certificate-derived identity/key accepted without sufficient scoping/constraints",
+      "decisive_security_relation": "Mapping from certificate attributes to authorized identity is too permissive",
+      "required_validation_or_authorization_condition": "Tight validation and scoping of certificate usage to intended identities/contexts",
+      "security_sensitive_effect": "Gain/abuse authenticated access beyond intended scope"
+    }
+  ],
+  "codeql_mappings": [
+    {
+      "mechanism_family_id": "idor_user_controlled_identifier_to_resource_operation",
+      "source_predicate_or_condition": "Sources are HTTP request-derived values: returns of javax.servlet.http.HttpServletRequest.getParameter/getHeader/getQueryString and web-exposed handler parameters (Spring @*Mapping, JAX-RS @PathParam/@QueryParam/@FormParam)",
+      "target_predicate_or_condition": "Sinks are call arguments to methods whose names indicate sensitive resource operations (delete/remove/update/modify/set/save/change/grant/revoke/share/unshare/bind/assign/disable/enable/approve/reject/clear/reset/subscribe/unsubscribe/cancel/close/open/start/stop) where the specific argument is ID-like (variable/field name contains id/uuid/key/token or request accessor called with an id-like literal)",
+      "relation_or_validation_predicate": "Heuristically exclude flows in methods that clearly access an authorization context (Principal/Authentication parameter or use SecurityContextHolder)",
+      "query_branch_or_join_condition": "Taint flow from sources to the exact sink argument expression via DataFlow and a join on the argument index",
+      "encoded_status": "ENCODED",
+      "bounded_limitation_if_not_encoded": "Ownership checks expressed via custom methods or annotations are not recognized; the presence of auth context does not guarantee proper checks, it only reduces false positives"
+    },
+    {
+      "mechanism_family_id": "bypass_via_missing_or_optional_identity_component",
+      "source_predicate_or_condition": "User-controlled or missing identity/configuration component influencing authorization branches",
+      "target_predicate_or_condition": "Privileged operations gated by conditional checks on the presence/value of the component",
+      "relation_or_validation_predicate": "Path-sensitive detection of skipped checks due to absent instance/key",
+      "query_branch_or_join_condition": "Requires control-flow/semantic understanding of authorization logic tied to optional components",
+      "encoded_status": "UNENCODABLE_OR_BOUNDED",
+      "bounded_limitation_if_not_encoded": "Generic CodeQL query without repository-specific models cannot reliably encode this control-flow based bypass; omitted to avoid undue false positives"
+    },
+    {
+      "mechanism_family_id": "improper_authentication_certificate_reuse",
+      "source_predicate_or_condition": "Certificate-based identities accepted from external clients",
+      "target_predicate_or_condition": "Authentication/authorization routines trusting certificate attributes as identity keys",
+      "relation_or_validation_predicate": "Improper mapping/scoping checks for certificate use",
+      "query_branch_or_join_condition": "Requires protocol- and repository-specific modeling of certificate validation logic",
+      "encoded_status": "UNENCODABLE_OR_BOUNDED",
+      "bounded_limitation_if_not_encoded": "Out of scope for a general static pattern without deep framework/protocol models; not encoded"
+    }
+  ]
+}

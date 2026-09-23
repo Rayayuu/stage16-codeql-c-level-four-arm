@@ -1,0 +1,206 @@
+T3 PRE-CODEQL HUMAN SEMANTIC SCORING PACKET
+============================================
+
+SCOPE: CWE-639 TRAIN ONLY
+TEST: FORBIDDEN
+COMPILER / HIT RESULTS: HIDDEN
+PRIOR T0/T1/T2 SCORE VALUES: HIDDEN
+
+FINAL QUERY SHA256: 6364a2e74e1973e1bba37ffa0b7f6f478371a3aa7220b13de2d6b9938e3828ae
+
+ALLOWED FINAL QUERY LABELS:
+- ALIGNED
+- WRONG_VULNERABILITY_MECHANISM
+- INCOMPLETE_VULNERABILITY_MECHANISM
+- MISSING_VALIDATION_SEMANTICS
+- MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS
+- INSUFFICIENT_EVIDENCE_UNCLEAR
+
+ALLOWED GENERIC-TEMPLATE LABELS:
+- GENERIC_TEMPLATE_MATCH
+- NOT_GENERIC_TEMPLATE_MATCH
+- UNCLEAR
+
+SEVEN TRAIN CASES TO SCORE:
+1. CVE-2020-23449 | idor_user_controlled_identifier_to_resource_operation
+2. CVE-2023-2260 | idor_user_controlled_identifier_to_resource_operation
+3. CVE-2023-30216 | idor_user_controlled_identifier_to_resource_operation
+4. CVE-2023-32310 | idor_user_controlled_identifier_to_resource_operation
+5. CVE-2023-43668 | bypass_via_missing_or_optional_identity_component
+6. CVE-2023-44981 | bypass_via_missing_or_optional_identity_component
+7. CVE-2021-4142 | improper_authentication_certificate_reuse
+
+HUMAN SCORING FORM IS INTENTIONALLY BLANK.
+
+FINAL FROZEN T3 QUERY
+---------------------
+/*
+ * T3 deterministic composition.
+ *
+ * Accepted mechanism branches are inserted byte-for-byte without
+ * semantic rewriting. Rejected or failed branches are intentionally
+ * omitted and are not replaced by generic surrogates.
+ */
+
+import java
+import semmle.code.java.dataflow.DataFlow
+
+module T3BranchCertificateReuse {
+
+  /** Certificate attribute getters on X509Certificate */
+  private predicate isX509CertMethod(Method m) {
+    m.getDeclaringType().hasQualifiedName("java.security.cert", "X509Certificate") or
+    m.getDeclaringType().hasQualifiedName("javax.security.cert", "X509Certificate")
+  }
+
+  private predicate isCertAttributeGetter(Method m) {
+    isX509CertMethod(m) and
+    (
+      m.getName().regexpMatch("getSubject(X500Principal|DN)") or
+      m.getName() = "getSubjectAlternativeNames" or
+      m.getName() = "getSerialNumber"
+    )
+  }
+
+  /**
+   * Heuristically recognize expressions derived from certificate attributes used as identity keys.
+   * Either direct getters on X509Certificate, or getName() on X500Principal when the same scope
+   * also calls getSubjectX500Principal on a certificate.
+   */
+  private predicate isCertAttrExpr(Expr e) {
+    exists(MethodCall mc, Method m |
+      mc = e and m = mc.getMethod() and isCertAttributeGetter(m)
+    )
+    or
+    exists(MethodCall mcName, Method mName, MethodCall mcSubject, Method mSubject |
+      mcName = e and mName = mcName.getMethod() and
+      mName.getName() = "getName" and
+      mName.getDeclaringType().getName().regexpMatch("X500Principal") and
+      mcName.getEnclosingCallable() = mcSubject.getEnclosingCallable() and
+      mSubject = mcSubject.getMethod() and
+      isX509CertMethod(mSubject) and mSubject.getName() = "getSubjectX500Principal"
+    )
+  }
+
+  /** Methods that establish or set an authenticated identity/session. */
+  private predicate isAuthEstablish(Method m) {
+    m.getName().regexpMatch("(authenticate|authenticat.*WithCert|login|logIn|createSession|startSession|setAuthenticated|setUser|setPrincipal|assumeUser|impersonat|switchUser|authorize)")
+  }
+
+  /**
+   * Decisive security relation: certificate attribute is mapped directly to an authenticated identity/session argument.
+   */
+  private predicate hasWeakMapping(Call c, Expr id) {
+    c.getCallee() instanceof Method and
+    isAuthEstablish(c.getCallee().(Method)) and
+    exists(int i | id = c.getArgument(i)) and
+    isCertAttrExpr(id)
+  }
+
+  /** Presence of validation/scoping that should gate certificate-to-identity mapping. */
+  private predicate hasValidationInScope(Callable scope) {
+    exists(Call v |
+      v.getEnclosingCallable() = scope and
+      (
+        exists(Callable cal |
+          cal = v.getCallee() and
+          (
+            cal.getName().regexpMatch("(verify|validat|check|scope|restrict|enforc|match|trust|isAuthorized|hasRole)") or
+            cal.getName().regexpMatch("get(ExtendedKeyUsage|KeyUsage|BasicConstraints|IssuerX500Principal)") or
+            cal.getName() = "checkValidity"
+          )
+        )
+      )
+    )
+  }
+
+  /**
+   * Exposed branch interface: sink is the certificate-derived identity used to establish an authenticated session/identity
+   * without sufficient validation/scoping.
+   */
+  predicate result(DataFlow::Node sink) {
+    exists(Call c, Expr id |
+      hasWeakMapping(c, id) and
+      not hasValidationInScope(c.getEnclosingCallable()) and
+      sink = DataFlow::exprNode(id)
+    )
+  }
+}
+
+
+from DataFlow::Node sink
+where T3BranchCertificateReuse::result(sink)
+select sink,
+  "CWE-639 T3 accepted mechanism branch: improper_authentication_certificate_reuse."
+
+
+FROZEN M1 MECHANISM REFERENCE
+-----------------------------
+Inferred vulnerability mechanism families for CWE-639 (Authorization Bypass Through User-Controlled Key) from TRAIN advisories:
+
+1) Classic IDOR via user-supplied identifier in web request
+- Subject/principal: Authenticated or unauthenticated web user
+- Target resource: User profile/info (newbee-mall), dashboards/messages/shares (DataEase), sensitive indexes (alf.io)
+- Security relation: Ownership or authorization over the specific resource identified by an ID
+- Validation/authorization boundary: Server-side controller/service must verify the current principal’s right to act on the resource ID
+- Propagation/context: Identifier taken directly from HTTP request (query parameter, path variable, header/body) flows to service/DAO calls performing update/delete/modify operations
+- Vulnerable vs fixed: Vulnerable versions accept user-controlled IDs; fixed versions derive the ID from the authenticated context or add an ownership/authorization check before invoking the operation
+- Representable by user-controlled-ID → resource-operation taint template: Yes
+
+2) Bypass due to missing/optional identity component causing skipped authorization (ZooKeeper SASL instance part, InLong sensitive param checks)
+- Subject/principal: Cluster peer or client presenting an identity or configuration keys
+- Target resource: Cluster membership/data tree (ZooKeeper) or security-sensitive configuration (InLong)
+- Security relation: Authorization contingent on presence/value of a key/instance component
+- Validation/authorization boundary: Authorization check branches based on optional/missing key; missing value leads to skip
+- Propagation/context: User-controlled/missing key flows into authorization logic influencing whether checks execute
+- Vulnerable vs fixed: Fix enforces presence/validation of the key and prevents bypass
+- Representable by simple user-controlled-ID → operation taint template: Only partially; direct data-flow into sensitive actions still applies when the key value is used without robust validation, but full control-flow-based skip is harder to encode generically without repository context
+
+3) Improper authentication via certificate reuse (Candlepin)
+- Subject/principal: Holder of SCA certificate
+- Target resource: Candlepin service authenticated session
+- Security relation: Authentication based on certificate attributes
+- Validation/authorization boundary: Server must ensure correct mapping/constraints on certificate use
+- Propagation/context: Certificate-derived identity used as key for authorization/authentication
+- Vulnerable vs fixed: Fix tightens validation and scoping of certificate use
+- Representable by simple user-controlled-ID → operation taint template: Not directly (more about authn) but overlapping theme is trust in externally supplied identity key
+
+Unified CWE-level semantic abstraction for query:
+- Model user-controlled identifiers extracted from HTTP requests (Servlet API and common Java web annotations) as taint sources.
+- Report flows where such tainted identifiers are used as arguments to methods whose names indicate security-sensitive resource modification operations (delete/remove/update/modify), and where the argument position or variable name is ID-like (id/userId/...ID), indicating it functions as an access key to a resource.
+- Heuristically reduce false positives and better differentiate patched code by excluding cases where the enclosing method clearly accesses an authentication context (e.g., uses SecurityContextHolder or has a Principal/Authentication parameter), a common pattern in fixed code where the ID is derived/validated against the current principal.
+
+This abstraction avoids repository-specific constants while capturing the core CWE-639 pattern: using a user-controlled key to directly drive sensitive operations without proper authorization checks.
+
+
+FROZEN T2 MECHANISM CONTRACTS
+-----------------------------
+[
+  {
+    "mechanism_family_id": "idor_user_controlled_identifier_to_resource_operation",
+    "security_subject_or_principal": "Web user (authenticated or unauthenticated) invoking a controller/service endpoint",
+    "protected_target_or_security_object": "Application resource identified by an ID/key (e.g., user profile, dashboard, message, index)",
+    "attacker_controlled_input_or_trigger": "Identifier obtained from HTTP request inputs (query parameter, header, path/body parameter via web frameworks)",
+    "decisive_security_relation": "Ownership/authorization of the current principal over the resource identified by the supplied ID/key",
+    "required_validation_or_authorization_condition": "Server-side must derive/verify the target ID against the authenticated context or perform an explicit ownership/authorization check before the operation",
+    "security_sensitive_effect": "Directly performing a sensitive operation (delete/update/modify/share/etc.) on the resource designated by the attacker-controlled ID/key"
+  },
+  {
+    "mechanism_family_id": "bypass_via_missing_or_optional_identity_component",
+    "security_subject_or_principal": "Peer/client or user presenting identity/configuration keys",
+    "protected_target_or_security_object": "Cluster membership or security-sensitive configuration options",
+    "attacker_controlled_input_or_trigger": "User-controlled identity component (e.g., SASL instance part) or configuration key whose absence/value influences authorization",
+    "decisive_security_relation": "Authorization logic branches based on presence/value of the key; missing/optional component causes checks to be skipped",
+    "required_validation_or_authorization_condition": "Enforce presence and validation of the key/identity component before allowing privileged operation",
+    "security_sensitive_effect": "Join a cluster or toggle sensitive parameters without proper authorization"
+  },
+  {
+    "mechanism_family_id": "improper_authentication_certificate_reuse",
+    "security_subject_or_principal": "Holder of an SCA certificate used to authenticate to the service",
+    "protected_target_or_security_object": "Authenticated session/identity at the service",
+    "attacker_controlled_input_or_trigger": "Certificate-derived identity/key accepted without sufficient scoping/constraints",
+    "decisive_security_relation": "Mapping from certificate attributes to authorized identity is too permissive",
+    "required_validation_or_authorization_condition": "Tight validation and scoping of certificate usage to intended identities/contexts",
+    "security_sensitive_effect": "Gain/abuse authenticated access beyond intended scope"
+  }
+]

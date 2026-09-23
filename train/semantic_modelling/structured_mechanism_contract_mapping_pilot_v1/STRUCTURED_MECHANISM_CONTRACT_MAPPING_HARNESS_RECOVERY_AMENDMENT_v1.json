@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "stage": "T2_GENERATION_HARNESS_RECOVERY",
+  "failure_class": "SELF_REFERENTIAL_STATIC_AUDIT_FALSE_POSITIVE",
+  "failed_runner": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/STRUCTURED_MECHANISM_CONTRACT_MAPPING_RUNNER_v1.py",
+    "sha256": "501437240519b4df24d781ef8a0e82d88d1c10453fb4a7af1771a06b35c2c313"
+  },
+  "corrected_runner": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/STRUCTURED_MECHANISM_CONTRACT_MAPPING_RUNNER_v1_1.py",
+    "sha256": "00c461b1f5f7ae1e5b89dbe95b2f7a86b208cc0fe77230fb6741a82f0727e832"
+  },
+  "root_cause": "The v1 self-check scanned its entire own source for prohibited artifact-name tokens. Those tokens were necessarily present inside the checker definition itself, causing a false-positive leakage failure.",
+  "correction": "The v1.1 checker scans only the actual generation surface: treatment_instruction(), build_prompt(), and generate().",
+  "scientific_effect": {
+    "model_call_consumed": false,
+    "codeql_executed": false,
+    "T2_contract_generated": false,
+    "T2_query_generated": false,
+    "generation_prompt_changed": false,
+    "generation_tool_schema_changed": false,
+    "scientific_rerun": false
+  },
+  "test_access": "FORBIDDEN"
+}

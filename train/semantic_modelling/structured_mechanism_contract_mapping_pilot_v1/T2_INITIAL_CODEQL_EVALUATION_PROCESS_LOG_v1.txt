@@ -1,0 +1,75 @@
+SEMANTIC_PRESERVATION_EVALUATOR=T1
+SEMANTIC_PRESERVATION_OUTPUT_NAMESPACE=query_evaluations_t2_valid1
+SEMANTIC_PRESERVATION_RESULT_ROOT=/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/query_evaluations_t2_valid1
+SEMANTIC_PRESERVATION_QUERY=/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql
+SEMANTIC_PRESERVATION_QUERY_SHA256=0f3188139935f0cec116efab018b3d0035ebd01a9fc0b81d68ae80a194ac1631
+===== CWE TRAIN QUERY EVALUATION =====
+CWE = CWE-639
+ATTEMPT_ID = t2_initial
+QUERY = /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql
+QUERY_SHA256 = 0f3188139935f0cec116efab018b3d0035ebd01a9fc0b81d68ae80a194ac1631
+TRAIN_CASES = 7
+
+===== CASE 1/7 CWE-639::CVE-2020-23449 =====
+VULNERABLE_DB = /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization/train/codeql_pilot_dbs/no_build/38cd148877308372c2a2
+PATCHED_DB = /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization/train/codeql_train_dbs/no_build/6737190954761235341e
+COMPILED = False
+VULNERABLE_HITS = 0
+PATCHED_HITS = 0
+PAIR_SUCCESS = False
+
+===== CASE 2/7 CWE-639::CVE-2021-4142 =====
+VULNERABLE_DB = /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization/train/codeql_train_dbs/no_build/7103bc783466f7808e94
+PATCHED_DB = /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization/train/codeql_train_dbs/no_build/02779eae310a1dd69a4c
+COMPILED = False
+VULNERABLE_HITS = 0
+PATCHED_HITS = 0
+PAIR_SUCCESS = False
+
+===== CASE 3/7 CWE-639::CVE-2023-2260 =====
+VULNERABLE_DB = /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization/train/codeql_train_dbs/no_build/4cc9304b310947963aa3
+PATCHED_DB = /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization/train/codeql_train_dbs/no_build/58576e044704e49e1025
+COMPILED = False
+VULNERABLE_HITS = 0
+PATCHED_HITS = 0
+PAIR_SUCCESS = False
+
+===== CASE 4/7 CWE-639::CVE-2023-30216 =====
+VULNERABLE_DB = /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization/train/codeql_train_dbs/no_build/addebcbe9d8283059b02
+PATCHED_DB = /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization/train/codeql_train_dbs/no_build/1253c462eb1b7aa45e94
+COMPILED = False
+VULNERABLE_HITS = 0
+PATCHED_HITS = 0
+PAIR_SUCCESS = False
+
+===== CASE 5/7 CWE-639::CVE-2023-32310 =====
+VULNERABLE_DB = /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization/train/codeql_train_dbs/no_build/43fc6a18da0d95d3ed82
+PATCHED_DB = /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization/train/codeql_train_dbs/no_build/23de0579ca06b0729c5c
+COMPILED = False
+VULNERABLE_HITS = 0
+PATCHED_HITS = 0
+PAIR_SUCCESS = False
+
+===== CASE 6/7 CWE-639::CVE-2023-43668 =====
+VULNERABLE_DB = /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization/train/codeql_train_dbs/no_build/78648e00b47a1463a09d
+PATCHED_DB = /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization/train/codeql_train_dbs/no_build/f8cc0b60516f9715172f
+COMPILED = False
+VULNERABLE_HITS = 0
+PATCHED_HITS = 0
+PAIR_SUCCESS = False
+
+===== CASE 7/7 CWE-639::CVE-2023-44981 =====
+VULNERABLE_DB = /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization/train/codeql_train_dbs/no_build/6fd6f5cd8e67569b0d91
+PATCHED_DB = /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization/train/codeql_train_dbs/no_build/5bfc838400438ac9ddcc
+COMPILED = False
+VULNERABLE_HITS = 0
+PATCHED_HITS = 0
+PAIR_SUCCESS = False
+
+===== TRAIN AGGREGATE =====
+COMPILED_PAIR_COUNT = 0
+SUCCESSFUL_PAIR_COUNT = 0
+ALL_PAIRS_SUCCESS = NO
+PAIR_RESULTS = /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/query_evaluations_t2_valid1/CWE-639/t2_initial/pair_results.csv
+AGGREGATE = /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/query_evaluations_t2_valid1/CWE-639/t2_initial/aggregate.json
+VERDICT=CWE_TRAIN_EVALUATOR_COMPLETED

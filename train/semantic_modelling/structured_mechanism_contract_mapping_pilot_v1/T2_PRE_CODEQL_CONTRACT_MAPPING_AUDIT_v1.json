@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "stage": "T2_PRE_CODEQL_CONTRACT_MAPPING_AUDIT",
+  "query_sha256": "0f3188139935f0cec116efab018b3d0035ebd01a9fc0b81d68ae80a194ac1631",
+  "contract_sha256": "65a4b3fd725a646b7300242253a482fbc0a9305fbb5ea8ae1de49dbe202a844b",
+  "audit_rows": [
+    {
+      "mechanism_family_id": "idor_user_controlled_identifier_to_resource_operation",
+      "claimed_encoded_status": "ENCODED",
+      "query_evidence": {
+        "request_source_present": true,
+        "sensitive_operation_present": true,
+        "auth_context_present": true,
+        "ownership_relation_present": true,
+        "session_identity_relation_present": false,
+        "explicit_identity_equality_present": false,
+        "authorization_check_present": true
+      },
+      "actual_mapping_status": "RELATION_ENCODED"
+    },
+    {
+      "mechanism_family_id": "bypass_via_missing_or_optional_identity_component",
+      "claimed_encoded_status": "UNENCODABLE_OR_BOUNDED",
+      "query_evidence": {
+        "sasl_or_quorum_semantics": false,
+        "jdbc_parameter_filter_semantics": false,
+        "control_flow_absence_check": true
+      },
+      "actual_mapping_status": "NOT_ENCODED"
+    },
+    {
+      "mechanism_family_id": "improper_authentication_certificate_reuse",
+      "claimed_encoded_status": "UNENCODABLE_OR_BOUNDED",
+      "query_evidence": {
+        "certificate_type_or_oid_semantics": false
+      },
+      "actual_mapping_status": "NOT_ENCODED"
+    }
+  ],
+  "summary": {
+    "mechanism_contract_count": 3,
+    "claimed_encoded_count": 1,
+    "claimed_unencodable_or_bounded_count": 2,
+    "actual_decisive_relation_encoded_count": 1,
+    "generic_flow_without_decisive_relation_count": 0,
+    "actual_not_encoded_count": 2,
+    "all_encoded_claims_supported": true
+  },
+  "feature_inventory": {
+    "GENERIC_ID_OR_KEY": true,
+    "GENERIC_SENSITIVE_OPERATION": true,
+    "HTTP_REQUEST_SOURCE": true,
+    "SPRING_OR_JAXRS_SOURCE": true,
+    "PRINCIPAL_OR_AUTH_CONTEXT": true,
+    "OWNERSHIP_RELATION": true,
+    "SESSION_IDENTITY_RELATION": false,
+    "EXPLICIT_IDENTITY_EQUALITY": false,
+    "AUTHORIZATION_CHECK": true,
+    "CERTIFICATE_TYPE_OR_OID": false,
+    "JDBC_PARAMETER_FILTER": false,
+    "SASL_OR_QUORUM": false,
+    "ORG_OR_TENANT_SCOPE": false,
+    "CONTROL_FLOW_ABSENCE_CHECK": true
+  },
+  "codeql_outcome_visible": false,
+  "model_execution": false,
+  "codeql_execution": false,
+  "test_access": "FORBIDDEN"
+}

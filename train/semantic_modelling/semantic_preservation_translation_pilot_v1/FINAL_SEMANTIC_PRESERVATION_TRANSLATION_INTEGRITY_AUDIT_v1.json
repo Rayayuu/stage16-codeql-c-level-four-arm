@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "status": "FINAL_INTEGRITY_AUDIT_PASS",
+  "pilot": "SEMANTIC_PRESERVATION_CWE639_TRAIN",
+  "artifact_checks": {
+    "prereg_json": true,
+    "harness_v1_1": true,
+    "generation_freeze": true,
+    "pre_semantic_json": true,
+    "pre_semantic_freeze": true,
+    "initial_eval_freeze": true,
+    "repair_harness_freeze": true,
+    "repair_outcome_freeze": true,
+    "post_repair_semantic_json": true,
+    "post_repair_semantic_csv": true,
+    "post_repair_semantic_txt": true,
+    "final_synthesis": true,
+    "supervisor_report": true,
+    "final_freeze_manifest": true
+  },
+  "final_result": {
+    "T0_semantic_alignment": "0/7",
+    "T1_pre_repair_semantic_alignment": "0/7",
+    "T1_post_repair_semantic_alignment": "0/7",
+    "T1_post_repair_generic_template": "7/7",
+    "T1_post_repair_translation_loss": "6/7",
+    "T1_compilation_initial": "0/7",
+    "T1_compilation_final": "7/7",
+    "T1_strict_success_final": "0/7",
+    "T1_detection_failure_final": "7/7",
+    "semantic_preservation_improvement_observed": false,
+    "compilation_recovery_observed": true
+  },
+  "scientific_interpretation": {
+    "planning_mechanism_coverage": "6/7",
+    "semantic_alignment_T0": "0/7",
+    "semantic_alignment_T1_pre_repair": "0/7",
+    "semantic_alignment_T1_post_repair": "0/7",
+    "generic_template_T1": "7/7",
+    "translation_loss_T1": "6/7",
+    "compilation_initial": "0/7",
+    "compilation_final": "7/7",
+    "strict_success_final": "0/7",
+    "detection_failure_final": "7/7",
+    "dominant_bottleneck": "SEMANTIC_PRESERVATION_DURING_UNIFICATION_AND_CODEQL_TRANSLATION"
+  },
+  "next_research_direction": "STRUCTURED_MECHANISM_CONTRACT_TO_CODEQL_PREDICATE_OR_BRANCH_MAPPING",
+  "generalization_to_other_cwes_or_test": false,
+  "model_execution": false,
+  "codeql_execution": false,
+  "test_access": "FORBIDDEN"
+}

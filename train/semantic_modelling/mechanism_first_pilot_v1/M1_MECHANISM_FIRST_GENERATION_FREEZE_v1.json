@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "pilot_cwe": "CWE-639",
+  "treatment_arm": "M1_MECHANISM_FIRST",
+  "treatment": "EXPLICIT_MECHANISM_FAMILY_DECOMPOSITION",
+  "status": "GENERATION_FROZEN",
+  "evidence_snapshot_sha256": "c2b12964eab7af408e3ae46b2f2bfe1a5c5f8b4aafbc1a3e38b0e510c3a760cf",
+  "runner_sha256": "3499c92468e51894cae3b5e178461744396a31e01b49b4c264aea3493dd11a26",
+  "plan": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/arm_outputs_v1/M1_MECHANISM_FIRST/CWE-639/planning_stage.txt",
+    "sha256": "ea609259a9f8bbed4319249de29915e640fac59cf3631fc664452d092c16368f"
+  },
+  "canonical_initial_query": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M1_MECHANISM_FIRST/shared_initial/CWE-639/iter0.ql",
+    "sha256": "5d4afa480a9002eac886791c1beb18bdc064e9d51a45caa299b6b0344afce7bb"
+  },
+  "shared_initial_manifest": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M1_MECHANISM_FIRST/shared_initial/CWE-639/SHARED_INITIAL_MANIFEST.json",
+    "sha256": "28136cb98b0198fc53363986fbe7f594c940c441597a073f8a09b6da59d2c6a5"
+  },
+  "identical_query_copies": [
+    {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M1_MECHANISM_FIRST/arms/V0_BASELINE_COMPILER_FEEDBACK/CWE-639/queries/iter0.ql",
+      "sha256": "5d4afa480a9002eac886791c1beb18bdc064e9d51a45caa299b6b0344afce7bb"
+    },
+    {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M1_MECHANISM_FIRST/arms/V1_LIBRARY_AWARE_REASONING/CWE-639/queries/iter0.ql",
+      "sha256": "5d4afa480a9002eac886791c1beb18bdc064e9d51a45caa299b6b0344afce7bb"
+    },
+    {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M1_MECHANISM_FIRST/arms/V2_AUTO_SKILL_RETRIEVAL/CWE-639/queries/iter0.ql",
+      "sha256": "5d4afa480a9002eac886791c1beb18bdc064e9d51a45caa299b6b0344afce7bb"
+    },
+    {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M1_MECHANISM_FIRST/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter0.ql",
+      "sha256": "5d4afa480a9002eac886791c1beb18bdc064e9d51a45caa299b6b0344afce7bb"
+    },
+    {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M1_MECHANISM_FIRST/shared_initial/CWE-639/iter0.ql",
+      "sha256": "5d4afa480a9002eac886791c1beb18bdc064e9d51a45caa299b6b0344afce7bb"
+    }
+  ],
+  "fork_semantics": "One canonical M1 initial query generated once and copied byte-identically into V0/V1/V2/V3 namespaces.",
+  "generation_cost": {
+    "model_call_count": 2,
+    "input_tokens": 16814,
+    "cached_input_tokens": 0,
+    "uncached_input_tokens": 16814,
+    "output_tokens": 15721,
+    "reasoning_tokens": 13504,
+    "total_tokens": 32535,
+    "wall_clock_sec": 236.982088
+  },
+  "codeql_execution": false,
+  "initial_evaluation": false,
+  "repair_execution": false,
+  "scientific_rerun": false,
+  "test_access": "FORBIDDEN"
+}

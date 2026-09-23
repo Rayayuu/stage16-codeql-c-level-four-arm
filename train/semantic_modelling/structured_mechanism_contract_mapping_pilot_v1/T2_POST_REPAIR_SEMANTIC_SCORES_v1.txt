@@ -1,0 +1,35 @@
+T2 STRUCTURED MECHANISM CONTRACT — POST-REPAIR SEMANTIC RESULT
+
+CWE: CWE-639
+Scope: TRAIN only
+
+Semantic result
+- Pre-CodeQL semantic alignment: 0/7
+- Post-repair semantic alignment: 0/7
+- Semantic mismatches: 7/7
+- Labels unchanged pre-to-post: 7/7
+- Plan-to-CodeQL translation loss: 6/7
+- Upstream plan failure: 1/7
+- Faithfully encoded mechanism families: 0/3
+
+Structured-contract diagnostic
+- Mechanism families generated: 3
+- Explicitly marked UNENCODABLE_OR_BOUNDED: 2/3
+- Claimed ENCODED: 1/3
+- Faithfully encoded after semantic review: 0/3
+
+Operational result
+- Initial compilation: 0/7
+- Final compilation after matched V3 repair: 7/7
+- Repair count: 2
+- Strict success: 0/7
+- Detection failure: 7/7
+- Discrimination failure: 0/7
+
+Interpretation
+The structured contract improved failure transparency but did not improve
+semantic preservation. Matched V3 repair again solved compilation without
+restoring the decisive ownership/session, certificate, JDBC filtering, or
+ZooKeeper SASL relations.
+
+TRAIN only. TEST not accessed.

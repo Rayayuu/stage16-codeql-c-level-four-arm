@@ -1,0 +1,50 @@
+{
+  "security_subject_or_principal": {
+    "executable_ql_elements": [
+      "isIdentityExpr",
+      "looksLikeIdentityName"
+    ],
+    "implementation_summary": "Identifies peer/client identity or configuration key expressions via name heuristics (e.g., sasl, instance, principal, identity, config) as potential subjects/principals."
+  },
+  "protected_target_or_security_object": {
+    "executable_ql_elements": [
+      "isSensitiveOperation",
+      "looksLikeSensitiveOpName"
+    ],
+    "implementation_summary": "Models protected targets as cluster membership or security-sensitive configuration operations, matched by sink operation names (e.g., join, cluster, quorum, setConfig)."
+  },
+  "attacker_controlled_input_or_trigger": {
+    "executable_ql_elements": [
+      "IdConfig.isSource",
+      "isIdentityExpr"
+    ],
+    "implementation_summary": "Treats identity/configuration components as taint sources to capture attacker-controlled keys or instance parts that can influence authorization flow."
+  },
+  "decisive_security_relation": {
+    "executable_ql_elements": [
+      "decisive_security_relation",
+      "ifGuardsAuthViaPresence",
+      "isPresenceTestUsing",
+      "isAuthCheckUsing",
+      "inThen",
+      "inElse"
+    ],
+    "implementation_summary": "Encodes executable control dependence: an IfStmt condition contains both a presence-test call and an auth-check call using the same identity, with presence textually before auth to model short-circuiting. The sensitive operation must be in one branch where no auth-check occurs, capturing that when the identity is missing/optional the authorization is skipped and the privileged path is taken."
+  },
+  "required_validation_or_authorization_condition": {
+    "executable_ql_elements": [
+      "required_validation_or_authorization_condition",
+      "isAuthCheckUsing"
+    ],
+    "implementation_summary": "Represents the requirement that the identity component must be validated/authorized; ties the identity to an authorization/validation call."
+  },
+  "security_sensitive_effect": {
+    "executable_ql_elements": [
+      "result",
+      "isSensitiveOperation",
+      "inThen",
+      "inElse"
+    ],
+    "implementation_summary": "Flags sensitive effects such as joining a cluster or toggling sensitive parameters only when reached along a branch where the authorization check is bypassed due to an optional/missing identity component."
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "security_subject_or_principal": {
+    "executable_ql_elements": [
+      "isIdentityExpr",
+      "looksLikeIdentityName"
+    ],
+    "implementation_summary": "Identifies peer/client identity or configuration key expressions via name heuristics (e.g., sasl, instance, principal, identity, config) as potential subjects/principals."
+  },
+  "protected_target_or_security_object": {
+    "executable_ql_elements": [
+      "isSensitiveOperation",
+      "looksLikeSensitiveOpName"
+    ],
+    "implementation_summary": "Models protected targets as cluster membership or security-sensitive configuration operations, matched by sink operation names (e.g., join, cluster, quorum, setConfig)."
+  },
+  "attacker_controlled_input_or_trigger": {
+    "executable_ql_elements": [
+      "IdConfig.isSource",
+      "isIdentityExpr"
+    ],
+    "implementation_summary": "Treats identity/configuration components as taint sources to capture attacker-controlled keys or instance parts that can influence authorization flow."
+  },
+  "decisive_security_relation": {
+    "executable_ql_elements": [
+      "decisive_security_relation",
+      "isPresenceTestUsing",
+      "isAuthCheckUsing"
+    ],
+    "implementation_summary": "Encodes that authorization logic is gated by a presence/optionality test on the identity component; the same identity also reaches the authorization routine, so missing/optional values cause the check path to be skipped."
+  },
+  "required_validation_or_authorization_condition": {
+    "executable_ql_elements": [
+      "required_validation_or_authorization_condition",
+      "isAuthCheckUsing"
+    ],
+    "implementation_summary": "Represents the requirement that the identity component must be validated/authorized; ties the identity to an authorization/validation call that should be enforced before privileged actions."
+  },
+  "security_sensitive_effect": {
+    "executable_ql_elements": [
+      "result",
+      "isSensitiveOperation"
+    ],
+    "implementation_summary": "Flags sensitive effects such as joining a cluster or toggling sensitive parameters when authorization is contingent on an optional identity component."
+  }
+}

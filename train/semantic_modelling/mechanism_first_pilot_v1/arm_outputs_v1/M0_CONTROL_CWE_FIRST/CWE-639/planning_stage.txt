@@ -1,0 +1,41 @@
+CWE-639 (Authorization Bypass Through User-Controlled Key / IDOR) — CWE-level Java CodeQL pattern plan
+
+Generic vulnerability pattern:
+- A user-controlled identifier (for example: id, userId, uid, messageId, dashboardId, key, token), typically received in a web/API entrypoint, is used directly to access, modify, or delete server-side resources without verifying that the authenticated principal is authorized for that identifier.
+- Commonly appears in controller/resource/endpoint methods (e.g., Spring MVC) that take an ID parameter from a path or request parameter and pass it to service/repository/DAO methods like delete/remove/update/modify/*ById without an ownership/authorization check tied to the current user.
+
+Likely sources (taint origins):
+- Method parameters of public web entrypoints (classes named *Controller/*Resource/*Endpoint) whose parameter names contain “id” (case-insensitive) and whose types are primitive numeric, boxed numeric, String, or UUID.
+- (Optional if available) Parameters explicitly annotated as @PathVariable or @RequestParam, but we will primarily rely on parameter names/types to avoid framework-API coupling and maintain robustness.
+
+Likely sinks (sensitive use):
+- Arguments to mutating or privileged operations where authorization is required, e.g., methods with names matching:
+  - delete*, remove*, update*, modify*, set*, change*, mark*, grant*, revoke*
+  - or repository-style CRUD-with-identifier methods: *ById (e.g., deleteById, updateById, removeById)
+
+Authoritative/mitigating checks to recognize and exclude (to reduce false positives and better align with patched states):
+- Presence of method/class-level security annotations indicating pre-authorization enforcement: @PreAuthorize, @Secured, @RolesAllowed.
+- Use of security-aware parameters or context within the same handler method, e.g., method parameters typed as java.security.Principal or org.springframework.security.core.Authentication, or calls that reference Spring Security context (SecurityContextHolder), indicating the method likely ties the requested identifier to the current principal.
+- Presence of explicit authorization/ownership checks in the same method prior to the sink, heuristically detected by calls whose names suggest checks (e.g., check*, verify*, ensure*, assert*) especially when mentioning owner/auth/perm/access/role/priv/authorize.
+
+Reusable implementation strategy (Java CodeQL):
+- Build a TaintTracking::Global configuration.
+- Sources: DataFlow::parameterNode(p) for parameters p that:
+  - belong to public methods in types whose names end with Controller/Resource/Endpoint; and
+  - have id-like names (regex case-insensitive ".*id"); and
+  - have id-like types (primitive numeric, boxed numeric, String, UUID).
+- Sinks: DataFlow::exprNode(arg) where arg is an argument to a Call whose callee name matches the mutating/privileged operation regex (case-insensitive):
+  - (delete|remove|update|modify|set|change|mark|grant|revoke).* OR .*(ById)$
+- Scope/guards: Restrict to flows where the enclosing method has no obvious security guard:
+  - no @PreAuthorize, @Secured, @RolesAllowed annotations; and
+  - no Principal/Authentication parameter; and
+  - no invocations of SecurityContextHolder; and
+  - no invocations suggesting explicit authorization/ownership checks (regex on callee names: (check|verify|ensure|assert).*(owner|auth|perm|access|role|priv|authorize)).
+
+Selection and message:
+- Report the sink call site with a concise message like: "User-controlled identifier flows into a sensitive operation without an authorization check." Also reference the specific parameter name and callee name to aid review.
+
+Generalization notes:
+- Avoid any repository/project-specific strings, IDs, or paths.
+- Focus on naming conventions and control/data-flow semantics common across Java web services.
+- Keep the query limited to clear controller-like entrypoints and mutating sinks to reduce noise and facilitate convergence between vulnerable vs patched states across the TRAIN cases.

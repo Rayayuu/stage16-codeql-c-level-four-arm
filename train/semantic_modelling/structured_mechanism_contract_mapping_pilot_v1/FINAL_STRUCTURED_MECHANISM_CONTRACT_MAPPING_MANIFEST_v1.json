@@ -1,0 +1,93 @@
+{
+  "schema_version": "1.0",
+  "scope": "CWE-639 TRAIN ONLY",
+  "status": "STRUCTURED_MECHANISM_CONTRACT_MAPPING_PILOT_FINALIZED",
+  "artifacts": {
+    "schema_recovery": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/FINAL_SYNTHESIS_SCHEMA_RECOVERY_v1.json",
+      "sha256": "f39ea012fe2dc9e234701b7d67316138ac80e7cc93ab69856ab0018c5b9e4f3f"
+    },
+    "structured_contract": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/t2_generation_v1/CWE-639/structured_contract_mapping.json",
+      "sha256": "65a4b3fd725a646b7300242253a482fbc0a9305fbb5ea8ae1de49dbe202a844b"
+    },
+    "pre_CodeQL_semantic_scores": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/T2_PRE_CODEQL_SEMANTIC_SCORES_v1.json",
+      "sha256": "1b7262f2ac9961718f315df0aed29e1416b46f87d945f67daf5f1b2cbd09b947"
+    },
+    "pre_CodeQL_semantic_freeze": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/T2_PRE_CODEQL_SEMANTIC_SCORING_FREEZE_v1.json",
+      "sha256": "bf61e1b97bd6430024d7628dcf08022c85a098a6c9a8dec6ebf0e76899c04b63"
+    },
+    "repair_outcome_freeze": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/T2_MATCHED_V3_REPAIR_OUTCOME_FREEZE_v1_1.json",
+      "sha256": "766d31507860206f3fc60949f0cfdad32f0911b99642bf1afd5c61b65a6d24ff"
+    },
+    "trajectory_audit": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/T2_POST_REPAIR_QUERY_SEMANTIC_TRAJECTORY_AUDIT_v1.json",
+      "sha256": "49ae0dd45ae96005f82a823c8ee9af03344acff27e16318872471e68e48e9459"
+    },
+    "trajectory_interpretation_addendum": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/T2_POST_REPAIR_TRAJECTORY_AUDIT_INTERPRETATION_ADDENDUM_v1.json",
+      "sha256": "31a03cdae7f45f0ff997bfad6426d443fef8c7caab8ab273938635784eaa3ce7"
+    },
+    "post_repair_semantic_scores_json": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/T2_POST_REPAIR_SEMANTIC_SCORES_v1.json",
+      "sha256": "6eeb07ba9d66125c6f42ec2ada6f7b6375c3e3379b6c14f299d1714c2440df2b"
+    },
+    "post_repair_semantic_scores_csv": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/T2_POST_REPAIR_SEMANTIC_SCORES_v1.csv",
+      "sha256": "771ca6ab3358fb89e1a3f6e7462b2db4755be8a12f4cd96c51779b7c21604291"
+    },
+    "post_repair_semantic_scores_txt": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/T2_POST_REPAIR_SEMANTIC_SCORES_v1.txt",
+      "sha256": "a27821de9bcff1f3884f00d7737ff80de5f2e47bbb0db26d2342c29f814dc056"
+    },
+    "final_query": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter2.ql",
+      "sha256": "1588edf8750d913766c2004e8c25e8ae28e158f99d26a55c305263018a0c88bc"
+    },
+    "final_aggregate": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/query_evaluations/CWE-639/V3_LIBRARY_PLUS_AUTO_SKILL_repair2/aggregate.json",
+      "sha256": "1a424d4ff2b6938bde1491532331576aa4727e4e44e0141d40314da57ed59013"
+    },
+    "final_synthesis": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/FINAL_STRUCTURED_MECHANISM_CONTRACT_MAPPING_SYNTHESIS_v1.json",
+      "sha256": "14fd1d574da0f41f2810649c968e3f1afedb9c447b4734a8e7f4fb623b8859d4"
+    },
+    "supervisor_report": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/FINAL_STRUCTURED_MECHANISM_CONTRACT_MAPPING_SUPERVISOR_REPORT_v1.txt",
+      "sha256": "f8dd97473b1a5be0cac22c794b5db8ffefd69915870fab020b9ffdd537b03740"
+    },
+    "T1_post_repair_semantics": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/semantic_preservation_translation_pilot_v1/T1_POST_REPAIR_SEMANTIC_SCORES_v1.json",
+      "sha256": "b111971a004b4a2d18f646e2dc97209942e1a02ab191132f98464102a19a0dd8"
+    },
+    "T1_final_synthesis": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/semantic_preservation_translation_pilot_v1/FINAL_SEMANTIC_PRESERVATION_TRANSLATION_SYNTHESIS_v1.json",
+      "sha256": "7ccc707aa927e27584c3680bb4bacd0ec8e3e2c31aaf0bc89dc37dcfa99b7462"
+    },
+    "M1_final_synthesis": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/FINAL_MECHANISM_FIRST_PILOT_SYNTHESIS_v1.json",
+      "sha256": "022fd57287f713b58fcf4c8aed46d42c903f06dfc5e5c36f22081ea6ddcd9004"
+    }
+  },
+  "final_result": {
+    "semantic_alignment": "0/7",
+    "semantic_mismatch": "7/7",
+    "translation_loss": "6/7",
+    "upstream_plan_failure": "1/7",
+    "initial_compilation": "0/7",
+    "final_compilation": "7/7",
+    "repair_count": 2,
+    "strict_success": "0/7",
+    "detection_failure": "7/7",
+    "discrimination_failure": "0/7",
+    "explicit_unencodable_or_bounded_families": "2/3",
+    "faithfully_encoded_mechanism_families": "0/3",
+    "semantic_improvement": false,
+    "failure_transparency_improvement": true
+  },
+  "scientific_conclusion": "Within this CWE-639 TRAIN pilot, structured mechanism contracts improved failure transparency but did not improve semantic alignment. Full compilation was recoverable, while mechanism-to-CodeQL semantic preservation remained the dominant observed bottleneck.",
+  "test_access": "FORBIDDEN"
+}

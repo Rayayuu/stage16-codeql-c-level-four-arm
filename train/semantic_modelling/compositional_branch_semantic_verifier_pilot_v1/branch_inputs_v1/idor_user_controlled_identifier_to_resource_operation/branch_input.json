@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0",
+  "pilot": "T3_COMPOSITIONAL_BRANCH_GENERATION_PLUS_SEMANTIC_VERIFIER",
+  "scope": "CWE-639 TRAIN ONLY",
+  "mechanism_family_id": "idor_user_controlled_identifier_to_resource_operation",
+  "required_module_name": "T3BranchIdor",
+  "required_branch_interface": "predicate result(DataFlow::Node sink)",
+  "preregistered_train_cves": [
+    "CVE-2020-23449",
+    "CVE-2023-2260",
+    "CVE-2023-30216",
+    "CVE-2023-32310"
+  ],
+  "mechanism_contract": {
+    "mechanism_family_id": "idor_user_controlled_identifier_to_resource_operation",
+    "security_subject_or_principal": "Web user (authenticated or unauthenticated) invoking a controller/service endpoint",
+    "protected_target_or_security_object": "Application resource identified by an ID/key (e.g., user profile, dashboard, message, index)",
+    "attacker_controlled_input_or_trigger": "Identifier obtained from HTTP request inputs (query parameter, header, path/body parameter via web frameworks)",
+    "decisive_security_relation": "Ownership/authorization of the current principal over the resource identified by the supplied ID/key",
+    "required_validation_or_authorization_condition": "Server-side must derive/verify the target ID against the authenticated context or perform an explicit ownership/authorization check before the operation",
+    "security_sensitive_effect": "Directly performing a sensitive operation (delete/update/modify/share/etc.) on the resource designated by the attacker-controlled ID/key"
+  },
+  "M1_plan_excerpt": "1) Classic IDOR via user-supplied identifier in web request\n- Subject/principal: Authenticated or unauthenticated web user\n- Target resource: User profile/info (newbee-mall), dashboards/messages/shares (DataEase), sensitive indexes (alf.io)\n- Security relation: Ownership or authorization over the specific resource identified by an ID\n- Validation/authorization boundary: Server-side controller/service must verify the current principal’s right to act on the resource ID\n- Propagation/context: Identifier taken directly from HTTP request (query parameter, path variable, header/body) flows to service/DAO calls performing update/delete/modify operations\n- Vulnerable vs fixed: Vulnerable versions accept user-controlled IDs; fixed versions derive the ID from the authenticated context or add an ownership/authorization check before invoking the operation\n- Representable by user-controlled-ID → resource-operation taint template: Yes",
+  "A_level_evidence_records": [
+    {
+      "benchmark_id": "CWE-639::CVE-2020-23449",
+      "cve_id": "CVE-2020-23449",
+      "historical_advisory_path": "advisories/unreviewed/2022/05/GHSA-9fg6-4jc3-m2x8/GHSA-9fg6-4jc3-m2x8.json",
+      "pre_cutoff_commit": "308f9cac9cc06441474024e0bdf71c1cc6149811",
+      "raw_advisory": "{\n  \"schema_version\": \"1.4.0\",\n  \"id\": \"GHSA-9fg6-4jc3-m2x8\",\n  \"modified\": \"2022-05-24T17:40:06Z\",\n  \"published\": \"2022-05-24T17:40:06Z\",\n  \"aliases\": [\n    \"CVE-2020-23449\"\n  ],\n  \"details\": \"newbee-mall all versions are affected by incorrect access control to remotely gain privileges through NewBeeMallIndexConfigServiceImpl.java. Unauthorized changes can be made to any user information through the userID.\",\n  \"severity\": [\n\n  ],\n  \"affected\": [\n\n  ],\n  \"references\": [\n    {\n      \"type\": \"ADVISORY\",\n      \"url\": \"https://nvd.nist.gov/vuln/detail/CVE-2020-23449\"\n    },\n    {\n      \"type\": \"WEB\",\n      \"url\": \"https://github.com/newbee-ltd/newbee-mall/issues/35\"\n    }\n  ],\n  \"database_specific\": {\n    \"cwe_ids\": [\n      \"CWE-863\"\n    ],\n    \"severity\": \"HIGH\",\n    \"github_reviewed\": false,\n    \"github_reviewed_at\": null,\n    \"nvd_published_at\": \"2021-01-26T18:15:00Z\"\n  }\n}",
+      "sha256_raw": "62bde674bf39cc869c0bed4120b4867b903e2601a52a2ba6330614b502293325"
+    },
+    {
+      "benchmark_id": "CWE-639::CVE-2023-2260",
+      "cve_id": "CVE-2023-2260",
+      "historical_advisory_path": "advisories/unreviewed/2023/04/GHSA-2rcc-q9cg-9v38/GHSA-2rcc-q9cg-9v38.json",
+      "pre_cutoff_commit": "308f9cac9cc06441474024e0bdf71c1cc6149811",
+      "raw_advisory": "{\n  \"schema_version\": \"1.4.0\",\n  \"id\": \"GHSA-2rcc-q9cg-9v38\",\n  \"modified\": \"2023-04-24T21:30:30Z\",\n  \"published\": \"2023-04-24T21:30:30Z\",\n  \"aliases\": [\n    \"CVE-2023-2260\"\n  ],\n  \"details\": \"Improper Authorization of Index Containing Sensitive Information in GitHub repository alfio-event/alf.io prior to 2.0-M4-2304.\",\n  \"severity\": [\n    {\n      \"type\": \"CVSS_V3\",\n      \"score\": \"CVSS:3.0/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H\"\n    }\n  ],\n  \"affected\": [\n\n  ],\n  \"references\": [\n    {\n      \"type\": \"ADVISORY\",\n      \"url\": \"https://nvd.nist.gov/vuln/detail/CVE-2023-2260\"\n    },\n    {\n      \"type\": \"WEB\",\n      \"url\": \"https://github.com/alfio-event/alf.io/commit/c9a16ab93d42b2beb06d529b57890121f85be6ef\"\n    },\n    {\n      \"type\": \"WEB\",\n      \"url\": \"https://huntr.dev/bounties/649badc8-c935-4a84-8aa8-d3269ac54377\"\n    }\n  ],\n  \"database_specific\": {\n    \"cwe_ids\": [\n      \"CWE-612\",\n      \"CWE-639\"\n    ],\n    \"severity\": \"HIGH\",\n    \"github_reviewed\": false,\n    \"github_reviewed_at\": null,\n    \"nvd_published_at\": \"2023-04-24T21:15:09Z\"\n  }\n}",
+      "sha256_raw": "9b085309165c66e023171fd73954d3442be367af7afe12ff70cbda91eaad0f34"
+    },
+    {
+      "benchmark_id": "CWE-639::CVE-2023-30216",
+      "cve_id": "CVE-2023-30216",
+      "historical_advisory_path": "advisories/unreviewed/2023/05/GHSA-5jrm-j79m-qqvm/GHSA-5jrm-j79m-qqvm.json",
+      "pre_cutoff_commit": "308f9cac9cc06441474024e0bdf71c1cc6149811",
+      "raw_advisory": "{\n  \"schema_version\": \"1.4.0\",\n  \"id\": \"GHSA-5jrm-j79m-qqvm\",\n  \"modified\": \"2023-05-11T15:30:21Z\",\n  \"published\": \"2023-05-04T21:30:29Z\",\n  \"aliases\": [\n    \"CVE-2023-30216\"\n  ],\n  \"details\": \"Insecure permissions in the updateUserInfo function of newbee-mall before commit 1f2c2dfy allows attackers to obtain user account information.\",\n  \"severity\": [\n    {\n      \"type\": \"CVSS_V3\",\n      \"score\": \"CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:N\"\n    }\n  ],\n  \"affected\": [\n\n  ],\n  \"references\": [\n    {\n      \"type\": \"ADVISORY\",\n      \"url\": \"https://nvd.nist.gov/vuln/detail/CVE-2023-30216\"\n    },\n    {\n      \"type\": \"WEB\",\n      \"url\": \"https://github.com/newbee-ltd/newbee-mall/issues/76\"\n    }\n  ],\n  \"database_specific\": {\n    \"cwe_ids\": [\n      \"CWE-639\"\n    ],\n    \"severity\": null,\n    \"github_reviewed\": false,\n    \"github_reviewed_at\": null,\n    \"nvd_published_at\": \"2023-05-04T21:15:11Z\"\n  }\n}",
+      "sha256_raw": "8ea9550270bdb4f9a5fd0af7ff0e659734bc2d40687773c19e177aeacf4dd2c3"
+    },
+    {
+      "benchmark_id": "CWE-639::CVE-2023-32310",
+      "cve_id": "CVE-2023-32310",
+      "historical_advisory_path": "advisories/github-reviewed/2023/06/GHSA-7hv6-gv38-78wj/GHSA-7hv6-gv38-78wj.json",
+      "pre_cutoff_commit": "308f9cac9cc06441474024e0bdf71c1cc6149811",
+      "raw_advisory": "{\n  \"schema_version\": \"1.4.0\",\n  \"id\": \"GHSA-7hv6-gv38-78wj\",\n  \"modified\": \"2023-06-02T17:09:17Z\",\n  \"published\": \"2023-06-02T17:09:17Z\",\n  \"aliases\": [\n    \"CVE-2023-32310\"\n  ],\n  \"summary\": \"DataEase API interface has IDOR vulnerability\",\n  \"details\": \"### Impact\\nThe api interface for DataEase delete dashboard and delete system messages is vulnerable to IDOR.\\n\\nThe interface to delete the dashboard:\\n1. Create two users: user1 and user2\\n2. User1 creates a dashboard named pan1\\n3. User2 creates a dashboard named pan2\\n4. Both user1 and user2 share their dashboards with the demo user\\n5. User1 wants to delete his dashboard. We hijack the request with burpsuite. The request will probably look like this: POST /api/share/removePanelShares/440efa7f-efd8-11ed-bec7-1144724bc08c HTTP/1.1. 440efa7f-efd8-11ed-bec7-1144724bc08c is the ID of pan1\\n6. We replace this ID with the ID of pan2 and continue the execution (i.e. we delete the shares of others)\\n7. Successfully remove the shared link\\n![image](https://user-images.githubusercontent.com/985347/238271028-d23a9ca3-cd77-42a2-9199-a28ef03f5bf0.png)\\n\\nThe interface to delete system messages:\\n1. Our request to delete a message is shown below\\n![image](https://user-images.githubusercontent.com/985347/238271474-1bf6be85-7a39-436d-b209-ac88bf52b591.png)\\n2. We can delete all messages by simply enumerating the message ID, regardless of whether the message belongs to the requester or not.\\n3. The interface for marking read messages is also affected\\n\\nAffected versions: <= 1.18.6\\n\\n### Patches\\nThe vulnerability has been fixed in v1.18.7.\\n\\n### Workarounds\\nIt is recommended to upgrade the version to v1.18.7.\\n\\n### References\\nIf you have any questions or comments about this advisory:\\n\\nOpen an issue in https://github.com/dataease/dataease\\nEmail us at [wei@fit2cloud.com](mailto:wei@fit2cloud.com)\\n\",\n  \"severity\": [\n    {\n      \"type\": \"CVSS_V3\",\n      \"score\": \"CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:H\"\n    }\n  ],\n  \"affected\": [\n    {\n      \"package\": {\n        \"ecosystem\": \"Maven\",\n        \"name\": \"io.dataease:dataease-plugin-common\"\n      },\n      \"ranges\": [\n        {\n          \"type\": \"ECOSYSTEM\",\n          \"events\": [\n            {\n              \"introduced\": \"0\"\n            },\n            {\n              \"fixed\": \"1.18.7\"\n            }\n          ]\n        }\n      ],\n      \"database_specific\": {\n        \"last_known_affected_version_range\": \"<= 1.18.6\"\n      }\n    }\n  ],\n  \"references\": [\n    {\n      \"type\": \"WEB\",\n      \"url\": \"https://github.com/dataease/dataease/security/advisories/GHSA-7hv6-gv38-78wj\"\n    },\n    {\n      \"type\": \"ADVISORY\",\n      \"url\": \"https://nvd.nist.gov/vuln/detail/CVE-2023-32310\"\n    },\n    {\n      \"type\": \"WEB\",\n      \"url\": \"https://github.com/dataease/dataease/pull/5342\"\n    },\n    {\n      \"type\": \"WEB\",\n      \"url\": \"https://github.com/dataease/dataease/commit/72f428e87b5395c03d2f94ef6185fc247ddbc8dc\"\n    },\n    {\n      \"type\": \"PACKAGE\",\n      \"url\": \"https://github.com/dataease/dataease\"\n    },\n    {\n      \"type\": \"WEB\",\n      \"url\": \"https://github.com/dataease/dataease/releases/tag/v1.18.7\"\n    }\n  ],\n  \"database_specific\": {\n    \"cwe_ids\": [\n      \"CWE-639\"\n    ],\n    \"severity\": \"HIGH\",\n    \"github_reviewed\": true,\n    \"github_reviewed_at\": \"2023-06-02T17:09:17Z\",\n    \"nvd_published_at\": \"2023-06-01T16:15:09Z\"\n  }\n}",
+      "sha256_raw": "2930f0361a5dcece51051075865fc9335d32af6e20542d9f99965aca0cd4cdd3"
+    }
+  ],
+  "generation_visibility_controls": {
+    "T2_codeql_mappings_visible": false,
+    "T2_encoded_status_visible": false,
+    "prior_queries_visible": false,
+    "prior_hit_results_visible": false,
+    "human_semantic_labels_visible": false,
+    "B_evidence_visible": false,
+    "C_evidence_visible": false,
+    "repository_source_visible": false,
+    "TEST_visible": false
+  }
+}

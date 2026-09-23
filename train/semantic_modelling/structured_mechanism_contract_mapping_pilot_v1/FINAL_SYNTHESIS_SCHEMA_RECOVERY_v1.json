@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "stage": "STEP_10B_FINAL_SYNTHESIS_SCHEMA_RECOVERY",
+  "failure_class": "FINAL_SYNTHESIS_SCHEMA_MISMATCH",
+  "root_cause": "The failed Step 10B attempted to read the T1 post-repair case field 'label'. The frozen T1 artifact actually stores the final semantic classification under 'post_label'.",
+  "failed_run_effect": {
+    "model_call_consumed": false,
+    "codeql_execution": false,
+    "query_modified": false,
+    "frozen_inputs_modified": false,
+    "scientific_result_invalidated": false,
+    "partial_artifact_created": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/T2_POST_REPAIR_TRAJECTORY_AUDIT_INTERPRETATION_ADDENDUM_v1.json",
+    "partial_artifact_sha256": "31a03cdae7f45f0ff997bfad6426d443fef8c7caab8ab273938635784eaa3ce7",
+    "partial_artifact_preserved": true
+  },
+  "recovery": {
+    "actual_T1_label_field": "post_label",
+    "T1_case_count": 7,
+    "T1_schema_verified": true,
+    "addendum_reused_without_modification": true
+  },
+  "test_access": "FORBIDDEN"
+}

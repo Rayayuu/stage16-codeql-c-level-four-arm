@@ -1,0 +1,8 @@
+{
+  "schema_version": "1.0",
+  "mechanism_family_id": "bypass_via_missing_or_optional_identity_component",
+  "model_call_budget_claimed": 1,
+  "model_call_may_execute_after_this_marker": true,
+  "automatic_rerun_allowed": false,
+  "test_access": "FORBIDDEN"
+}

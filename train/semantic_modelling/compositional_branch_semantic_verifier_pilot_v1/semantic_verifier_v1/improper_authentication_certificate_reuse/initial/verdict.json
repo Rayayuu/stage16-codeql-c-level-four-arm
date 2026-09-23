@@ -1,0 +1,6 @@
+{
+  "schema_version": "1.0",
+  "mechanism_family_id": "improper_authentication_certificate_reuse",
+  "verdict": "PASS",
+  "feedback": "Decisive relation is explicitly encoded by hasWeakMapping: an isCertAttrExpr (X509Certificate subject/SAN/serial or X500Principal.getName linked to getSubjectX500Principal) is directly used as an argument to an authentication/session-establishing call (isAuthEstablish). The required validation condition is explicitly enforced via not hasValidationInScope in the same enclosing callable, checking for certificate-related validation/scoping calls (verify/validate/check/EKU/KeyUsage/issuer/checkValidity, etc.). The subject (certificate holder) and target (authenticated session/identity) are realized by the certificate attribute getters and authentication-establishing methods, respectively. This is not a generic user-controlled surrogate; it is specific to certificate-derived identity mapping and its absence of scoping/constraints."
+}

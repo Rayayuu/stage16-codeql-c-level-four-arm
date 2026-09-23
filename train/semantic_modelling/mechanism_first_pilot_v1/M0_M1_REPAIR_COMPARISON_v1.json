@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "pilot_cwe": "CWE-639",
+  "stage": "MATCHED_REPAIR_COMPARISON",
+  "M0_CONTROL_CWE_FIRST": {
+    "repair_count": 1,
+    "final_compiled": "7/7",
+    "final_strict_success": "0/7",
+    "compilation_failure_count": 0,
+    "detection_failure_count": 7,
+    "discrimination_failure_count": 0,
+    "strict_success_count": 0,
+    "total_tokens": 17424,
+    "model_call_count": 2,
+    "whole_agent_wall_clock_sec": 28.613034,
+    "codeql_runtime_sec": 149.11,
+    "library_lookup_count": 2,
+    "retrieved_skill_count": 4
+  },
+  "M1_MECHANISM_FIRST": {
+    "repair_count": 1,
+    "final_compiled": "7/7",
+    "final_strict_success": "1/7",
+    "compilation_failure_count": 0,
+    "detection_failure_count": 2,
+    "discrimination_failure_count": 4,
+    "strict_success_count": 1,
+    "total_tokens": 12162,
+    "model_call_count": 1,
+    "whole_agent_wall_clock_sec": 43.372815,
+    "codeql_runtime_sec": 237.75,
+    "library_lookup_count": 0,
+    "retrieved_skill_count": 4
+  },
+  "deltas_M1_minus_M0": {
+    "repair_count": 0,
+    "compiled_pair_count": 0,
+    "strict_success_count": 1,
+    "detection_failure_count": -5,
+    "discrimination_failure_count": 4,
+    "total_tokens": -5262,
+    "model_call_count": -1,
+    "whole_agent_wall_clock_sec": 14.759781,
+    "codeql_runtime_sec": 88.64,
+    "library_lookup_count": -2,
+    "retrieved_skill_count": 0
+  },
+  "interpretation": "Both M0 and M1 reached 7/7 compilation after one matched V3-support repair. M1 produced one strict hit-based success whereas M0 produced none, but the repair objective was compilation restoration rather than semantic optimization. Therefore this difference is descriptive and must not be treated as evidence of improved semantic alignment until the repaired final queries are scored under the frozen semantic rubric.",
+  "next_required_analysis": "Score both repaired final queries using the same frozen semantic rubric and actual-mechanism reference used for the pre-CodeQL semantic audit.",
+  "integrity": {
+    "M0_repair_freeze_sha256": "d7bc42fb1a0f8ed5614e303fd298806bcaef3d30063a1d836418fa7eb47cdc40",
+    "M1_repair_freeze_sha256": "c20ca06a54c42676f9a359fc9602385af6f6119d1b11c98c75540b9840b09947",
+    "M1_arm_outcome_sha256": "4426a21df7c1a504d0afaee98d27779c3eb30a5934736f51a4a5f54a1c679971"
+  },
+  "test_access": "FORBIDDEN"
+}

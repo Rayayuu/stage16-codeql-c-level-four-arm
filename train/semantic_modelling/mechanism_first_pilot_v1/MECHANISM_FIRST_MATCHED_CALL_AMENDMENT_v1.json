@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "status": "PRE_EXECUTION_METHOD_AMENDMENT",
+  "pilot_cwe": "CWE-639",
+  "created_before_any_M0_M1_model_execution": true,
+  "created_before_any_M0_M1_codeql_execution": true,
+  "reason": "Remove a planning-compute confound: if M1 had an extra planning model call while M0 had only direct synthesis, any improvement could reflect additional inference budget rather than mechanism-first planning.",
+  "primary_research_question_unchanged": true,
+  "two_arm_design_unchanged": true,
+  "matched_pre_generation_model_calls": true,
+  "model_calls_per_arm_before_initial_evaluation": 2,
+  "M0": {
+    "call_1": "Generic CWE-first planning using the same A-level TRAIN evidence; infer one general CWE-level security/CodeQL pattern without mandatory mechanism-family decomposition.",
+    "call_2": "Generate one CWE-level Java CodeQL query conditioned on the frozen generic CWE-first plan."
+  },
+  "M1": {
+    "call_1": "Mechanism-first planning using the same A-level TRAIN evidence; explicitly infer heterogeneous mechanism families, principal/object/relation/validation/context semantics and identify families not representable by generic ID-flow.",
+    "call_2": "Generate one CWE-level Java CodeQL query conditioned on the frozen mechanism-first plan."
+  },
+  "controlled_after_amendment": [
+    "same CWE-639 seven TRAIN cases",
+    "same frozen A-level evidence snapshot",
+    "same underlying model/configuration",
+    "same two pre-evaluation model calls",
+    "same CodeQL/java-all environment",
+    "same V3 library-aware reasoning support",
+    "same automatic skills",
+    "same compiler-feedback repair policy",
+    "same MAX_REPAIRS=4",
+    "same evaluator and databases",
+    "same one-CWE-level-query constraint",
+    "no per-CVE tuning",
+    "no TEST access"
+  ],
+  "treatment_difference": "Content and structure of the planning instruction: generic CWE-first planning versus explicit mechanism-first family decomposition.",
+  "semantic_scoring_policy": "Frozen v1 rubric remains authoritative. M1 plan-level diagnostic remains required. The M0 generic plan is retained as a matched-compute control artifact and may be inspected supplementally without changing the frozen primary final-query scoring rules.",
+  "anti_leakage": {
+    "sept18_human_labels_visible_to_generation": false,
+    "sept18_actual_mechanisms_visible_to_generation": false,
+    "prior_CWE639_queries_visible_to_generation": false,
+    "prior_CWE639_results_visible_to_generation": false,
+    "patch_B_evidence_visible_to_generation": false,
+    "source_C_evidence_visible_to_generation": false,
+    "test_visible_to_generation": false
+  },
+  "references": {
+    "preregistration_sha256": "4044946dda8ec9f798f32e776a56d5aaf53f405202ef1722ad8f85f397e78cec",
+    "evidence_snapshot_manifest_sha256": "d8eac85319eb7ede709da9422309ac9c5fb42188abb6a23d412524484d9a1043",
+    "semantic_scoring_rubric_sha256": "8cf6219632742f4310e5ddbd9fdcb61944f23bddb4b3f2eeb1e8bfa4e6e9e96d"
+  },
+  "model_execution": false,
+  "codeql_execution": false,
+  "test_access": "FORBIDDEN"
+}

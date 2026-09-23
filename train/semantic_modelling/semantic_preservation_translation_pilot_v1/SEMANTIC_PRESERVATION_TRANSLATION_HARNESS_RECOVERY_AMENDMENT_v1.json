@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "event": "PRE_MODEL_CALL_HARNESS_IMPLEMENTATION_RECOVERY",
+  "invalid_harness": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/semantic_preservation_translation_pilot_v1/SEMANTIC_PRESERVATION_TRANSLATION_RUNNER_v1.py",
+    "sha256": "d60ed931e549794218d6b48fc79e5e8a306880940c2b2eb46fb53c2907cf27c2",
+    "preserved": true
+  },
+  "invalid_harness_freeze": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/semantic_preservation_translation_pilot_v1/SEMANTIC_PRESERVATION_TRANSLATION_HARNESS_FREEZE_v1.json",
+    "sha256": "000687dd81d7752027647f3d348fc0dc99f40aa62f30029b4a641c9f066ae0a9",
+    "preserved": true
+  },
+  "observed_error": "AttributeError: mechanism-first runner has no top-level load_chat_model",
+  "actual_frozen_model_API": {
+    "loader": "from react_agent.utils import load_chat_model",
+    "configuration": "orig = old.load_original(); load_chat_model(orig.MODEL)",
+    "tool_binding": "bind_tools([write_initial_query])",
+    "invocation": "await query_model.ainvoke(messages)",
+    "usage_parser": "orig.parse_model_usage(response)"
+  },
+  "impact": {
+    "T1_query_created": false,
+    "T1_metadata_created": false,
+    "model_call_count": 0,
+    "model_call_budget_consumed": false,
+    "scientific_treatment_started": false,
+    "scientific_result_created": false
+  },
+  "corrected_harness": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/semantic_preservation_translation_pilot_v1/SEMANTIC_PRESERVATION_TRANSLATION_RUNNER_v1_1.py",
+    "sha256": "6cfaa71480539ebb6dba65829f6b7a3d1859ca0c77411bc9c3d33adff58a67ba"
+  },
+  "test_access": "FORBIDDEN"
+}

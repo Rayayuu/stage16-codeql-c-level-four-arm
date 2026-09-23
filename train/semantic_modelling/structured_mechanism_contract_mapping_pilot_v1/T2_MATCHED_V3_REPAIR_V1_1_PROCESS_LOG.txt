@@ -1,0 +1,168 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "cwe": "CWE-639",
+  "arm": "V3_LIBRARY_PLUS_AUTO_SKILL",
+  "shared_initial_sha256": "0f3188139935f0cec116efab018b3d0035ebd01a9fc0b81d68ae80a194ac1631",
+  "attempts": [
+    {
+      "iteration": 0,
+      "query_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter0.ql",
+      "query_sha256": "0f3188139935f0cec116efab018b3d0035ebd01a9fc0b81d68ae80a194ac1631",
+      "result": {
+        "train_case_count": 7,
+        "compiled_pair_count": 0,
+        "successful_pair_count": 0,
+        "all_pairs_success": false,
+        "codeql_runtime_sec": 209.11
+      },
+      "compiler_feedback": [
+        {
+          "cve_id": "CVE-2020-23449",
+          "side": "vulnerable",
+          "log_tail": "==\n/home/ray001/codeql-bundle-clean/codeql/codeql query run --database=/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization/train/codeql_pilot_dbs/no_build/38cd148877308372c2a2 --output=/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/query_evaluations_t2_valid1/CWE-639/t2_initial/CVE-2020-23449_vulnerable.bqrs --search-path=/home/ray001/codeql-bundle-clean/codeql/qlpacks /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql\nResolving data extensions.\nFinished resolving data extensions.\nLoading data extensions.\nFinished loading data extensions.\nNot caching stages during query-loading, since max heap size is only 1748 MB.\nCompiling query plan for /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql.\nWARNING: QLDoc comment is not attached to any QL element (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql:5,1-11,4)\nERROR: getDeclaringCallable() cannot be resolved for type Variable::Parameter (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql:115,32-52)\nERROR: could not resolve type VariableAccess (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql:74,10-24)\nERROR: getTarget() cannot be resolved for type Expr::FieldAccess (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql:75,54-63)\nERROR: getDeclaringCallable() cannot be resolved for type Variable::Parameter (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql:94,7-27)\nERROR: 'n' is not bound to a value. (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql:48,39-40)\nERROR: 'n' is not bound to a value. (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql:82,51-52)\n"
+        },
+        {
+          "cve_id": "CVE-2020-23449",
+          "side": "patched",
+          "log_tail": "=====\n/home/ray001/codeql-bundle-clean/codeql/codeql query run --database=/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization/train/codeql_train_dbs/no_build/6737190954761235341e --output=/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/query_evaluations_t2_valid1/CWE-639/t2_initial/CVE-2020-23449_patched.bqrs --search-path=/home/ray001/codeql-bundle-clean/codeql/qlpacks /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql\nResolving data extensions.\nFinished resolving data extensions.\nLoading data extensions.\nFinished loading data extensions.\nNot caching stages during query-loading, since max heap size is only 1748 MB.\nCompiling query plan for /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql.\nWARNING: QLDoc comment is not attached to any QL element (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql:5,1-11,4)\nERROR: getDeclaringCallable() cannot be resolved for type Variable::Parameter (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql:115,32-52)\nERROR: could not resolve type VariableAccess (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql:74,10-24)\nERROR: getTarget() cannot be resolved for type Expr::FieldAccess (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql:75,54-63)\nERROR: getDeclaringCallable() cannot be resolved for type Variable::Parameter (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql:94,7-27)\nERROR: 'n' is not bound to a value. (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql:48,39-40)\nERROR: 'n' is not bound to a value. (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql:82,51-52)\n"
+        },
+        {
+          "cve_id": "CVE-2021-4142",
+          "side": "vulnerable",
+          "log_tail": "===\n/home/ray001/codeql-bundle-clean/codeql/codeql query run --database=/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization/train/codeql_train_dbs/no_build/7103bc783466f7808e94 --output=/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/query_evaluations_t2_valid1/CWE-639/t2_initial/CVE-2021-4142_vulnerable.bqrs --search-path=/home/ray001/codeql-bundle-clean/codeql/qlpacks /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql\nResolving data extensions.\nFinished resolving data extensions.\nLoading data extensions.\nFinished loading data extensions.\nNot caching stages during query-loading, since max heap size is only 1566 MB.\nCompiling query plan for /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql.\nWARNING: QLDoc comment is not attached to any QL element (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql:5,1-11,4)\nERROR: getDeclaringCallable() cannot be resolved for type Variable::Parameter (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql:115,32-52)\nERROR: could not resolve type VariableAccess (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql:74,10-24)\nERROR: getTarget() cannot be resolved for type Expr::FieldAccess (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql:75,54-63)\nERROR: getDeclaringCallable() cannot be resolved for type Variable::Parameter (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql:94,7-27)\nERROR: 'n' is not bound to a value. (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql:48,39-40)\nERROR: 'n' is not bound to a value. (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql:82,51-52)\n"
+        },
+        {
+          "cve_id": "CVE-2021-4142",
+          "side": "patched",
+          "log_tail": " =====\n/home/ray001/codeql-bundle-clean/codeql/codeql query run --database=/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization/train/codeql_train_dbs/no_build/02779eae310a1dd69a4c --output=/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/query_evaluations_t2_valid1/CWE-639/t2_initial/CVE-2021-4142_patched.bqrs --search-path=/home/ray001/codeql-bundle-clean/codeql/qlpacks /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql\nResolving data extensions.\nFinished resolving data extensions.\nLoading data extensions.\nFinished loading data extensions.\nNot caching stages during query-loading, since max heap size is only 1566 MB.\nCompiling query plan for /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql.\nWARNING: QLDoc comment is not attached to any QL element (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql:5,1-11,4)\nERROR: getDeclaringCallable() cannot be resolved for type Variable::Parameter (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql:115,32-52)\nERROR: could not resolve type VariableAccess (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql:74,10-24)\nERROR: getTarget() cannot be resolved for type Expr::FieldAccess (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql:75,54-63)\nERROR: getDeclaringCallable() cannot be resolved for type Variable::Parameter (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql:94,7-27)\nERROR: 'n' is not bound to a value. (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql:48,39-40)\nERROR: 'n' is not bound to a value. (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql:82,51-52)\n"
+        }
+      ],
+      "shared_initial": true,
+      "repair_cost": null
+    },
+    {
+      "iteration": 1,
+      "query_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter1.ql",
+      "query_sha256": "74ff5b67addc2af5ab90058df97c0f5edad69cb7b3902234c824c8dc9a64b22d",
+      "result": {
+        "train_case_count": 7,
+        "compiled_pair_count": 0,
+        "successful_pair_count": 0,
+        "all_pairs_success": false,
+        "codeql_runtime_sec": 201.89
+      },
+      "compiler_feedback": [
+        {
+          "cve_id": "CVE-2020-23449",
+          "side": "vulnerable",
+          "log_tail": "===== QUERY RUN =====\n/home/ray001/codeql-bundle-clean/codeql/codeql query run --database=/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization/train/codeql_pilot_dbs/no_build/38cd148877308372c2a2 --output=/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/query_evaluations/CWE-639/V3_LIBRARY_PLUS_AUTO_SKILL_repair1/CVE-2020-23449_vulnerable.bqrs --search-path=/home/ray001/codeql-bundle-clean/codeql/qlpacks /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter1.ql\nResolving data extensions.\nFinished resolving data extensions.\nLoading data extensions.\nFinished loading data extensions.\nNot caching stages during query-loading, since max heap size is only 1748 MB.\nCompiling query plan for /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter1.ql.\nWARNING: QLDoc comment is not attached to any QL element (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter1.ql:5,1-11,4)\nERROR: 'n' is not bound to a value. (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter1.ql:74,51-52)\n"
+        },
+        {
+          "cve_id": "CVE-2020-23449",
+          "side": "patched",
+          "log_tail": "===== QUERY RUN =====\n/home/ray001/codeql-bundle-clean/codeql/codeql query run --database=/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization/train/codeql_train_dbs/no_build/6737190954761235341e --output=/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/query_evaluations/CWE-639/V3_LIBRARY_PLUS_AUTO_SKILL_repair1/CVE-2020-23449_patched.bqrs --search-path=/home/ray001/codeql-bundle-clean/codeql/qlpacks /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter1.ql\nResolving data extensions.\nFinished resolving data extensions.\nLoading data extensions.\nFinished loading data extensions.\nNot caching stages during query-loading, since max heap size is only 1748 MB.\nCompiling query plan for /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter1.ql.\nWARNING: QLDoc comment is not attached to any QL element (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter1.ql:5,1-11,4)\nERROR: 'n' is not bound to a value. (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter1.ql:74,51-52)\n"
+        },
+        {
+          "cve_id": "CVE-2021-4142",
+          "side": "vulnerable",
+          "log_tail": "===== QUERY RUN =====\n/home/ray001/codeql-bundle-clean/codeql/codeql query run --database=/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization/train/codeql_train_dbs/no_build/7103bc783466f7808e94 --output=/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/query_evaluations/CWE-639/V3_LIBRARY_PLUS_AUTO_SKILL_repair1/CVE-2021-4142_vulnerable.bqrs --search-path=/home/ray001/codeql-bundle-clean/codeql/qlpacks /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter1.ql\nResolving data extensions.\nFinished resolving data extensions.\nLoading data extensions.\nFinished loading data extensions.\nNot caching stages during query-loading, since max heap size is only 1566 MB.\nCompiling query plan for /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter1.ql.\nWARNING: QLDoc comment is not attached to any QL element (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter1.ql:5,1-11,4)\nERROR: 'n' is not bound to a value. (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter1.ql:74,51-52)\n"
+        },
+        {
+          "cve_id": "CVE-2021-4142",
+          "side": "patched",
+          "log_tail": "===== QUERY RUN =====\n/home/ray001/codeql-bundle-clean/codeql/codeql query run --database=/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization/train/codeql_train_dbs/no_build/02779eae310a1dd69a4c --output=/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/query_evaluations/CWE-639/V3_LIBRARY_PLUS_AUTO_SKILL_repair1/CVE-2021-4142_patched.bqrs --search-path=/home/ray001/codeql-bundle-clean/codeql/qlpacks /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter1.ql\nResolving data extensions.\nFinished resolving data extensions.\nLoading data extensions.\nFinished loading data extensions.\nNot caching stages during query-loading, since max heap size is only 1566 MB.\nCompiling query plan for /home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter1.ql.\nWARNING: QLDoc comment is not attached to any QL element (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter1.ql:5,1-11,4)\nERROR: 'n' is not bound to a value. (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter1.ql:74,51-52)\n"
+        }
+      ],
+      "shared_initial": false,
+      "repair_cost": {
+        "query_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter1.ql",
+        "query_sha256": "74ff5b67addc2af5ab90058df97c0f5edad69cb7b3902234c824c8dc9a64b22d",
+        "wall_clock_sec": 76.962078,
+        "token_usage": {
+          "input_tokens": 17926,
+          "cached_input_tokens": 8704,
+          "uncached_input_tokens": 9222,
+          "output_tokens": 5806,
+          "reasoning_tokens": 4032,
+          "total_tokens": 23732,
+          "model_call_count": 2
+        },
+        "model_call_count": 2,
+        "library_lookup_count": 1,
+        "retrieved_skill_count": 4,
+        "retrieved_skill_ids": [
+          "AUTO_FINAL_PLANNING_SYSTEMATIC_REFTYPE_NORMALIZATION",
+          "AUTO_FINAL_PLANNING_RECEIVER_AND_HASBODY_AUDIT",
+          "AUTO_FINAL_ATOMIC_BIND_REFTYPE_BEFORE_NAME_CHECKS",
+          "AUTO_FINAL_ATOMIC_METHODCALL_GETQUALIFIER"
+        ]
+      }
+    },
+    {
+      "iteration": 2,
+      "query_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter2.ql",
+      "query_sha256": "1588edf8750d913766c2004e8c25e8ae28e158f99d26a55c305263018a0c88bc",
+      "result": {
+        "train_case_count": 7,
+        "compiled_pair_count": 7,
+        "successful_pair_count": 0,
+        "all_pairs_success": false,
+        "codeql_runtime_sec": 168.21
+      },
+      "compiler_feedback": [],
+      "shared_initial": false,
+      "repair_cost": {
+        "query_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter2.ql",
+        "query_sha256": "1588edf8750d913766c2004e8c25e8ae28e158f99d26a55c305263018a0c88bc",
+        "wall_clock_sec": 76.420068,
+        "token_usage": {
+          "input_tokens": 7272,
+          "cached_input_tokens": 0,
+          "uncached_input_tokens": 7272,
+          "output_tokens": 6015,
+          "reasoning_tokens": 4160,
+          "total_tokens": 13287,
+          "model_call_count": 1
+        },
+        "model_call_count": 1,
+        "library_lookup_count": 0,
+        "retrieved_skill_count": 4,
+        "retrieved_skill_ids": [
+          "AUTO_FINAL_PLANNING_SYSTEMATIC_REFTYPE_NORMALIZATION",
+          "AUTO_FINAL_PLANNING_RECEIVER_AND_HASBODY_AUDIT",
+          "AUTO_FINAL_ATOMIC_BOOLEANLITERAL_TYPED_ACCESSOR",
+          "AUTO_FINAL_ATOMIC_BIND_REFTYPE_BEFORE_NAME_CHECKS"
+        ]
+      }
+    }
+  ],
+  "repair_count": 2,
+  "initial_compiled_pair_count": 0,
+  "final_compiled_pair_count": 7,
+  "best_compiled_pair_count": 7,
+  "initial_successful_pair_count": 0,
+  "final_successful_pair_count": 0,
+  "best_successful_pair_count": 0,
+  "train_case_count": 7,
+  "final_full_compilation": true,
+  "terminal_reason": "FULL_COMPILATION_REACHED",
+  "repair_stage_cost": {
+    "tokens": {
+      "input_tokens": 25198,
+      "cached_input_tokens": 8704,
+      "uncached_input_tokens": 16494,
+      "output_tokens": 11821,
+      "reasoning_tokens": 8192,
+      "total_tokens": 37019,
+      "model_call_count": 3
+    },
+    "whole_agent_wall_clock_sec": 153.382146,
+    "codeql_runtime_sec": 370.1,
+    "library_lookup_count": 1,
+    "retrieved_skill_count": 8
+  },
+  "shared_initial_cost_excluded_from_arm_incremental_cost": true,
+  "test_access": "FORBIDDEN"
+}
+null

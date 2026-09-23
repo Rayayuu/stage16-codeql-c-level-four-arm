@@ -1,0 +1,129 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "pilot_cwe": "CWE-639",
+  "treatment_arm": "M0_CONTROL_CWE_FIRST",
+  "stage": "VALID_INITIAL_EVALUATION",
+  "status": "FROZEN_VALID_M0_INITIAL_OUTCOME",
+  "query": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M0_CONTROL_CWE_FIRST/shared_initial/CWE-639/iter0.ql",
+    "sha256": "dcd8019966eccd400d875fe33dc62366101ca6815ddff69e6886799b303f5b95",
+    "iteration": 0
+  },
+  "evaluation": {
+    "namespace": "query_evaluations_valid1",
+    "aggregate_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M0_CONTROL_CWE_FIRST/query_evaluations_valid1/CWE-639/shared_initial/aggregate.json",
+    "aggregate_sha256": "3fc363638d689e605244c8620c6330c49def99f732d6bf23c013d76d87b9d21b",
+    "pair_results_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M0_CONTROL_CWE_FIRST/query_evaluations_valid1/CWE-639/shared_initial/pair_results.csv",
+    "pair_results_sha256": "1cf57b49ff7cb5448444ab200f68af40da8e394ec18d9319acdaa5c48b92f877",
+    "shared_state_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M0_CONTROL_CWE_FIRST/shared_initial/CWE-639/SHARED_INITIAL_EVALUATION_STATE.json",
+    "shared_state_sha256": "b6fa2ecf5d0c3d65582ed24c28f2cd9c1ab3aa6c4aaedf70081a942c59f1a469",
+    "train_case_count": 7,
+    "compiled_pair_count": 0,
+    "successful_pair_count": 0,
+    "compilation_failure_count": 7,
+    "detection_failure_count": 0,
+    "discrimination_failure_count": 0,
+    "all_pairs_success": false,
+    "codeql_runtime_sec": 210.36,
+    "success_definition": "compile AND vulnerable_hits>=1 AND patched_hits=0"
+  },
+  "per_case": [
+    {
+      "cve_id": "CVE-2020-23449",
+      "compiled": false,
+      "vulnerable_hits": 0,
+      "patched_hits": 0,
+      "pair_success": false,
+      "failure_class": "COMPILATION_FAILURE",
+      "vulnerable_returncode": 2,
+      "patched_returncode": 2,
+      "vulnerable_runtime_sec": 14.48,
+      "patched_runtime_sec": 14.18
+    },
+    {
+      "cve_id": "CVE-2021-4142",
+      "compiled": false,
+      "vulnerable_hits": 0,
+      "patched_hits": 0,
+      "pair_success": false,
+      "failure_class": "COMPILATION_FAILURE",
+      "vulnerable_returncode": 2,
+      "patched_returncode": 2,
+      "vulnerable_runtime_sec": 15.34,
+      "patched_runtime_sec": 16.16
+    },
+    {
+      "cve_id": "CVE-2023-2260",
+      "compiled": false,
+      "vulnerable_hits": 0,
+      "patched_hits": 0,
+      "pair_success": false,
+      "failure_class": "COMPILATION_FAILURE",
+      "vulnerable_returncode": 2,
+      "patched_returncode": 2,
+      "vulnerable_runtime_sec": 15.47,
+      "patched_runtime_sec": 15.68
+    },
+    {
+      "cve_id": "CVE-2023-30216",
+      "compiled": false,
+      "vulnerable_hits": 0,
+      "patched_hits": 0,
+      "pair_success": false,
+      "failure_class": "COMPILATION_FAILURE",
+      "vulnerable_returncode": 2,
+      "patched_returncode": 2,
+      "vulnerable_runtime_sec": 14.57,
+      "patched_runtime_sec": 14.8
+    },
+    {
+      "cve_id": "CVE-2023-32310",
+      "compiled": false,
+      "vulnerable_hits": 0,
+      "patched_hits": 0,
+      "pair_success": false,
+      "failure_class": "COMPILATION_FAILURE",
+      "vulnerable_returncode": 2,
+      "patched_returncode": 2,
+      "vulnerable_runtime_sec": 14.72,
+      "patched_runtime_sec": 15.24
+    },
+    {
+      "cve_id": "CVE-2023-43668",
+      "compiled": false,
+      "vulnerable_hits": 0,
+      "patched_hits": 0,
+      "pair_success": false,
+      "failure_class": "COMPILATION_FAILURE",
+      "vulnerable_returncode": 2,
+      "patched_returncode": 2,
+      "vulnerable_runtime_sec": 14.5,
+      "patched_runtime_sec": 15.35
+    },
+    {
+      "cve_id": "CVE-2023-44981",
+      "compiled": false,
+      "vulnerable_hits": 0,
+      "patched_hits": 0,
+      "pair_success": false,
+      "failure_class": "COMPILATION_FAILURE",
+      "vulnerable_returncode": 2,
+      "patched_returncode": 2,
+      "vulnerable_runtime_sec": 14.22,
+      "patched_runtime_sec": 15.65
+    }
+  ],
+  "interpretation": "The frozen M0 initial CWE-level query failed to compile on all seven TRAIN pairs. Therefore vulnerable_hits=0 and patched_hits=0 are not interpreted as detection failures. The valid initial outcome is 7/7 compilation failures and 0/7 strict successes.",
+  "integrity": {
+    "pre_codeql_semantic_scores_sha256": "af8714c27e966fb646b2a857d29e26385b13de2c5450275003362dff22184204",
+    "valid1_namespace_amendment_sha256": "6172ebf2beeb6c8cfdbd4f30873cc6accfb0874346c40634a9ba9a977a5b162b",
+    "invalid_partial_attempt_freeze_sha256": "2c5dc8a00cddb044a9b28057c10f6c7228d7fed5e009218dfacc05413907d1bc",
+    "invalid_partial_attempt_reused": false,
+    "invalid_partial_attempt_used_for_repair": false
+  },
+  "repair_execution": false,
+  "model_execution": false,
+  "M1_initial_evaluation_executed": false,
+  "test_access": "FORBIDDEN"
+}

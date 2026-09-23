@@ -1,0 +1,27 @@
+SEMANTIC-PRESERVATION TRANSLATION PILOT — POST-REPAIR SEMANTIC SCORING
+
+Pre-repair semantic alignment: 0/7
+Post-repair semantic alignment: 0/7
+Alignment delta after repair: 0
+
+Post-repair semantic mismatches: 7/7
+Post-repair generic-template matches: 7/7
+Post-repair generic-template collapse: YES
+
+Post-repair plan-to-CodeQL translation losses: 6/7
+Post-repair upstream plan failures: 1/7
+Semantic labels unchanged after repair: 7/7
+
+Operational result:
+Compilation: 0/7 -> 7/7
+Repair count: 2
+Strict success: 0/7
+Detection failure: 7/7
+
+INTERPRETATION
+V3 compilation repair recovered executability but did not recover mechanism-specific
+security semantics or detection capability. The final query remains a generic
+identifier/authentication-context -> sensitive-operation / authorization-decision
+abstraction.
+
+TRAIN ONLY. TEST not accessed.

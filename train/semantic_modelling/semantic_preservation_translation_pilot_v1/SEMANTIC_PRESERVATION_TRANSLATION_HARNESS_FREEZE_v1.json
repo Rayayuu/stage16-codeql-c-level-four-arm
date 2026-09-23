@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "stage": "T1_TRANSLATION_GENERATION_HARNESS_FREEZE",
+  "status": "FROZEN_READY_FOR_GENERATION",
+  "harness": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/semantic_preservation_translation_pilot_v1/SEMANTIC_PRESERVATION_TRANSLATION_RUNNER_v1.py",
+    "sha256": "d60ed931e549794218d6b48fc79e5e8a306880940c2b2eb46fb53c2907cf27c2"
+  },
+  "inputs": {
+    "preregistration": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/semantic_preservation_translation_pilot_v1/SEMANTIC_PRESERVATION_TRANSLATION_PREREGISTRATION_v1.json",
+      "sha256": "4eb518def34d3011bbe55141bcd029c21b9a64e2ea7c61bcc74238342a77cb71"
+    },
+    "frozen_M1_plan": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/arm_outputs_v1/M1_MECHANISM_FIRST/CWE-639/planning_stage.txt",
+      "sha256": "ea609259a9f8bbed4319249de29915e640fac59cf3631fc664452d092c16368f"
+    },
+    "A_level_snapshot": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/fixed_evidence_snapshot_v1/CWE-639_A_LEVEL_INPUT_v1.json",
+      "sha256": "c2b12964eab7af408e3ae46b2f2bfe1a5c5f8b4aafbc1a3e38b0e510c3a760cf"
+    },
+    "old_generation_runner": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/MECHANISM_FIRST_PILOT_RUNNER_v1.py",
+      "sha256": "3499c92468e51894cae3b5e178461744396a31e01b49b4c264aea3493dd11a26"
+    }
+  },
+  "controls": {
+    "translation_model_call_budget": 1,
+    "sept18_human_reference_visible": false,
+    "hit_results_visible": false,
+    "prior_codeql_results_visible": false,
+    "patch_or_source_BC_visible": false,
+    "test_access": "FORBIDDEN",
+    "one_CWE_level_query": true,
+    "multi_branch_allowed": true,
+    "generic_IDOR_collapse_forbidden": true
+  },
+  "model_execution": false,
+  "codeql_execution": false
+}

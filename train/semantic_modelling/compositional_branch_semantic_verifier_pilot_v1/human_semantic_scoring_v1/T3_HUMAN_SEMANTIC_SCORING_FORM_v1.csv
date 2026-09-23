@@ -1,0 +1,8 @@
+case_id,mechanism_family_id,final_query_semantic_label,rationale,generic_template_label,human_score_completed
+CVE-2020-23449,idor_user_controlled_identifier_to_resource_operation,,,,NO
+CVE-2023-2260,idor_user_controlled_identifier_to_resource_operation,,,,NO
+CVE-2023-30216,idor_user_controlled_identifier_to_resource_operation,,,,NO
+CVE-2023-32310,idor_user_controlled_identifier_to_resource_operation,,,,NO
+CVE-2023-43668,bypass_via_missing_or_optional_identity_component,,,,NO
+CVE-2023-44981,bypass_via_missing_or_optional_identity_component,,,,NO
+CVE-2021-4142,improper_authentication_certificate_reuse,,,,NO

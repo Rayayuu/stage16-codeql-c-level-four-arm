@@ -1,0 +1,358 @@
+===== CWE-116 QUERY-LEVEL BASELINE =====
+B_QUERY_SECURITY_PROPERTY=Untrusted data from servlet request inputs, environment variables, or system properties must not flow to generic writer/output operations or filesystem-path construction/write operations without appropriate escaping, encoding, or canonicalization.
+TEMPLATE_PATTERN=untrusted input -> writer/output or filesystem path
+HARD_CODED_SECURITY_ASSUMPTION=CWE-116 is approximated as generic untrusted-data-to-output/filesystem taint flow.
+
+SUPERVISOR_TASK_FOR_EACH_CASE=(a) actual vulnerability mechanism in 1-2 sentences; (b) query-modelled security property; (c) concrete mismatch; then assign one of the five new categories.
+
+========================================================================================================================
+CASE_INDEX=1/7
+CWE=CWE-116
+CVE=CVE-2019-10362
+BENCHMARK_ID=CWE-116::CVE-2019-10362
+OUTCOME=DISCRIMINATION_FAILURE
+VULNERABLE_HITS=13
+PATCHED_HITS=13
+
+----- EXISTING GROUND-TRUTH / PROGRAM EVIDENCE -----
+ADVISORY_OR_GROUND_TRUTH:
+Jenkins Configuration as Code Plugin 1.24 and earlier did not escape values resulting in variable interpolation during configuration import when exporting, allowing attackers with permission to change Jenkins system configuration to obtain the values of environment variables.
+
+VULNERABLE_CODE:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+PATCHED_OR_NONVULNERABLE_CODE:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+PATCH_SHAPE:
+MODIFICATION
+
+----- EXISTING AGENT / QUERY INTERPRETATION -----
+WHAT_AGENT_WANTED_TO_DETECT:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+CODEQL_GENERATED:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+RESULT_OF_AUTO_SKILL:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+OLD_WHY_IT_FAILED:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+OLD_ROOT_CAUSE:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+----- NEW SUPERVISOR REVIEW TO BE FILLED NEXT -----
+A_ACTUAL_VULNERABILITY_MECHANISM=[PENDING]
+B_QUERY_SECURITY_PROPERTY=Untrusted data from servlet request inputs, environment variables, or system properties must not flow to generic writer/output operations or filesystem-path construction/write operations without appropriate escaping, encoding, or canonicalization.
+C_CONCRETE_MISMATCH=[PENDING]
+NEW_ROOT_CAUSE_CATEGORY=[PENDING]
+GENERIC_TEMPLATE_COLLAPSE_EVIDENCE=[PENDING]
+
+========================================================================================================================
+CASE_INDEX=2/7
+CWE=CWE-116
+CVE=CVE-2020-13654
+BENCHMARK_ID=CWE-116::CVE-2020-13654
+OUTCOME=DISCRIMINATION_FAILURE
+VULNERABLE_HITS=270
+PATCHED_HITS=44
+
+----- EXISTING GROUND-TRUTH / PROGRAM EVIDENCE -----
+ADVISORY_OR_GROUND_TRUTH:
+XWiki Platform before 12.8 mishandles escaping in the property displayer.
+
+VULNERABLE_CODE:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+PATCHED_OR_NONVULNERABLE_CODE:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+PATCH_SHAPE:
+MODIFICATION
+
+----- EXISTING AGENT / QUERY INTERPRETATION -----
+WHAT_AGENT_WANTED_TO_DETECT:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+CODEQL_GENERATED:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+RESULT_OF_AUTO_SKILL:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+OLD_WHY_IT_FAILED:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+OLD_ROOT_CAUSE:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+----- NEW SUPERVISOR REVIEW TO BE FILLED NEXT -----
+A_ACTUAL_VULNERABILITY_MECHANISM=[PENDING]
+B_QUERY_SECURITY_PROPERTY=Untrusted data from servlet request inputs, environment variables, or system properties must not flow to generic writer/output operations or filesystem-path construction/write operations without appropriate escaping, encoding, or canonicalization.
+C_CONCRETE_MISMATCH=[PENDING]
+NEW_ROOT_CAUSE_CATEGORY=[PENDING]
+GENERIC_TEMPLATE_COLLAPSE_EVIDENCE=[PENDING]
+
+========================================================================================================================
+CASE_INDEX=3/7
+CWE=CWE-116
+CVE=CVE-2021-21684
+BENCHMARK_ID=CWE-116::CVE-2021-21684
+OUTCOME=DETECTION_FAILURE
+VULNERABLE_HITS=0
+PATCHED_HITS=0
+
+----- EXISTING GROUND-TRUTH / PROGRAM EVIDENCE -----
+ADVISORY_OR_GROUND_TRUTH:
+Jenkins Git Plugin 4.8.2 and earlier does not escape the Git SHA-1 checksum parameters provided to commit notifications when displaying them in a build cause.
+
+This results in a stored cross-site scripting (XSS) vulnerability exploitable by attackers able to submit crafted commit notifications to the `/git/notifyCommit` endpoint.
+
+Jenkins Git Plugin 4.8.3 rejects Git SHA-1 checksum parameters that do not match the expected format. Existing values are sanitized when displayed on the UI.
+
+This vulnerability is only exploitable in Jenkins 2.314 and earlier, LTS 2.303.1 and earlier. See the [LTS upgrade guide](https://www.jenkins.io/doc/upgrade-guide/2.303/#SECURITY-2452).
+
+VULNERABLE_CODE:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+PATCHED_OR_NONVULNERABLE_CODE:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+PATCH_SHAPE:
+MODIFICATION
+
+----- EXISTING AGENT / QUERY INTERPRETATION -----
+WHAT_AGENT_WANTED_TO_DETECT:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+CODEQL_GENERATED:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+RESULT_OF_AUTO_SKILL:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+OLD_WHY_IT_FAILED:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+OLD_ROOT_CAUSE:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+----- NEW SUPERVISOR REVIEW TO BE FILLED NEXT -----
+A_ACTUAL_VULNERABILITY_MECHANISM=[PENDING]
+B_QUERY_SECURITY_PROPERTY=Untrusted data from servlet request inputs, environment variables, or system properties must not flow to generic writer/output operations or filesystem-path construction/write operations without appropriate escaping, encoding, or canonicalization.
+C_CONCRETE_MISMATCH=[PENDING]
+NEW_ROOT_CAUSE_CATEGORY=[PENDING]
+GENERIC_TEMPLATE_COLLAPSE_EVIDENCE=[PENDING]
+
+========================================================================================================================
+CASE_INDEX=4/7
+CWE=CWE-116
+CVE=CVE-2022-23620
+BENCHMARK_ID=CWE-116::CVE-2022-23620
+OUTCOME=DISCRIMINATION_FAILURE
+VULNERABLE_HITS=300
+PATCHED_HITS=300
+
+----- EXISTING GROUND-TRUTH / PROGRAM EVIDENCE -----
+ADVISORY_OR_GROUND_TRUTH:
+XWiki Platform is a generic wiki platform offering runtime services for applications built on top of it. AbstractSxExportURLFactoryActionHandler#processSx does not escape anything from SSX document reference when serializing it on filesystem, so it's easy to mess up the HTML export process with reference elements containing filesystem syntax like "../", "./". or "/" in general (the last two not causing any security threat, but can cause conflicts with others serialized files). Patch can be found in 13.6-rc-1. Giving script or subwiki admin right only to trusted people and disabling HTML/PDF export can be done as workaround.
+
+VULNERABLE_CODE:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+PATCHED_OR_NONVULNERABLE_CODE:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+PATCH_SHAPE:
+MODIFICATION
+
+----- EXISTING AGENT / QUERY INTERPRETATION -----
+WHAT_AGENT_WANTED_TO_DETECT:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+CODEQL_GENERATED:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+RESULT_OF_AUTO_SKILL:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+OLD_WHY_IT_FAILED:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+OLD_ROOT_CAUSE:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+----- NEW SUPERVISOR REVIEW TO BE FILLED NEXT -----
+A_ACTUAL_VULNERABILITY_MECHANISM=[PENDING]
+B_QUERY_SECURITY_PROPERTY=Untrusted data from servlet request inputs, environment variables, or system properties must not flow to generic writer/output operations or filesystem-path construction/write operations without appropriate escaping, encoding, or canonicalization.
+C_CONCRETE_MISMATCH=[PENDING]
+NEW_ROOT_CAUSE_CATEGORY=[PENDING]
+GENERIC_TEMPLATE_COLLAPSE_EVIDENCE=[PENDING]
+
+========================================================================================================================
+CASE_INDEX=5/7
+CWE=CWE-116
+CVE=CVE-2022-29599
+BENCHMARK_ID=CWE-116::CVE-2022-29599
+OUTCOME=DISCRIMINATION_FAILURE
+VULNERABLE_HITS=18
+PATCHED_HITS=18
+
+----- EXISTING GROUND-TRUTH / PROGRAM EVIDENCE -----
+ADVISORY_OR_GROUND_TRUTH:
+In Apache Maven maven-shared-utils prior to version 3.3.3, the Commandline class can emit double-quoted strings without proper escaping, allowing shell injection attacks.
+
+VULNERABLE_CODE:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+PATCHED_OR_NONVULNERABLE_CODE:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+PATCH_SHAPE:
+MODIFICATION
+
+----- EXISTING AGENT / QUERY INTERPRETATION -----
+WHAT_AGENT_WANTED_TO_DETECT:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+CODEQL_GENERATED:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+RESULT_OF_AUTO_SKILL:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+OLD_WHY_IT_FAILED:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+OLD_ROOT_CAUSE:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+----- NEW SUPERVISOR REVIEW TO BE FILLED NEXT -----
+A_ACTUAL_VULNERABILITY_MECHANISM=[PENDING]
+B_QUERY_SECURITY_PROPERTY=Untrusted data from servlet request inputs, environment variables, or system properties must not flow to generic writer/output operations or filesystem-path construction/write operations without appropriate escaping, encoding, or canonicalization.
+C_CONCRETE_MISMATCH=[PENDING]
+NEW_ROOT_CAUSE_CATEGORY=[PENDING]
+GENERIC_TEMPLATE_COLLAPSE_EVIDENCE=[PENDING]
+
+========================================================================================================================
+CASE_INDEX=6/7
+CWE=CWE-116
+CVE=CVE-2022-45143
+BENCHMARK_ID=CWE-116::CVE-2022-45143
+OUTCOME=DISCRIMINATION_FAILURE
+VULNERABLE_HITS=1511
+PATCHED_HITS=1511
+
+----- EXISTING GROUND-TRUTH / PROGRAM EVIDENCE -----
+ADVISORY_OR_GROUND_TRUTH:
+The `JsonErrorReportValve` in Apache Tomcat 8.5.83, 9.0.40 to 9.0.68 and 10.1.0-M1 to 10.1.1 does not escape the `type`, `message` or `description` values. In some circumstances these are constructed from user provided data and it was therefore possible for users to supply values that invalidated or manipulated the JSON output.
+
+VULNERABLE_CODE:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+PATCHED_OR_NONVULNERABLE_CODE:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+PATCH_SHAPE:
+MODIFICATION
+
+----- EXISTING AGENT / QUERY INTERPRETATION -----
+WHAT_AGENT_WANTED_TO_DETECT:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+CODEQL_GENERATED:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+RESULT_OF_AUTO_SKILL:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+OLD_WHY_IT_FAILED:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+OLD_ROOT_CAUSE:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+----- NEW SUPERVISOR REVIEW TO BE FILLED NEXT -----
+A_ACTUAL_VULNERABILITY_MECHANISM=[PENDING]
+B_QUERY_SECURITY_PROPERTY=Untrusted data from servlet request inputs, environment variables, or system properties must not flow to generic writer/output operations or filesystem-path construction/write operations without appropriate escaping, encoding, or canonicalization.
+C_CONCRETE_MISMATCH=[PENDING]
+NEW_ROOT_CAUSE_CATEGORY=[PENDING]
+GENERIC_TEMPLATE_COLLAPSE_EVIDENCE=[PENDING]
+
+========================================================================================================================
+CASE_INDEX=7/7
+CWE=CWE-116
+CVE=CVE-2023-26472
+BENCHMARK_ID=CWE-116::CVE-2023-26472
+OUTCOME=DISCRIMINATION_FAILURE
+VULNERABLE_HITS=36
+PATCHED_HITS=272
+
+----- EXISTING GROUND-TRUTH / PROGRAM EVIDENCE -----
+ADVISORY_OR_GROUND_TRUTH:
+### Impact
+
+One can execute any wiki content with the right of IconThemeSheet author by creating an icon theme with the following content:
+
+```
+}}}
+{{async async="true"}}
+{{groovy}}
+  println("Hello from Groovy!")
+{{/groovy}}
+{{/async}}
+{{{
+```
+
+Can be done by creating a new page or even through the user profile for users not having edit right.
+
+### Patches
+
+This has been patched in XWiki 14.9, 14.4.6, and 13.10.10.
+
+### Workarounds
+
+An easy workaround is to actually fix the bug in the page `IconThemesCode.IconThemeSheet` by applying the following modification: https://github.com/xwiki/xwiki-platform/commit/48caf7491595238af2b531026a614221d5d61f38#diff-2ec9d716673ee049937219cdb0a92e520f81da14ea84d144504b97ab2bdae243R45
+
+### References
+
+https://jira.xwiki.org/browse/XWIKI-19731
+
+### For more information
+If you have any questions or comments about this advisory:
+* Open an issue in [Jira](http://jira.xwiki.org)
+* Email us at [Security ML](mailto:security@xwiki.org)
+
+VULNERABLE_CODE:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+PATCHED_OR_NONVULNERABLE_CODE:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+PATCH_SHAPE:
+PURE_DELETE_OR_DELETE_ONLY_JAVA_DIFF
+
+----- EXISTING AGENT / QUERY INTERPRETATION -----
+WHAT_AGENT_WANTED_TO_DETECT:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+CODEQL_GENERATED:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+RESULT_OF_AUTO_SKILL:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+OLD_WHY_IT_FAILED:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+OLD_ROOT_CAUSE:
+[NOT AVAILABLE IN FROZEN EVIDENCE]
+
+----- NEW SUPERVISOR REVIEW TO BE FILLED NEXT -----
+A_ACTUAL_VULNERABILITY_MECHANISM=[PENDING]
+B_QUERY_SECURITY_PROPERTY=Untrusted data from servlet request inputs, environment variables, or system properties must not flow to generic writer/output operations or filesystem-path construction/write operations without appropriate escaping, encoding, or canonicalization.
+C_CONCRETE_MISMATCH=[PENDING]
+NEW_ROOT_CAUSE_CATEGORY=[PENDING]
+GENERIC_TEMPLATE_COLLAPSE_EVIDENCE=[PENDING]

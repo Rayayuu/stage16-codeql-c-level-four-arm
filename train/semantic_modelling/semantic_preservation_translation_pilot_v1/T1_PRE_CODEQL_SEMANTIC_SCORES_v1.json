@@ -1,0 +1,133 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "pilot_cwe": "CWE-639",
+  "stage": "PRE_CODEQL_T1_SEMANTIC_SCORING",
+  "current_T1_codeql_outcomes_visible": false,
+  "hit_metrics_used_to_assign_semantic_labels": false,
+  "semantic_reference": "Frozen Sept18 actual vulnerability mechanism reference and frozen rubric.",
+  "T0_baseline": "Frozen original M1 mechanism-first initial translation.",
+  "T1_treatment": "Semantic-preservation translation from the exact same frozen M1 plan.",
+  "cases": [
+    {
+      "cve": "CVE-2020-23449",
+      "label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "rationale": "T1 still models attacker-controlled HTTP identifiers flowing into sensitive resource operations and suppresses results when generic authentication context is present. It does not encode the decisive equality/ownership relation between requested target user and authenticated session identity.",
+      "generic": "GENERIC_TEMPLATE_MATCH",
+      "actual_mechanism": "Authorization depends on binding the requested target user identity to the authenticated session identity.",
+      "t0_label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "t0_generic": "GENERIC_TEMPLATE_MATCH",
+      "m1_plan": "PLAN_REPRESENTS_MECHANISM",
+      "m1_plan_rationale": "The plan explicitly describes ownership/authorization over a resource ID and fixed behavior deriving the ID from authenticated context.",
+      "t1_translation": "LOST_IN_CODEQL_TRANSLATION"
+    },
+    {
+      "cve": "CVE-2021-4142",
+      "label": "WRONG_VULNERABILITY_MECHANISM",
+      "rationale": "T1 adds Principal/X500Principal name sources and generic authorization-decision sinks, but it does not model certificate class/type, SCA-versus-identity credential distinction, OIDs, or certificate-attribute validation. The security property therefore remains different from the actual authentication flaw.",
+      "generic": "GENERIC_TEMPLATE_MATCH",
+      "actual_mechanism": "Authentication must distinguish the permitted Candlepin identity certificate from an SCA certificate using certificate type/OID/attribute validation.",
+      "t0_label": "WRONG_VULNERABILITY_MECHANISM",
+      "t0_generic": "GENERIC_TEMPLATE_MATCH",
+      "m1_plan": "PLAN_REPRESENTS_MECHANISM",
+      "m1_plan_rationale": "The mechanism-first plan separately identifies improper certificate authentication, SCA certificate use, certificate attributes, and tightened validation/scoping.",
+      "t1_translation": "LOST_IN_CODEQL_TRANSLATION"
+    },
+    {
+      "cve": "CVE-2023-2260",
+      "label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "rationale": "T1 recognizes Principal-derived identity values and generic authorization decisions, but it does not model propagation of the authenticated Principal or the acting-subject, organization-scope, target, and operation relation required by the vulnerability.",
+      "generic": "GENERIC_TEMPLATE_MATCH",
+      "actual_mechanism": "The authenticated Principal must be propagated and enforced across organization/user/API-key/password operations with the correct subject-scope-target relation.",
+      "t0_label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "t0_generic": "GENERIC_TEMPLATE_MATCH",
+      "m1_plan": "PLAN_REPRESENTS_MECHANISM",
+      "m1_plan_rationale": "Although its Alf.io target description is imprecise, the plan substantively identifies authenticated-principal authorization over the target resource as the decisive security relation.",
+      "t1_translation": "LOST_IN_CODEQL_TRANSLATION"
+    },
+    {
+      "cve": "CVE-2023-30216",
+      "label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "rationale": "T1 tracks request-derived identifiers but does not require selected user identity to equal or derive from the authenticated session identity.",
+      "generic": "GENERIC_TEMPLATE_MATCH",
+      "actual_mechanism": "The selected/exposed user must be derived from the authenticated session user rather than an externally supplied user identifier.",
+      "t0_label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "t0_generic": "GENERIC_TEMPLATE_MATCH",
+      "m1_plan": "PLAN_REPRESENTS_MECHANISM",
+      "m1_plan_rationale": "The plan explicitly describes fixed behavior deriving IDs from authenticated context and checking principal authorization over the resource.",
+      "t1_translation": "LOST_IN_CODEQL_TRANSLATION"
+    },
+    {
+      "cve": "CVE-2023-32310",
+      "label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "rationale": "T1 models ID-like values reaching delete/remove/update/modify operations but does not encode requester-to-dashboard/message ownership or authorization.",
+      "generic": "GENERIC_TEMPLATE_MATCH",
+      "actual_mechanism": "Dashboard/message operations require an ownership/authorization relation between requester and target resource ID.",
+      "t0_label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "t0_generic": "GENERIC_TEMPLATE_MATCH",
+      "m1_plan": "PLAN_REPRESENTS_MECHANISM",
+      "m1_plan_rationale": "The plan directly identifies ownership/authorization over the specific resource identified by an ID.",
+      "t1_translation": "LOST_IN_CODEQL_TRANSLATION"
+    },
+    {
+      "cve": "CVE-2023-43668",
+      "label": "WRONG_VULNERABILITY_MECHANISM",
+      "rationale": "T1 contains no sensitive JDBC parameter-key filtering, replacement, blacklist/allowlist, or configuration-key validation semantics. Its ID/authz flow property is not the actual mechanism.",
+      "generic": "GENERIC_TEMPLATE_MATCH",
+      "actual_mechanism": "Security-sensitive JDBC parameter keys must be filtered/replaced so dangerous parameters cannot bypass sensitive-parameter checks.",
+      "t0_label": "WRONG_VULNERABILITY_MECHANISM",
+      "t0_generic": "GENERIC_TEMPLATE_MATCH",
+      "m1_plan": "PLAN_MISSES_MECHANISM",
+      "m1_plan_rationale": "The plan notices InLong sensitive parameter checks but groups the case with missing/optional identity components and skipped authorization. That materially differs from the actual sensitive-key filtering/replacement mechanism.",
+      "t1_translation": "UPSTREAM_PLAN_FAILURE"
+    },
+    {
+      "cve": "CVE-2023-44981",
+      "label": "WRONG_VULNERABILITY_MECHANISM",
+      "rationale": "T1 contains no quorum SASL peer-authentication semantics, authentication-ID instance component, server-list membership relation, or conditional authorization-skip logic.",
+      "generic": "GENERIC_TEMPLATE_MATCH",
+      "actual_mechanism": "ZooKeeper quorum SASL authorization must not be skipped when the optional instance component of the authentication ID is absent.",
+      "t0_label": "WRONG_VULNERABILITY_MECHANISM",
+      "t0_generic": "GENERIC_TEMPLATE_MATCH",
+      "m1_plan": "PLAN_REPRESENTS_MECHANISM",
+      "m1_plan_rationale": "The plan explicitly identifies ZooKeeper SASL instance-part absence, conditional authorization, and the check being skipped when the component is missing.",
+      "t1_translation": "LOST_IN_CODEQL_TRANSLATION"
+    }
+  ],
+  "summary": {
+    "T0_semantic_alignment": 0,
+    "T1_semantic_alignment": 0,
+    "semantic_alignment_delta_T1_minus_T0": 0,
+    "T0_semantic_mismatch_count": 7,
+    "T1_semantic_mismatch_count": 7,
+    "semantic_mismatch_delta_T1_minus_T0": 0,
+    "T0_generic_template_count": 7,
+    "T1_generic_template_count": 7,
+    "generic_template_delta_T1_minus_T0": 0,
+    "T0_generic_template_collapse": "YES",
+    "T1_generic_template_collapse": "YES",
+    "M1_frozen_plan_mechanism_coverage": 6,
+    "T0_plan_to_CodeQL_translation_loss": 6,
+    "T1_plan_to_CodeQL_translation_loss": 6,
+    "translation_loss_delta_T1_minus_T0": 0,
+    "T0_upstream_plan_failure": 1,
+    "T1_upstream_plan_failure": 1
+  },
+  "primary_pre_CodeQL_interpretation": "Under the frozen semantic rubric, the explicit semantic-preservation translation contract did not improve semantic alignment relative to the frozen T0 translation. T1 remains 0/7 aligned, 7/7 semantic mismatches, 7/7 generic-template matches, and 6/7 plan-to-CodeQL translation losses. The generated query still collapses heterogeneous planned mechanisms into a predominantly identifier/authentication-context-to-sensitive-operation or generic authorization-decision abstraction.",
+  "important_boundary": "This conclusion concerns semantic translation before any current T1 CodeQL execution. Compilation and hit-based performance remain unknown.",
+  "generation_cost": {
+    "total_tokens": 16150,
+    "input_tokens": 8934,
+    "output_tokens": 7216,
+    "reasoning_tokens": 5632,
+    "model_call_count": 1,
+    "wall_clock_sec": 76.297503
+  },
+  "limitations": [
+    "Single CWE-639 TRAIN translation pilot.",
+    "TEST not accessed.",
+    "No current T1 compilation or hit results were viewed during semantic scoring.",
+    "No generalization claim to other CWEs."
+  ],
+  "test_access": "FORBIDDEN"
+}

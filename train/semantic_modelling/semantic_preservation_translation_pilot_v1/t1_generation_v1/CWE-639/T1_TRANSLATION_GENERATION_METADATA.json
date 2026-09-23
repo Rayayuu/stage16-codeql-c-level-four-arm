@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.1",
+  "scope": "TRAIN_ONLY",
+  "pilot_cwe": "CWE-639",
+  "stage": "T1_SEMANTIC_PRESERVATION_TRANSLATION_GENERATION",
+  "model": "openai/gpt-5",
+  "model_call_count": 1,
+  "model_call_budget": 1,
+  "token_usage": {
+    "input_tokens": 8934,
+    "cached_input_tokens": 0,
+    "uncached_input_tokens": 8934,
+    "output_tokens": 7216,
+    "reasoning_tokens": 5632,
+    "total_tokens": 16150,
+    "model_call_count": 1
+  },
+  "wall_clock_sec": 76.297503,
+  "frozen_plan_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/arm_outputs_v1/M1_MECHANISM_FIRST/CWE-639/planning_stage.txt",
+  "frozen_plan_sha256": "ea609259a9f8bbed4319249de29915e640fac59cf3631fc664452d092c16368f",
+  "A_level_snapshot_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/fixed_evidence_snapshot_v1/CWE-639_A_LEVEL_INPUT_v1.json",
+  "A_level_snapshot_sha256": "c2b12964eab7af408e3ae46b2f2bfe1a5c5f8b4aafbc1a3e38b0e510c3a760cf",
+  "query_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/semantic_preservation_translation_pilot_v1/t1_generation_v1/CWE-639/iter0.ql",
+  "query_sha256": "c7c92c88a4ecd6e91b322ca0b06b7e34dcf099a05a720fa2cb25a71de8fb4450",
+  "sept18_human_reference_visible": false,
+  "hit_results_visible": false,
+  "prior_codeql_results_visible": false,
+  "patch_or_source_BC_visible": false,
+  "manual_query_modification": false,
+  "model_execution": true,
+  "codeql_execution": false,
+  "test_access": "FORBIDDEN"
+}

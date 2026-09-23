@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "checks": {
+    "generation_runner_exists": true,
+    "prereg_exists": true,
+    "verdicts_exact": true,
+    "initial_verifier_total_budget_three": true,
+    "single_revision": true,
+    "exactly_one_reverification": true,
+    "maximum_revision_calls_three": true,
+    "maximum_reverification_calls_three": true,
+    "maximum_total_precomposition_calls_twelve": true,
+    "optional_initial_verifier_output_absent": true,
+    "optional_revision_output_absent": true,
+    "optional_reverification_output_absent": true,
+    "optional_frozen_material_resolvable": true,
+    "contract_dict": true,
+    "branch_nonempty": true,
+    "traceability_dict": true,
+    "runtime_surface_resolvable_without_model_call": true
+  },
+  "model_execution": false,
+  "semantic_verifier_execution": false,
+  "semantic_revision_execution": false,
+  "reverification_execution": false,
+  "codeql_execution": false,
+  "query_modification": false,
+  "test_access": "FORBIDDEN"
+}

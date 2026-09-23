@@ -1,0 +1,103 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "pilot_cwe": "CWE-639",
+  "stage": "T1_INITIAL_CODEQL_EVALUATION",
+  "status": "FROZEN",
+  "attempt_id": "t1_initial",
+  "query": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/semantic_preservation_translation_runs_v1/T1_SEMANTIC_PRESERVATION/CWE-639/iter0.ql",
+    "sha256": "c7c92c88a4ecd6e91b322ca0b06b7e34dcf099a05a720fa2cb25a71de8fb4450"
+  },
+  "aggregate": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/semantic_preservation_translation_runs_v1/T1_SEMANTIC_PRESERVATION/query_evaluations_t1_valid1/CWE-639/t1_initial/aggregate.json",
+    "sha256": "5ad8c764070569ef0a95e3dbe79cb083206385025890c89af28cb597d2325667"
+  },
+  "pair_results": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/semantic_preservation_translation_runs_v1/T1_SEMANTIC_PRESERVATION/query_evaluations_t1_valid1/CWE-639/t1_initial/pair_results.csv",
+    "sha256": "a59fc0c46cfebe7ee22aea8bfffab89063e746c72c1711d0d1dbcfa39af4afb9"
+  },
+  "outcome": {
+    "train_case_count": 7,
+    "compiled_pair_count": 0,
+    "successful_pair_count": 0,
+    "compilation_failure_count": 7,
+    "detection_failure_count": 0,
+    "discrimination_failure_count": 0,
+    "strict_success_count": 0,
+    "codeql_runtime_sec": null,
+    "per_case": [
+      {
+        "cve_id": "CVE-2020-23449",
+        "compiled": false,
+        "vulnerable_hits": 0,
+        "patched_hits": 0,
+        "pair_success": false,
+        "failure_class": "COMPILATION_FAILURE"
+      },
+      {
+        "cve_id": "CVE-2021-4142",
+        "compiled": false,
+        "vulnerable_hits": 0,
+        "patched_hits": 0,
+        "pair_success": false,
+        "failure_class": "COMPILATION_FAILURE"
+      },
+      {
+        "cve_id": "CVE-2023-2260",
+        "compiled": false,
+        "vulnerable_hits": 0,
+        "patched_hits": 0,
+        "pair_success": false,
+        "failure_class": "COMPILATION_FAILURE"
+      },
+      {
+        "cve_id": "CVE-2023-30216",
+        "compiled": false,
+        "vulnerable_hits": 0,
+        "patched_hits": 0,
+        "pair_success": false,
+        "failure_class": "COMPILATION_FAILURE"
+      },
+      {
+        "cve_id": "CVE-2023-32310",
+        "compiled": false,
+        "vulnerable_hits": 0,
+        "patched_hits": 0,
+        "pair_success": false,
+        "failure_class": "COMPILATION_FAILURE"
+      },
+      {
+        "cve_id": "CVE-2023-43668",
+        "compiled": false,
+        "vulnerable_hits": 0,
+        "patched_hits": 0,
+        "pair_success": false,
+        "failure_class": "COMPILATION_FAILURE"
+      },
+      {
+        "cve_id": "CVE-2023-44981",
+        "compiled": false,
+        "vulnerable_hits": 0,
+        "patched_hits": 0,
+        "pair_success": false,
+        "failure_class": "COMPILATION_FAILURE"
+      }
+    ]
+  },
+  "semantic_status_before_evaluation": {
+    "T1_semantic_alignment": "0/7",
+    "T1_semantic_mismatch": "7/7",
+    "T1_generic_template_count": "7/7",
+    "T1_translation_loss": "6/7",
+    "semantic_scoring_frozen_before_CodeQL": true,
+    "semantic_labels_modified_by_hit_results": false
+  },
+  "controls": {
+    "model_execution": false,
+    "query_modification": false,
+    "repair_execution": false,
+    "scientific_rerun": false,
+    "test_access": "FORBIDDEN"
+  }
+}

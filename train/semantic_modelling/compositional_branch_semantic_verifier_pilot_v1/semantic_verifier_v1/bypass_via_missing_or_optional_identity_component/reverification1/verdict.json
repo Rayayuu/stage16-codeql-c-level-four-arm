@@ -1,0 +1,6 @@
+{
+  "schema_version": "1.0",
+  "mechanism_family_id": "bypass_via_missing_or_optional_identity_component",
+  "verdict": "FAIL_MISSING_DECISIVE_RELATION",
+  "feedback": "The executable QL models an identity-like expression and detects a presence-test call and an auth-check call co-located in the same IfStmt condition, with the presence-test textually before the auth-check (ifGuardsAuthViaPresence using appearsBefore and getEnclosingStmt()==IfStmt). However, it never constrains the boolean operator or control semantics to ensure that a missing/optional identity actually short-circuits the authorization and still allows the privileged branch. The result predicate only checks that a sensitive operation is in one branch where no in-branch auth call exists, not that the branch is taken when the presence-test is false. Consequently, cases like `if (isPresent(id) && authorize(id)) { sens(); }` satisfy the pattern even though a missing identity prevents `sens()` from executing. This misses the decisive security relation that “missing/optional component causes checks to be skipped and the privileged operation allowed.” Additionally, the required validation condition is only a generic auth-call presence and is not tied to being enforced before the sensitive operation."
+}

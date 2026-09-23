@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0",
+  "scope": "CWE-639 TRAIN ONLY",
+  "status": "FINAL",
+  "research_question": "Can increasingly explicit semantic-preservation structure reduce mechanism-to-CodeQL translation loss while retaining compilability?",
+  "T0_original_mechanism_first_translation": {
+    "plan_mechanism_coverage": "6/7",
+    "pre_CodeQL_semantic_alignment": "0/7",
+    "post_repair_semantic_alignment": "0/7",
+    "translation_loss": "6/7",
+    "final_compilation": "7/7",
+    "final_strict_success": "1/7",
+    "important_caveat": "The single strict hit-based success was semantically wrong under the frozen human mechanism review."
+  },
+  "T1_prompt_only_semantic_preservation": {
+    "pre_CodeQL_semantic_alignment": "0/7",
+    "post_repair_semantic_alignment": "0/7",
+    "translation_loss": "6/7",
+    "final_compilation": "7/7",
+    "strict_success": "0/7",
+    "detection_failure": "7/7",
+    "semantic_improvement": false
+  },
+  "T2_structured_mechanism_contract": {
+    "mechanism_families_generated": 3,
+    "claimed_encoded_families": 1,
+    "explicit_unencodable_or_bounded_families": 2,
+    "faithfully_encoded_families": 0,
+    "pre_CodeQL_semantic_alignment": "0/7",
+    "post_repair_semantic_alignment": "0/7",
+    "translation_loss": "6/7",
+    "initial_compilation": "0/7",
+    "final_compilation": "7/7",
+    "repair_count": 2,
+    "strict_success": "0/7",
+    "detection_failure": "7/7",
+    "semantic_improvement": false,
+    "failure_transparency_improvement": true
+  },
+  "main_findings": [
+    "Mechanism-first planning represented 6/7 actual mechanisms, yet all three translation variants retained 0/7 semantic alignment.",
+    "Prompt-only semantic-preservation instructions did not reduce the observed 6/7 plan-to-CodeQL translation loss.",
+    "Structured mechanism contracts also did not reduce semantic loss, but they made failure more explicit by marking 2/3 mechanism families UNENCODABLE_OR_BOUNDED.",
+    "Matched V3 repair recovered compilation from 0/7 to 7/7 for T2, but semantic alignment remained 0/7 and all seven cases were detection failures.",
+    "The dominant observed bottleneck in this CWE-639 TRAIN pilot is preserving decisive security relations during mechanism unification and CodeQL translation, not compilation alone."
+  ],
+  "next_research_implication": "The next intervention should test compositional translation: generate mechanism-specific CodeQL branches or sub-predicates independently, verify each branch against its structured semantic contract, and only then unify them into the required single CWE-level query.",
+  "limitations": [
+    "Evidence is restricted to seven CWE-639 TRAIN pairs.",
+    "No TEST data were accessed.",
+    "No cross-CWE generalization claim is made.",
+    "Failure-transparency improvement is diagnostic, not a semantic-accuracy improvement."
+  ],
+  "test_access": "FORBIDDEN"
+}

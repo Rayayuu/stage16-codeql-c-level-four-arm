@@ -1,0 +1,167 @@
+========================================================================================================================
+CVE=CVE-2013-4316
+OUTCOME=DETECTION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=Apache Struts enabled Dynamic Method Invocation by default, exposing additional method-dispatch behavior beyond the intended action surface. The security issue is tied to framework-level method invocation configuration rather than absence of a normal web-endpoint authorization annotation.
+B_QUERY_SECURITY_PROPERTY=A public web-exposed endpoint that invokes a name-matched sensitive operation should contain an explicit security annotation or an authorization-check call.
+C_CONCRETE_MISMATCH=The generated query looks for sensitive calls inside public web endpoints without explicit authorization. The actual issue is unsafe framework dispatch configuration that enables Dynamic Method Invocation, so the query searches for a different security property.
+NEW_ROOT_CAUSE_CATEGORY=Wrong vulnerability mechanism
+CATEGORY_RATIONALE=The query models endpoint authorization, while the advisory describes unsafe framework method-dispatch exposure.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_COLLAPSE_CANDIDATE=YES
+TEMPLATE_COLLAPSE_EVIDENCE=Dynamic Method Invocation configuration is collapsed into the generic missing-authorization web-endpoint template.
+
+========================================================================================================================
+CVE=CVE-2014-3120
+OUTCOME=DETECTION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=Elasticsearch enabled dynamic scripting by default, allowing remote input supplied through the _search source parameter to execute MVEL expressions and Java code.
+B_QUERY_SECURITY_PROPERTY=A public web-exposed endpoint that invokes a name-matched sensitive operation should contain an explicit security annotation or an authorization-check call.
+C_CONCRETE_MISMATCH=The final query searches for missing authorization around name-matched sensitive calls in web endpoints. The actual mechanism is attacker-controlled script execution enabled by unsafe default scripting configuration, not missing endpoint authorization.
+NEW_ROOT_CAUSE_CATEGORY=Wrong vulnerability mechanism
+CATEGORY_RATIONALE=The generated security property is unrelated to the dynamic-script execution mechanism.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_COLLAPSE_CANDIDATE=YES
+TEMPLATE_COLLAPSE_EVIDENCE=Dynamic scripting/RCE is reduced to the same generic endpoint-to-sensitive-operation authorization template.
+
+========================================================================================================================
+CVE=CVE-2015-5325
+OUTCOME=DETECTION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=Jenkins allowed a JNLP slave to bypass intended slave-to-master access restrictions. The vulnerability depends on the trust boundary and permissions associated with the remoting channel.
+B_QUERY_SECURITY_PROPERTY=A public web-exposed endpoint that invokes a name-matched sensitive operation should contain an explicit security annotation or an authorization-check call.
+C_CONCRETE_MISMATCH=The query assumes a public web endpoint and a local explicit authorization check. It does not model the slave/master remoting relationship, channel trust boundary, or restrictions that should govern operations crossing that boundary.
+NEW_ROOT_CAUSE_CATEGORY=Missing relational/contextual semantics
+CATEGORY_RATIONALE=The security property depends on which side of the slave/master trust boundary performs an operation, a context absent from the generic endpoint template.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_COLLAPSE_CANDIDATE=YES
+TEMPLATE_COLLAPSE_EVIDENCE=A remoting-channel trust relationship is flattened into generic web-endpoint authorization.
+
+========================================================================================================================
+CVE=CVE-2016-4464
+OUTCOME=DETECTION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=Apache CXF Fediz accepted a correctly signed SAML token without verifying that its AudienceRestriction matched the configured audience URI, allowing a token intended for a different audience to bypass restrictions.
+B_QUERY_SECURITY_PROPERTY=A public web-exposed endpoint that invokes a name-matched sensitive operation should contain an explicit security annotation or an authorization-check call.
+C_CONCRETE_MISMATCH=The query checks whether a web endpoint has an authorization annotation or recognizable authorization call. It does not model SAML token audience validation, which is the concrete security check separating valid from invalid authentication context.
+NEW_ROOT_CAUSE_CATEGORY=Missing validation semantics
+CATEGORY_RATIONALE=The critical omitted semantic is validation of the token's audience claim against the configured audience.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_COLLAPSE_CANDIDATE=YES
+TEMPLATE_COLLAPSE_EVIDENCE=SAML audience-validation semantics are collapsed into a generic missing-endpoint-authorization abstraction.
+
+========================================================================================================================
+CVE=CVE-2016-5388
+OUTCOME=DETECTION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=Tomcat's CGI handling allowed an untrusted HTTP Proxy header to populate the HTTP_PROXY environment variable, which could redirect outbound HTTP traffic through an attacker-chosen proxy.
+B_QUERY_SECURITY_PROPERTY=A public web-exposed endpoint that invokes a name-matched sensitive operation should contain an explicit security annotation or an authorization-check call.
+C_CONCRETE_MISMATCH=The generated query searches for web endpoints invoking sensitive methods without explicit authorization. The actual mechanism is trust propagation from an HTTP header into a CGI environment variable that later controls outbound proxy behavior.
+NEW_ROOT_CAUSE_CATEGORY=Wrong vulnerability mechanism
+CATEGORY_RATIONALE=The query models access-control checks, while the advisory describes an input-trust/environment propagation issue.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_COLLAPSE_CANDIDATE=YES
+TEMPLATE_COLLAPSE_EVIDENCE=HTTP-header-to-environment proxy trust is forced into the same generic CWE-284 authorization template.
+
+========================================================================================================================
+CVE=CVE-2016-6802
+OUTCOME=DETECTION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=Apache Shiro could be bypassed when an application used a non-root servlet context path, causing intended servlet-filter restrictions not to apply correctly to protected requests.
+B_QUERY_SECURITY_PROPERTY=A public web-exposed endpoint that invokes a name-matched sensitive operation should contain an explicit security annotation or an authorization-check call.
+C_CONCRETE_MISMATCH=The query treats access control as the presence or absence of explicit annotations or authorization calls inside an endpoint. It does not model the request path/context-path relationship that determines whether the security filter is applied.
+NEW_ROOT_CAUSE_CATEGORY=Missing relational/contextual semantics
+CATEGORY_RATIONALE=The vulnerability depends on contextual path/filter matching rather than a missing authorization call in the endpoint.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_COLLAPSE_CANDIDATE=YES
+TEMPLATE_COLLAPSE_EVIDENCE=Servlet context-path/filter semantics are collapsed into generic endpoint authorization.
+
+========================================================================================================================
+CVE=CVE-2020-35497
+OUTCOME=DETECTION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=An authenticated oVirt user could read other users' personal information. The security boundary depends on the relationship between the authenticated user and the user/resource being accessed.
+B_QUERY_SECURITY_PROPERTY=A public web-exposed endpoint that invokes a name-matched sensitive operation should contain an explicit security annotation or an authorization-check call.
+C_CONCRETE_MISMATCH=The generated query checks only whether a web endpoint performs a sensitive operation without an explicit authorization marker. It does not represent the identity/ownership relation needed to distinguish access to one's own information from access to another user's information.
+NEW_ROOT_CAUSE_CATEGORY=Missing relational/contextual semantics
+CATEGORY_RATIONALE=This is a relational authorization property between requester identity and target resource owner.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_COLLAPSE_CANDIDATE=YES
+TEMPLATE_COLLAPSE_EVIDENCE=Per-user ownership/identity semantics are flattened into the generic missing-authorization endpoint template.
+
+========================================================================================================================
+CVE=CVE-2020-5242
+OUTCOME=DETECTION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=The frozen TRAIN evidence does not contain an advisory or sufficient vulnerable/patched-code detail to establish the concrete vulnerability mechanism.
+B_QUERY_SECURITY_PROPERTY=A public web-exposed endpoint that invokes a name-matched sensitive operation should contain an explicit security annotation or an authorization-check call.
+C_CONCRETE_MISMATCH=Because the actual mechanism cannot be established from the retained TRAIN evidence, the mismatch between the generated endpoint-authorization query and the real vulnerability cannot be determined reliably.
+NEW_ROOT_CAUSE_CATEGORY=Insufficient evidence / unclear
+CATEGORY_RATIONALE=The supervisor taxonomy requires mechanism-level comparison, but the frozen evidence is insufficient.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_COLLAPSE_CANDIDATE=UNDETERMINED
+TEMPLATE_COLLAPSE_EVIDENCE=No template-collapse conclusion is assigned for this case because the actual mechanism is unavailable.
+
+========================================================================================================================
+CVE=CVE-2021-26118
+OUTCOME=DETECTION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=Apache ActiveMQ Artemis created OpenWire advisory messages without applying the policy-based access control that should govern message production, effectively bypassing access control for the session.
+B_QUERY_SECURITY_PROPERTY=A public web-exposed endpoint that invokes a name-matched sensitive operation should contain an explicit security annotation or an authorization-check call.
+C_CONCRETE_MISMATCH=The generated query assumes access control is an annotation or authorization call in a public web endpoint. It does not model protocol-session state, advisory-message type, or the policy relationship determining whether that message may be produced.
+NEW_ROOT_CAUSE_CATEGORY=Missing relational/contextual semantics
+CATEGORY_RATIONALE=The missing security property is protocol/session-specific policy enforcement rather than endpoint-local authorization.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_COLLAPSE_CANDIDATE=YES
+TEMPLATE_COLLAPSE_EVIDENCE=OpenWire session/message-policy context is collapsed into generic web-endpoint authorization.
+
+========================================================================================================================
+CVE=CVE-2023-24425
+OUTCOME=DETECTION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=The Jenkins Kubernetes Credentials Provider performed credential lookup without the appropriate context, allowing a user with Item/Configure permission to access credentials outside the scope they were entitled to.
+B_QUERY_SECURITY_PROPERTY=A public web-exposed endpoint that invokes a name-matched sensitive operation should contain an explicit security annotation or an authorization-check call.
+C_CONCRETE_MISMATCH=The query checks for explicit authorization around sensitive calls but does not represent the lookup context, credential scope, or relationship between the current item/user and the credentials that may be accessed.
+NEW_ROOT_CAUSE_CATEGORY=Missing relational/contextual semantics
+CATEGORY_RATIONALE=The vulnerability is determined by credential-scope and lookup-context relationships.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_COLLAPSE_CANDIDATE=YES
+TEMPLATE_COLLAPSE_EVIDENCE=Credential lookup scope/context is flattened into generic endpoint authorization.
+
+========================================================================================================================
+CVE=CVE-2023-26471
+OUTCOME=DETECTION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=XWiki intended comments to execute with superadmin rights only under restricted mode, but the async macro failed to preserve that restriction, allowing a user with comment rights to execute dangerous wiki/Groovy content with superadmin privileges.
+B_QUERY_SECURITY_PROPERTY=A public web-exposed endpoint that invokes a name-matched sensitive operation should contain an explicit security annotation or an authorization-check call.
+C_CONCRETE_MISMATCH=The final query searches for web endpoints lacking explicit authorization checks. The actual mechanism depends on propagation of restricted execution mode and privilege context across the async macro boundary.
+NEW_ROOT_CAUSE_CATEGORY=Missing relational/contextual semantics
+CATEGORY_RATIONALE=The critical property is preservation of execution/privilege context across asynchronous evaluation.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_COLLAPSE_CANDIDATE=YES
+TEMPLATE_COLLAPSE_EVIDENCE=Restricted-mode and privilege-propagation semantics are collapsed into generic endpoint authorization.
+
+========================================================================================================================
+CVE=CVE-2023-36820
+OUTCOME=DETECTION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=Micronaut's ID token validator skipped audience validation when a token came from the same issuer, allowing a token intended for another application/client under that issuer to be accepted.
+B_QUERY_SECURITY_PROPERTY=A public web-exposed endpoint that invokes a name-matched sensitive operation should contain an explicit security annotation or an authorization-check call.
+C_CONCRETE_MISMATCH=The generated query searches for explicit authorization checks in web endpoints but does not model OIDC issuer/audience/client relationships or the required validation that audiences contain the current client ID.
+NEW_ROOT_CAUSE_CATEGORY=Missing validation semantics
+CATEGORY_RATIONALE=The omitted security mechanism is explicit audience-claim validation in token verification.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_COLLAPSE_CANDIDATE=YES
+TEMPLATE_COLLAPSE_EVIDENCE=OIDC audience validation is collapsed into the same generic endpoint-authorization template.
+
+========================================================================================================================
+CVE=CVE-2023-40573
+OUTCOME=DETECTION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=XWiki authorized scheduled Groovy jobs using the document content author's programming right, even though an attacker with edit rights could modify or add the job script without changing that content author. This allowed attacker-controlled code to execute under another user's programming privilege.
+B_QUERY_SECURITY_PROPERTY=A public web-exposed endpoint that invokes a name-matched sensitive operation should contain an explicit security annotation or an authorization-check call.
+C_CONCRETE_MISMATCH=The query looks for missing explicit authorization in web endpoints. It does not model the relationship between script modifier, stored content author, programming right, scheduled job, and the identity whose privilege is used when the script executes.
+NEW_ROOT_CAUSE_CATEGORY=Missing relational/contextual semantics
+CATEGORY_RATIONALE=The vulnerability depends on a mismatch between author identity, modifier identity, and execution privilege.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_COLLAPSE_CANDIDATE=YES
+TEMPLATE_COLLAPSE_EVIDENCE=Author/modifier/execution-right relationships are flattened into generic web-endpoint authorization.
+
+========================================================================================================================
+CVE=CVE-2023-44794
+OUTCOME=DETECTION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=The retained advisory states only that a crafted URL can cause privilege escalation in SaToken, but does not provide enough mechanism-level detail to identify the concrete security check or context that fails.
+B_QUERY_SECURITY_PROPERTY=A public web-exposed endpoint that invokes a name-matched sensitive operation should contain an explicit security annotation or an authorization-check call.
+C_CONCRETE_MISMATCH=The available evidence is too sparse to determine whether the generated web-endpoint authorization template models the wrong mechanism, omits part of the mechanism, or misses a contextual/validation semantic.
+NEW_ROOT_CAUSE_CATEGORY=Insufficient evidence / unclear
+CATEGORY_RATIONALE=Mechanism-level classification would require evidence not present in the frozen TRAIN record.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_COLLAPSE_CANDIDATE=UNDETERMINED
+TEMPLATE_COLLAPSE_EVIDENCE=No template-collapse conclusion is assigned because the advisory is too underspecified.

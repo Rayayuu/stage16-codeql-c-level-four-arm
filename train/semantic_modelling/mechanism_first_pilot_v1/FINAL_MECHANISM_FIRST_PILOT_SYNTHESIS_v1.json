@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "pilot_cwe": "CWE-639",
+  "research_question": "Can mechanism-first semantic planning reduce within-CWE generic-template over-generalization and improve semantic alignment while preserving compilation success?",
+  "arms": {
+    "M0_CONTROL_CWE_FIRST": "Generic CWE-first planning followed by CWE-level CodeQL synthesis.",
+    "M1_MECHANISM_FIRST": "Mechanism-family decomposition before unified CWE-level CodeQL synthesis."
+  },
+  "matched_conditions": {
+    "same_A_level_evidence": true,
+    "same_model_call_count_initial_stage": true,
+    "same_V3_repair_support_stack": true,
+    "same_MAX_REPAIRS": 4,
+    "same_CodeQL_environment": true,
+    "same_semantic_rubric": true,
+    "per_CVE_tuning": false,
+    "manual_query_modification": false,
+    "test_access": "FORBIDDEN"
+  },
+  "initial_stage": {
+    "M0_compiled": "0/7",
+    "M1_compiled": "0/7",
+    "M0_strict_success": "0/7",
+    "M1_strict_success": "0/7",
+    "M0_semantic_alignment": "0/7",
+    "M1_semantic_alignment": "0/7",
+    "M1_plan_mechanism_coverage": "6/7",
+    "M1_plan_to_CodeQL_translation_loss": "6/7",
+    "M1_upstream_plan_failure": "1/7"
+  },
+  "matched_repair_stage": {
+    "M0": {
+      "repair_count": 1,
+      "compiled_before": "0/7",
+      "compiled_after": "7/7",
+      "strict_success_after": "0/7",
+      "detection_failure_after": "7/7",
+      "discrimination_failure_after": "0/7",
+      "repair_tokens": 17424,
+      "model_calls": 2,
+      "library_lookups": 2,
+      "retrieved_skills": 4,
+      "agent_wall_clock_sec": 28.613034,
+      "codeql_runtime_sec": 149.11
+    },
+    "M1": {
+      "repair_count": 1,
+      "compiled_before": "0/7",
+      "compiled_after": "7/7",
+      "strict_success_after": "1/7",
+      "detection_failure_after": "2/7",
+      "discrimination_failure_after": "4/7",
+      "repair_tokens": 12162,
+      "model_calls": 1,
+      "library_lookups": 0,
+      "retrieved_skills": 4,
+      "agent_wall_clock_sec": 43.372815,
+      "codeql_runtime_sec": 237.75
+    }
+  },
+  "final_semantic_result": {
+    "M0_semantic_alignment": "0/7",
+    "M1_semantic_alignment": "0/7",
+    "M0_semantic_mismatch": "7/7",
+    "M1_semantic_mismatch": "7/7",
+    "M0_generic_template_count": "7/7",
+    "M1_generic_template_count": "7/7",
+    "M0_generic_template_collapse": "YES",
+    "M1_generic_template_collapse": "YES",
+    "M1_plan_mechanism_coverage": "6/7",
+    "M1_plan_to_CodeQL_translation_loss": "6/7",
+    "M1_upstream_plan_failure": "1/7",
+    "semantic_alignment_delta_M1_minus_M0": 0
+  },
+  "diagnostic_case": {
+    "cve": "CVE-2023-43668",
+    "M1_hit_based_outcome": "STRICT_SUCCESS",
+    "M1_semantic_label": "WRONG_VULNERABILITY_MECHANISM",
+    "meaning": "A query can satisfy compile + vulnerable_hits>=1 + patched_hits=0 while still modelling the wrong security mechanism."
+  },
+  "main_findings": [
+    "Mechanism-first planning substantially improved mechanism representation at the planning stage: 6/7 TRAIN mechanisms were represented.",
+    "That improvement did not survive unification into the final CWE-level CodeQL query: all 6 represented mechanisms were lost in translation.",
+    "Both M0 and M1 repaired queries collapsed to a generic identifier/key to sensitive-operation abstraction in 7/7 cases.",
+    "Compilation repair was highly effective operationally: both arms moved from 0/7 to 7/7 compilation after a single V3-support repair.",
+    "Compilation repair did not improve semantic alignment: both arms remained 0/7 aligned after repair.",
+    "M1 obtained 1/7 strict hit-based success, but the successful case remained semantically wrong, showing that strict hit metrics and semantic correctness must be evaluated separately."
+  ],
+  "research_interpretation": "For this CWE-639 TRAIN pilot, the dominant bottleneck is not merely the agent's ability to reason about vulnerability mechanisms. The mechanism-first arm represented 6/7 mechanisms at the planning stage, but those semantics were not preserved when producing one unified CWE-level CodeQL security property. The observed failure is therefore most consistent with a semantic-preservation/unification/CodeQL-translation bottleneck. Compilation support fixes executability but does not by itself solve that semantic bottleneck.",
+  "limitations": [
+    "Single CWE-639 TRAIN pilot only.",
+    "No claim of generalization to other CWEs.",
+    "TEST remained completely unaccessed.",
+    "Historical V3 human blinding is not claimed because of the frozen Step16A deviation.",
+    "The 1/7 M1 strict success must not be interpreted as semantic alignment.",
+    "The pilot diagnoses a bottleneck; it does not yet demonstrate an effective semantic-preservation intervention."
+  ],
+  "next_research_direction": "Design an intervention that preserves mechanism-family constraints during unification into a single CWE-level CodeQL query, rather than adding more mechanism reasoning only at the planning stage."
+}

@@ -1,0 +1,6 @@
+{
+  "schema_version": "1.0",
+  "mechanism_family_id": "bypass_via_missing_or_optional_identity_component",
+  "verdict": "FAIL_MISSING_DECISIVE_RELATION",
+  "feedback": "The branch models identity-like expressions, presence-test-like calls, auth-check-like calls, and sensitive operations via name heuristics and taint. However, the decisive security relation is not encoded: decisive_security_relation only requires that a presence test and an auth check that both reference the same identity occur within the same enclosing callable. There is no executable control- or path-dependence tying the outcome of the presence test to whether the authorization check is executed or skipped, nor any requirement that the sensitive operation is reached specifically on the path where the identity is missing/optional and the auth check is bypassed. As a result, the core contract condition—authorization branching based on the presence/value of the identity component causing checks to be skipped—is absent from the executable QL logic."
+}

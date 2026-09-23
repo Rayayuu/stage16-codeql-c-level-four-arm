@@ -1,0 +1,9 @@
+{
+  "mechanism_family_id": "improper_authentication_certificate_reuse",
+  "security_subject_or_principal": "Holder of an SCA certificate used to authenticate to the service",
+  "protected_target_or_security_object": "Authenticated session/identity at the service",
+  "attacker_controlled_input_or_trigger": "Certificate-derived identity/key accepted without sufficient scoping/constraints",
+  "decisive_security_relation": "Mapping from certificate attributes to authorized identity is too permissive",
+  "required_validation_or_authorization_condition": "Tight validation and scoping of certificate usage to intended identities/contexts",
+  "security_sensitive_effect": "Gain/abuse authenticated access beyond intended scope"
+}

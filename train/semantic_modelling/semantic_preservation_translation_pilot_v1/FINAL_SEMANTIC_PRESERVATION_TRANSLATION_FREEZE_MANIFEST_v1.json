@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "status": "SEMANTIC_PRESERVATION_CWE639_TRAIN_PILOT_COMPLETE",
+  "artifacts": {
+    "post_repair_semantic_json": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/semantic_preservation_translation_pilot_v1/T1_POST_REPAIR_SEMANTIC_SCORES_v1.json",
+      "sha256": "b111971a004b4a2d18f646e2dc97209942e1a02ab191132f98464102a19a0dd8"
+    },
+    "post_repair_semantic_csv": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/semantic_preservation_translation_pilot_v1/T1_POST_REPAIR_SEMANTIC_SCORES_v1.csv",
+      "sha256": "a977aa9add4fa6c3f6c498402fcafc5bf40c6ca3979a1eee7901e680f528c2b8"
+    },
+    "post_repair_semantic_txt": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/semantic_preservation_translation_pilot_v1/T1_POST_REPAIR_SEMANTIC_SCORES_v1.txt",
+      "sha256": "7c50b0b524b49df122ed54e65c4b4f7ad90242920c1d42daab3b7723b57995b3"
+    },
+    "final_synthesis_json": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/semantic_preservation_translation_pilot_v1/FINAL_SEMANTIC_PRESERVATION_TRANSLATION_SYNTHESIS_v1.json",
+      "sha256": "7ccc707aa927e27584c3680bb4bacd0ec8e3e2c31aaf0bc89dc37dcfa99b7462"
+    },
+    "final_supervisor_report": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/semantic_preservation_translation_pilot_v1/FINAL_SEMANTIC_PRESERVATION_TRANSLATION_SUPERVISOR_REPORT_v1.md",
+      "sha256": "06fdbacf705d6f0669a6dbaad2b24e6060a4a38a4dec47bd005a1f16f5c9dcce"
+    }
+  },
+  "frozen_inputs": {
+    "final_query_sha256": "d87b5e766a2f1d13ed4376f9668708d5e564198cc95daac142c2a82e72a8b5aa",
+    "arm_outcome_sha256": "6d5a5ae9bfa40d5b6e2b0f5ad2d141267cf8d944ccea435658edc18d09563124",
+    "pre_T1_semantic_sha256": "3ceab4db7f64d7623ccb270dccfd42417cc74ff06155dea6771cef374cf8306b",
+    "T0_pre_semantic_sha256": "af8714c27e966fb646b2a857d29e26385b13de2c5450275003362dff22184204",
+    "rubric_sha256": "8cf6219632742f4310e5ddbd9fdcb61944f23bddb4b3f2eeb1e8bfa4e6e9e96d",
+    "repair_outcome_freeze_sha256": "307cdb43ea4acf5e05a8079c04a8f299f492a975c68bc3085e5779631250ffe6"
+  },
+  "final_result": {
+    "T0_semantic_alignment": "0/7",
+    "T1_pre_repair_semantic_alignment": "0/7",
+    "T1_post_repair_semantic_alignment": "0/7",
+    "T1_post_repair_generic_template": "7/7",
+    "T1_post_repair_translation_loss": "6/7",
+    "T1_compilation_initial": "0/7",
+    "T1_compilation_final": "7/7",
+    "T1_strict_success_final": "0/7",
+    "T1_detection_failure_final": "7/7",
+    "semantic_preservation_improvement_observed": false,
+    "compilation_recovery_observed": true
+  },
+  "model_execution": false,
+  "codeql_execution": false,
+  "test_access": "FORBIDDEN"
+}

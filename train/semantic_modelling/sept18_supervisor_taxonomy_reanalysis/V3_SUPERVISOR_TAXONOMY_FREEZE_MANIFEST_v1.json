@@ -1,0 +1,84 @@
+{
+  "stage": "Sept18 supervisor taxonomy re-analysis",
+  "status": "FROZEN",
+  "scope": "TRAIN_ONLY",
+  "test_access": "FORBIDDEN_AND_NOT_ACCESSED",
+  "scientific_rerun": false,
+  "model_execution": false,
+  "codeql_execution": false,
+  "query_modification": false,
+  "case_count": 39,
+  "reviewed_count": 39,
+  "supervisor_category_count": 38,
+  "semantically_aligned_na_count": 1,
+  "taxonomy_counts": {
+    "Wrong vulnerability mechanism": 9,
+    "Incomplete vulnerability mechanism": 4,
+    "Missing validation semantics": 7,
+    "Missing relational/contextual semantics": 11,
+    "Insufficient evidence / unclear": 7
+  },
+  "strict_success_cases": [
+    {
+      "cwe": "CWE-434",
+      "cve": "CVE-2022-27047",
+      "category": "N/A - semantically aligned strict success",
+      "vulnerable_hits": "1",
+      "patched_hits": "0"
+    },
+    {
+      "cwe": "CWE-434",
+      "cve": "CVE-2022-27477",
+      "category": "Insufficient evidence / unclear",
+      "vulnerable_hits": "2",
+      "patched_hits": "0"
+    },
+    {
+      "cwe": "CWE-434",
+      "cve": "CVE-2023-41009",
+      "category": "Insufficient evidence / unclear",
+      "vulnerable_hits": "2",
+      "patched_hits": "0"
+    },
+    {
+      "cwe": "CWE-639",
+      "cve": "CVE-2023-43668",
+      "category": "Wrong vulnerability mechanism",
+      "vulnerable_hits": "446",
+      "patched_hits": "0"
+    }
+  ],
+  "generic_template_interpretation": "Observed outputs are consistent with within-CWE semantic over-generalization/template collapse because heterogeneous actual mechanisms repeatedly mismatch one shared generic security abstraction. Query repetition alone is not treated as evidence because one CWE-level query is required by design.",
+  "artifacts": {
+    "sept18_reanalysis_source": {
+      "path": "train/semantic_modelling/sept18_supervisor_taxonomy_reanalysis/V3_39_CASE_SUPERVISOR_TAXONOMY_REANALYSIS_v1.csv",
+      "sha256": "8d8be7da6b8a928e4037bbf264b9f148b66339a4d7f7d89add3b283ac8af3e7a",
+      "bytes": 268352
+    },
+    "supervisor_final_39_case_csv": {
+      "path": "train/semantic_modelling/sept18_supervisor_taxonomy_reanalysis/V3_SUPERVISOR_TAXONOMY_39_CASE_FINAL_v1.csv",
+      "sha256": "d49844006d7ed09fde4b3b4f4811cd8aaa12e29d9411e889a2e745bfa92a319b",
+      "bytes": 41091
+    },
+    "final_summary": {
+      "path": "train/semantic_modelling/sept18_supervisor_taxonomy_reanalysis/V3_SUPERVISOR_TAXONOMY_SUMMARY_FINAL_v1.md",
+      "sha256": "4205561eadd99d12968be7120f732fa303e6e00dc7d00bba45f61296992ec38d",
+      "bytes": 2660
+    },
+    "supervisor_update": {
+      "path": "train/semantic_modelling/sept18_supervisor_taxonomy_reanalysis/V3_SUPERVISOR_UPDATE_SEPT18_FINAL_v1.md",
+      "sha256": "2e2776847762aa42354bde5f8df44ff1cd5ddb1d90e129d8e7d417ff5b59b000",
+      "bytes": 1841
+    },
+    "strict_success_policy": {
+      "path": "train/semantic_modelling/sept18_supervisor_taxonomy_reanalysis/V3_STRICT_SUCCESS_CATEGORY_POLICY_v1.txt",
+      "sha256": "e931384f36330932dbe7aec04b739c9baeb935a91939e4031fabcae34f811c61",
+      "bytes": 900
+    },
+    "query_security_property_baseline": {
+      "path": "train/semantic_modelling/sept18_supervisor_taxonomy_reanalysis/V3_CWE_QUERY_SECURITY_PROPERTY_BASELINE_v1.csv",
+      "sha256": "02fcdd61221b72073fe079f4eaa9b4706a313166998dcc08665cc6b4524e15e7",
+      "bytes": 2989
+    }
+  }
+}

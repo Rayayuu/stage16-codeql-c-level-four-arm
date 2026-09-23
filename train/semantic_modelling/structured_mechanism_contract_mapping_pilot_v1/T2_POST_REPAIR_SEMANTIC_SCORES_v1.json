@@ -1,0 +1,90 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "pilot_cwe": "CWE-639",
+  "stage": "T2_POST_REPAIR_SEMANTIC_SCORING",
+  "final_query_sha256": "1588edf8750d913766c2004e8c25e8ae28e158f99d26a55c305263018a0c88bc",
+  "cases": [
+    {
+      "cve": "CVE-2020-23449",
+      "actual_mechanism": "Authorization depends on binding the requested target user identity to the authenticated session identity.",
+      "T1_post_label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "T2_pre_label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "T2_post_label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "pre_to_post_change": "UNCHANGED",
+      "reason": "The final repaired query does not implement the decisive relation between the requested target user identity and the authenticated session identity."
+    },
+    {
+      "cve": "CVE-2021-4142",
+      "actual_mechanism": "Authentication must distinguish the permitted identity certificate from an SCA certificate using certificate type/OID/attribute validation.",
+      "T1_post_label": "WRONG_VULNERABILITY_MECHANISM",
+      "T2_pre_label": "WRONG_VULNERABILITY_MECHANISM",
+      "T2_post_label": "WRONG_VULNERABILITY_MECHANISM",
+      "pre_to_post_change": "UNCHANGED",
+      "reason": "The final repaired query contains no certificate class/type, OID, SCA-versus-identity certificate, or certificate-attribute validation semantics."
+    },
+    {
+      "cve": "CVE-2023-2260",
+      "actual_mechanism": "The authenticated Principal must be propagated and enforced across organization/user/API-key/password operations with the correct subject-scope-target relation.",
+      "T1_post_label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "T2_pre_label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "T2_post_label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "pre_to_post_change": "UNCHANGED",
+      "reason": "The final repaired query does not model authenticated Principal propagation or the acting-subject, organization-scope, target-object relation."
+    },
+    {
+      "cve": "CVE-2023-30216",
+      "actual_mechanism": "The selected or exposed user must derive from the authenticated session user rather than an externally supplied user identifier.",
+      "T1_post_label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "T2_pre_label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "T2_post_label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "pre_to_post_change": "UNCHANGED",
+      "reason": "The final repaired query does not require the selected or exposed user identity to derive from the authenticated session identity."
+    },
+    {
+      "cve": "CVE-2023-32310",
+      "actual_mechanism": "Dashboard/message operations require an ownership or authorization relation between requester and target resource ID.",
+      "T1_post_label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "T2_pre_label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "T2_post_label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "pre_to_post_change": "UNCHANGED",
+      "reason": "The final repaired query does not implement requester-to-dashboard/message ownership or authorization."
+    },
+    {
+      "cve": "CVE-2023-43668",
+      "actual_mechanism": "Security-sensitive JDBC parameter keys must be filtered or replaced so dangerous parameters cannot bypass sensitive-parameter checks.",
+      "T1_post_label": "WRONG_VULNERABILITY_MECHANISM",
+      "T2_pre_label": "WRONG_VULNERABILITY_MECHANISM",
+      "T2_post_label": "WRONG_VULNERABILITY_MECHANISM",
+      "pre_to_post_change": "UNCHANGED",
+      "reason": "The final repaired query contains no JDBC dangerous-parameter filtering or sensitive configuration-key validation semantics."
+    },
+    {
+      "cve": "CVE-2023-44981",
+      "actual_mechanism": "ZooKeeper quorum SASL authorization must not be skipped when the optional instance component of the authentication ID is absent.",
+      "T1_post_label": "WRONG_VULNERABILITY_MECHANISM",
+      "T2_pre_label": "WRONG_VULNERABILITY_MECHANISM",
+      "T2_post_label": "WRONG_VULNERABILITY_MECHANISM",
+      "pre_to_post_change": "UNCHANGED",
+      "reason": "The final repaired query contains no ZooKeeper quorum SASL authentication-ID instance-component or skipped-authorization control-flow semantics."
+    }
+  ],
+  "summary": {
+    "semantic_alignment": 0,
+    "semantic_mismatch": 7,
+    "semantic_labels_unchanged_pre_to_post": 7,
+    "plan_to_CodeQL_translation_loss": 6,
+    "upstream_plan_failure": 1,
+    "faithfully_encoded_mechanism_families": 0,
+    "explicit_unencodable_or_bounded_families": 2,
+    "semantic_improvement_due_to_repair": false,
+    "initial_compilation": "0/7",
+    "final_compilation": "7/7",
+    "repair_count": 2,
+    "strict_success": "0/7",
+    "detection_failure": "7/7",
+    "discrimination_failure": "0/7"
+  },
+  "interpretation": "Matched V3 repair recovered full compilation but did not restore the decisive security relations lost during translation. The repaired query continues to implement a generic request-derived identifier to generic sensitive-operation abstraction with an authentication-context exclusion heuristic. Semantic alignment therefore remains 0/7.",
+  "test_access": "FORBIDDEN"
+}

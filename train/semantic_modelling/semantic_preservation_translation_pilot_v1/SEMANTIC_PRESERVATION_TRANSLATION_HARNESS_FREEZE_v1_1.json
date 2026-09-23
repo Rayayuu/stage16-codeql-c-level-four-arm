@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.1",
+  "scope": "TRAIN_ONLY",
+  "status": "FROZEN_CORRECTED_HARNESS_READY_FOR_GENERATION",
+  "harness": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/semantic_preservation_translation_pilot_v1/SEMANTIC_PRESERVATION_TRANSLATION_RUNNER_v1_1.py",
+    "sha256": "6cfaa71480539ebb6dba65829f6b7a3d1859ca0c77411bc9c3d33adff58a67ba"
+  },
+  "recovery_from": {
+    "invalid_harness_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/semantic_preservation_translation_pilot_v1/SEMANTIC_PRESERVATION_TRANSLATION_RUNNER_v1.py",
+    "invalid_harness_sha256": "d60ed931e549794218d6b48fc79e5e8a306880940c2b2eb46fb53c2907cf27c2",
+    "failure_class": "HARNESS_IMPLEMENTATION_ERROR_BEFORE_MODEL_CALL",
+    "scientific_treatment_started": false,
+    "model_calls_consumed": 0
+  },
+  "controls": {
+    "model_call_budget": 1,
+    "same_frozen_M1_plan": true,
+    "same_A_level_evidence": true,
+    "manual_query_modification": false,
+    "model_execution_during_this_step": false,
+    "codeql_execution": false,
+    "test_access": "FORBIDDEN"
+  }
+}

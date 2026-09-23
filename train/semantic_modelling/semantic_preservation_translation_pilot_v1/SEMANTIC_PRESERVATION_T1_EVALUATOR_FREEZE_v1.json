@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "stage": "T1_PACK_AWARE_EVALUATOR_FREEZE",
+  "status": "FROZEN_READY_FOR_FIRST_T1_EVALUATION",
+  "source_query": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/semantic_preservation_translation_pilot_v1/t1_generation_v1/CWE-639/iter0.ql",
+    "sha256": "c7c92c88a4ecd6e91b322ca0b06b7e34dcf099a05a720fa2cb25a71de8fb4450"
+  },
+  "evaluation_query": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/semantic_preservation_translation_runs_v1/T1_SEMANTIC_PRESERVATION/CWE-639/iter0.ql",
+    "sha256": "c7c92c88a4ecd6e91b322ca0b06b7e34dcf099a05a720fa2cb25a71de8fb4450",
+    "byte_identical_to_source": true
+  },
+  "wrapper": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/semantic_preservation_translation_pilot_v1/SEMANTIC_PRESERVATION_T1_PACK_AWARE_EVALUATOR_v1.py",
+    "sha256": "59339605e3e468291a3e186cb972125b596b6297b1aa0b68915cf418cb795169"
+  },
+  "source_valid1_evaluator": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/MECHANISM_FIRST_PILOT_PACK_AWARE_EVALUATOR_VALID1_v1.py",
+    "sha256": "79ce723420cba76437e396780ad17735ebff774bf9ba97a51723f739c49a7751"
+  },
+  "pack": {
+    "root": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack",
+    "qlpack": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/qlpack.yml"
+  },
+  "result_namespace": {
+    "root": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/semantic_preservation_translation_runs_v1/T1_SEMANTIC_PRESERVATION/query_evaluations_t1_valid1",
+    "exists_before_first_evaluation": false
+  },
+  "frozen_semantic_scoring": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/semantic_preservation_translation_pilot_v1/T1_PRE_CODEQL_SEMANTIC_SCORING_FREEZE_v1.json",
+    "sha256": "1452c033c9956ccb9718fa4d8b782ebea1e1587f4a111b2eed28cb7a5b79c59d",
+    "completed_before_current_T1_CodeQL_result": true
+  },
+  "controls": {
+    "query_modification": false,
+    "manual_query_modification": false,
+    "model_execution": false,
+    "codeql_execution": false,
+    "scientific_rerun": false,
+    "test_access": "FORBIDDEN"
+  }
+}

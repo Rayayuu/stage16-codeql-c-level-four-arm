@@ -1,0 +1,1840 @@
+========================================================================================================================
+CASE_INDEX=1/11
+CVE=CVE-2017-12617
+OUTCOME=DISCRIMINATION_FAILURE
+ADVISORY_GROUND_TRUTH=[NOT AVAILABLE]
+VULNERABLE_CODE=[java/org/apache/catalina/servlets/DefaultServlet.java]         // If the resource is not a collection, and the resource path
+[java/org/apache/catalina/servlets/DefaultServlet.java]         // ends with "/" or "\", return NOT FOUND
+[java/org/apache/catalina/servlets/DefaultServlet.java]         if (resource.isFile() && (path.endsWith("/") || path.endsWith("\\"))) {
+[java/org/apache/catalina/servlets/DefaultServlet.java]             // Check if we're included so we can return the appropriate
+[java/org/apache/catalina/servlets/DefaultServlet.java]             // missing resource name in the error
+[java/org/apache/catalina/servlets/DefaultServlet.java]             String requestUri = (String) request.getAttribute(
+[java/org/apache/catalina/servlets/DefaultServlet.java]                     RequestDispatcher.INCLUDE_REQUEST_URI);
+[java/org/apache/catalina/servlets/DefaultServlet.java]             if (requestUri == null) {
+[java/org/apache/catalina/servlets/DefaultServlet.java]                 requestUri = request.getRequestURI();
+[java/org/apache/catalina/servlets/DefaultServlet.java]             }
+[java/org/apache/catalina/servlets/DefaultServlet.java]             response.sendError(HttpServletResponse.SC_NOT_FOUND, requestUri);
+[java/org/apache/catalina/servlets/DefaultServlet.java]             return;
+[java/org/apache/catalina/servlets/DefaultServlet.java]         }
+[java/org/apache/catalina/servlets/DefaultServlet.java]
+PATCHED_CODE=[NOT AVAILABLE]
+PATCH_SHAPE=MODIFICATION
+WHAT_AGENT_WANTED_TO_DETECT=Detect user-controlled request/upload filename data flowing into filesystem write or move operations.
+CODEQL_GENERATED=import java
+import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.TaintTracking
+
+predicate exprHasType(Expr e, string pkg, string name) {
+  exists(RefType t | e.getType() = t and t.hasQualifiedName(pkg, name))
+}
+
+predicate isHttpRequestSourceCall(MethodCall mc) {
+  exists(Method m |
+    m = mc.getMethod() and
+    m.getDeclaringType().hasQualifiedName("javax.servlet.http", "HttpServletRequest") and
+    (
+      m.getName() = "getParameter" or
+      m.getName() = "getHeader" or
+      m.getName() = "getRequestURI" or
+      m.getName() = "getPathInfo" or
+      m.getName() = "getServletPath" or
+      m.getName() = "getContextPath" or
+      m.getName() = "getQueryString"
+    )
+  )
+}
+
+predicate isMultipartFilenameSourceCall(MethodCall mc) {
+  exists(Method m |
+    m = mc.getMethod() and
+    (
+      m.getDeclaringType().hasQualifiedName("javax.servlet.http", "Part") and m.getName() = "getSubmittedFileName" or
+      m.getDeclaringType().hasQualifiedName("org.springframework.web.multipart", "MultipartFile") and m.getName() = "getOriginalFilename" or
+      m.getDeclaringType().hasQualifiedName("org.apache.commons.fileupload", "FileItem") and m.getName() = "getName"
+    )
+  )
+}
+
+predicate isFilesApiCallWithPathArg(Call c, Expr arg) {
+  exists(Method m |
+    m = c.getCallee() and
+    m.getDeclaringType().hasQualifiedName("java.nio.file", "Files") and
+    (
+      m.getName() = "write" or
+      m.getName() = "copy" or
+      m.getName() = "move" or
+      m.getName() = "newOutputStream" or
+      m.getName() = "newBufferedWriter" or
+      m.getName() = "createFile"
+    ) and
+    exists(int i | arg = c.getArgument(i) and exprHasType(arg, "java.nio.file", "Path"))
+  )
+}
+
+predicate isJavaIoWriteConstructor(Call c, Expr arg) {
+  exists(Constructor m |
+    m = c.getCallee() and
+    (
+      m.getDeclaringType().hasQualifiedName("java.io", "FileOutputStream") or
+      m.getDeclaringType().hasQualifiedName("java.io", "FileWriter") or
+      m.getDeclaringType().hasQualifiedName("java.io", "RandomAccessFile")
+    ) and
+    (
+      arg = c.getArgument(0) and (
+        exprHasType(arg, "java.lang", "String") or
+        exprHasType(arg, "java.io", "File") or
+        exprHasType(arg, "java.nio.file", "Path")
+      )
+    )
+  )
+}
+
+predicate isCommonsIoFileUtilsWrite(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and
+    m.getDeclaringType().hasQualifiedName("org.apache.commons.io", "FileUtils") and
+    (
+      m.getName() = "writeByteArrayToFile" or
+      m.getName() = "writeStringToFile" or
+      m.getName() = "copyInputStreamToFile" or
+      m.getName() = "copyFile" or
+      m.getName() = "moveFile"
+    ) and
+    exists(int i | arg = mc.getArgument(i) and (
+      exprHasType(arg, "java.io", "File") or exprHasType(arg, "java.nio.file", "Path")
+    ))
+  )
+}
+
+predicate isFileMoveToDest(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "renameTo" and
+    m.getDeclaringType().hasQualifiedName("java.io", "File") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isServletPartWrite(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "write" and
+    m.getDeclaringType().hasQualifiedName("javax.servlet.http", "Part") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isSpringMultipartTransferTo(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "transferTo" and
+    m.getDeclaringType().hasQualifiedName("org.springframework.web.multipart", "MultipartFile") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isFilesystemWriteSinkExpr(Expr e) {
+  exists(MethodCall mc | isServletPartWrite(mc, e)) or
+  exists(MethodCall mc | isSpringMultipartTransferTo(mc, e)) or
+  exists(MethodCall mc | isCommonsIoFileUtilsWrite(mc, e)) or
+  exists(MethodCall mc | isFileMoveToDest(mc, e)) or
+  exists(Call c | isJavaIoWriteConstructor(c, e)) or
+  exists(Call c, Expr a | isFilesApiCallWithPathArg(c, a) and e = a)
+}
+
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    exists(MethodCall mc |
+      (isHttpRequestSourceCall(mc) or isMultipartFilenameSourceCall(mc)) and
+      source.asExpr() = mc
+    )
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(Expr e | isFilesystemWriteSinkExpr(e) and sink.asExpr() = e)
+  }
+}
+
+module Flow = TaintTracking::Global<Config>;
+
+from Flow::PathNode source, Flow::PathNode sink
+where Flow::flowPath(source, sink)
+select sink.getNode(),
+  "User-controlled value flows into a filesystem write/move path, which may allow unrestricted file upload (CWE-434).",
+  source, sink
+RESULT_OF_AUTO_SKILL=Auto-Skill retrieval primarily supplied CodeQL API/type/receiver compatibility guidance. Final V3 query compiled for this case. Retrieved skills: AUTO_FINAL_PLANNING_RECEIVER_AND_HASBODY_AUDIT; AUTO_FINAL_PLANNING_SYSTEMATIC_REFTYPE_NORMALIZATION; AUTO_FINAL_ATOMIC_METHODCALL_GETQUALIFIER; AUTO_FINAL_FUNCTIONAL_BIND_REFTYPE_FOR_TYPE_SOURCES
+EVALUATION_RESULT=compiled=True; vulnerable_hits=9; patched_hits=9; outcome=DISCRIMINATION_FAILURE
+OLD_ROOT_CAUSE=LLM can model the code, but failed to model the code in CodeQL
+OLD_WHY_FAILED=The query correctly targets user-controlled data reaching filesystem write operations, but the actual fix changes path-resolution validation rather than removing the write flow. Therefore the same generic taint path remains in both revisions and the query cannot discriminate.
+STRICT_SUCCESS_SEMANTIC_REVIEW=[NOT AVAILABLE]
+EVIDENCE_STATUS=advisory=AVAILABLE; code=BOTH_REMOVED_AND_ADDED_LINES_PRESENT
+
+========================================================================================================================
+CASE_INDEX=2/11
+CVE=CVE-2020-13128
+OUTCOME=DETECTION_FAILURE
+ADVISORY_GROUND_TRUTH=[NOT AVAILABLE]
+VULNERABLE_CODE=[core/src/main/java/gwtupload/server/AbstractUploadListener.java]     if (slowUploads > 0 && done < total) {
+PATCHED_CODE=[NOT AVAILABLE]
+PATCH_SHAPE=MODIFICATION
+WHAT_AGENT_WANTED_TO_DETECT=Detect user-controlled request/upload filename data flowing into filesystem write or move operations.
+CODEQL_GENERATED=import java
+import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.TaintTracking
+
+predicate exprHasType(Expr e, string pkg, string name) {
+  exists(RefType t | e.getType() = t and t.hasQualifiedName(pkg, name))
+}
+
+predicate isHttpRequestSourceCall(MethodCall mc) {
+  exists(Method m |
+    m = mc.getMethod() and
+    m.getDeclaringType().hasQualifiedName("javax.servlet.http", "HttpServletRequest") and
+    (
+      m.getName() = "getParameter" or
+      m.getName() = "getHeader" or
+      m.getName() = "getRequestURI" or
+      m.getName() = "getPathInfo" or
+      m.getName() = "getServletPath" or
+      m.getName() = "getContextPath" or
+      m.getName() = "getQueryString"
+    )
+  )
+}
+
+predicate isMultipartFilenameSourceCall(MethodCall mc) {
+  exists(Method m |
+    m = mc.getMethod() and
+    (
+      m.getDeclaringType().hasQualifiedName("javax.servlet.http", "Part") and m.getName() = "getSubmittedFileName" or
+      m.getDeclaringType().hasQualifiedName("org.springframework.web.multipart", "MultipartFile") and m.getName() = "getOriginalFilename" or
+      m.getDeclaringType().hasQualifiedName("org.apache.commons.fileupload", "FileItem") and m.getName() = "getName"
+    )
+  )
+}
+
+predicate isFilesApiCallWithPathArg(Call c, Expr arg) {
+  exists(Method m |
+    m = c.getCallee() and
+    m.getDeclaringType().hasQualifiedName("java.nio.file", "Files") and
+    (
+      m.getName() = "write" or
+      m.getName() = "copy" or
+      m.getName() = "move" or
+      m.getName() = "newOutputStream" or
+      m.getName() = "newBufferedWriter" or
+      m.getName() = "createFile"
+    ) and
+    exists(int i | arg = c.getArgument(i) and exprHasType(arg, "java.nio.file", "Path"))
+  )
+}
+
+predicate isJavaIoWriteConstructor(Call c, Expr arg) {
+  exists(Constructor m |
+    m = c.getCallee() and
+    (
+      m.getDeclaringType().hasQualifiedName("java.io", "FileOutputStream") or
+      m.getDeclaringType().hasQualifiedName("java.io", "FileWriter") or
+      m.getDeclaringType().hasQualifiedName("java.io", "RandomAccessFile")
+    ) and
+    (
+      arg = c.getArgument(0) and (
+        exprHasType(arg, "java.lang", "String") or
+        exprHasType(arg, "java.io", "File") or
+        exprHasType(arg, "java.nio.file", "Path")
+      )
+    )
+  )
+}
+
+predicate isCommonsIoFileUtilsWrite(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and
+    m.getDeclaringType().hasQualifiedName("org.apache.commons.io", "FileUtils") and
+    (
+      m.getName() = "writeByteArrayToFile" or
+      m.getName() = "writeStringToFile" or
+      m.getName() = "copyInputStreamToFile" or
+      m.getName() = "copyFile" or
+      m.getName() = "moveFile"
+    ) and
+    exists(int i | arg = mc.getArgument(i) and (
+      exprHasType(arg, "java.io", "File") or exprHasType(arg, "java.nio.file", "Path")
+    ))
+  )
+}
+
+predicate isFileMoveToDest(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "renameTo" and
+    m.getDeclaringType().hasQualifiedName("java.io", "File") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isServletPartWrite(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "write" and
+    m.getDeclaringType().hasQualifiedName("javax.servlet.http", "Part") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isSpringMultipartTransferTo(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "transferTo" and
+    m.getDeclaringType().hasQualifiedName("org.springframework.web.multipart", "MultipartFile") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isFilesystemWriteSinkExpr(Expr e) {
+  exists(MethodCall mc | isServletPartWrite(mc, e)) or
+  exists(MethodCall mc | isSpringMultipartTransferTo(mc, e)) or
+  exists(MethodCall mc | isCommonsIoFileUtilsWrite(mc, e)) or
+  exists(MethodCall mc | isFileMoveToDest(mc, e)) or
+  exists(Call c | isJavaIoWriteConstructor(c, e)) or
+  exists(Call c, Expr a | isFilesApiCallWithPathArg(c, a) and e = a)
+}
+
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    exists(MethodCall mc |
+      (isHttpRequestSourceCall(mc) or isMultipartFilenameSourceCall(mc)) and
+      source.asExpr() = mc
+    )
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(Expr e | isFilesystemWriteSinkExpr(e) and sink.asExpr() = e)
+  }
+}
+
+module Flow = TaintTracking::Global<Config>;
+
+from Flow::PathNode source, Flow::PathNode sink
+where Flow::flowPath(source, sink)
+select sink.getNode(),
+  "User-controlled value flows into a filesystem write/move path, which may allow unrestricted file upload (CWE-434).",
+  source, sink
+RESULT_OF_AUTO_SKILL=Auto-Skill retrieval primarily supplied CodeQL API/type/receiver compatibility guidance. Final V3 query compiled for this case. Retrieved skills: AUTO_FINAL_PLANNING_RECEIVER_AND_HASBODY_AUDIT; AUTO_FINAL_PLANNING_SYSTEMATIC_REFTYPE_NORMALIZATION; AUTO_FINAL_ATOMIC_METHODCALL_GETQUALIFIER; AUTO_FINAL_FUNCTIONAL_BIND_REFTYPE_FOR_TYPE_SOURCES
+EVALUATION_RESULT=compiled=True; vulnerable_hits=0; patched_hits=0; outcome=DETECTION_FAILURE
+OLD_ROOT_CAUSE=Failed to correctly reason about the program
+OLD_WHY_FAILED=Despite the benchmark being grouped under CWE-434, the advisory and patch describe a user-controlled delay / resource-exhaustion issue. The V3 query searches only for unrestricted-file-upload dataflow, so it models a different vulnerability mechanism.
+STRICT_SUCCESS_SEMANTIC_REVIEW=[NOT AVAILABLE]
+EVIDENCE_STATUS=advisory=AVAILABLE; code=BOTH_REMOVED_AND_ADDED_LINES_PRESENT
+
+========================================================================================================================
+CASE_INDEX=3/11
+CVE=CVE-2021-21245
+OUTCOME=DISCRIMINATION_FAILURE
+ADVISORY_GROUND_TRUTH=[NOT AVAILABLE]
+VULNERABLE_CODE=[server-core/src/main/java/io/onedev/server/web/component/markdown/InsertUrlPanel.java] 						attachmentName = attachmentSupport.saveAttachment(upload.getClientFileName(), is);
+[server-core/src/main/java/io/onedev/server/web/component/markdown/MarkdownEditor.java] 					String fileName = URLDecoder.decode(request.getHeader("File-Name"), StandardCharsets.UTF_8.name());
+[server-core/src/main/java/io/onedev/server/web/page/project/blob/ProjectBlobPage.java] 			String blobPath = upload.getClientFileName();
+PATCHED_CODE=[NOT AVAILABLE]
+PATCH_SHAPE=MODIFICATION
+WHAT_AGENT_WANTED_TO_DETECT=Detect user-controlled request/upload filename data flowing into filesystem write or move operations.
+CODEQL_GENERATED=import java
+import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.TaintTracking
+
+predicate exprHasType(Expr e, string pkg, string name) {
+  exists(RefType t | e.getType() = t and t.hasQualifiedName(pkg, name))
+}
+
+predicate isHttpRequestSourceCall(MethodCall mc) {
+  exists(Method m |
+    m = mc.getMethod() and
+    m.getDeclaringType().hasQualifiedName("javax.servlet.http", "HttpServletRequest") and
+    (
+      m.getName() = "getParameter" or
+      m.getName() = "getHeader" or
+      m.getName() = "getRequestURI" or
+      m.getName() = "getPathInfo" or
+      m.getName() = "getServletPath" or
+      m.getName() = "getContextPath" or
+      m.getName() = "getQueryString"
+    )
+  )
+}
+
+predicate isMultipartFilenameSourceCall(MethodCall mc) {
+  exists(Method m |
+    m = mc.getMethod() and
+    (
+      m.getDeclaringType().hasQualifiedName("javax.servlet.http", "Part") and m.getName() = "getSubmittedFileName" or
+      m.getDeclaringType().hasQualifiedName("org.springframework.web.multipart", "MultipartFile") and m.getName() = "getOriginalFilename" or
+      m.getDeclaringType().hasQualifiedName("org.apache.commons.fileupload", "FileItem") and m.getName() = "getName"
+    )
+  )
+}
+
+predicate isFilesApiCallWithPathArg(Call c, Expr arg) {
+  exists(Method m |
+    m = c.getCallee() and
+    m.getDeclaringType().hasQualifiedName("java.nio.file", "Files") and
+    (
+      m.getName() = "write" or
+      m.getName() = "copy" or
+      m.getName() = "move" or
+      m.getName() = "newOutputStream" or
+      m.getName() = "newBufferedWriter" or
+      m.getName() = "createFile"
+    ) and
+    exists(int i | arg = c.getArgument(i) and exprHasType(arg, "java.nio.file", "Path"))
+  )
+}
+
+predicate isJavaIoWriteConstructor(Call c, Expr arg) {
+  exists(Constructor m |
+    m = c.getCallee() and
+    (
+      m.getDeclaringType().hasQualifiedName("java.io", "FileOutputStream") or
+      m.getDeclaringType().hasQualifiedName("java.io", "FileWriter") or
+      m.getDeclaringType().hasQualifiedName("java.io", "RandomAccessFile")
+    ) and
+    (
+      arg = c.getArgument(0) and (
+        exprHasType(arg, "java.lang", "String") or
+        exprHasType(arg, "java.io", "File") or
+        exprHasType(arg, "java.nio.file", "Path")
+      )
+    )
+  )
+}
+
+predicate isCommonsIoFileUtilsWrite(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and
+    m.getDeclaringType().hasQualifiedName("org.apache.commons.io", "FileUtils") and
+    (
+      m.getName() = "writeByteArrayToFile" or
+      m.getName() = "writeStringToFile" or
+      m.getName() = "copyInputStreamToFile" or
+      m.getName() = "copyFile" or
+      m.getName() = "moveFile"
+    ) and
+    exists(int i | arg = mc.getArgument(i) and (
+      exprHasType(arg, "java.io", "File") or exprHasType(arg, "java.nio.file", "Path")
+    ))
+  )
+}
+
+predicate isFileMoveToDest(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "renameTo" and
+    m.getDeclaringType().hasQualifiedName("java.io", "File") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isServletPartWrite(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "write" and
+    m.getDeclaringType().hasQualifiedName("javax.servlet.http", "Part") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isSpringMultipartTransferTo(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "transferTo" and
+    m.getDeclaringType().hasQualifiedName("org.springframework.web.multipart", "MultipartFile") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isFilesystemWriteSinkExpr(Expr e) {
+  exists(MethodCall mc | isServletPartWrite(mc, e)) or
+  exists(MethodCall mc | isSpringMultipartTransferTo(mc, e)) or
+  exists(MethodCall mc | isCommonsIoFileUtilsWrite(mc, e)) or
+  exists(MethodCall mc | isFileMoveToDest(mc, e)) or
+  exists(Call c | isJavaIoWriteConstructor(c, e)) or
+  exists(Call c, Expr a | isFilesApiCallWithPathArg(c, a) and e = a)
+}
+
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    exists(MethodCall mc |
+      (isHttpRequestSourceCall(mc) or isMultipartFilenameSourceCall(mc)) and
+      source.asExpr() = mc
+    )
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(Expr e | isFilesystemWriteSinkExpr(e) and sink.asExpr() = e)
+  }
+}
+
+module Flow = TaintTracking::Global<Config>;
+
+from Flow::PathNode source, Flow::PathNode sink
+where Flow::flowPath(source, sink)
+select sink.getNode(),
+  "User-controlled value flows into a filesystem write/move path, which may allow unrestricted file upload (CWE-434).",
+  source, sink
+RESULT_OF_AUTO_SKILL=Auto-Skill retrieval primarily supplied CodeQL API/type/receiver compatibility guidance. Final V3 query compiled for this case. Retrieved skills: AUTO_FINAL_PLANNING_RECEIVER_AND_HASBODY_AUDIT; AUTO_FINAL_PLANNING_SYSTEMATIC_REFTYPE_NORMALIZATION; AUTO_FINAL_ATOMIC_METHODCALL_GETQUALIFIER; AUTO_FINAL_FUNCTIONAL_BIND_REFTYPE_FOR_TYPE_SOURCES
+EVALUATION_RESULT=compiled=True; vulnerable_hits=1; patched_hits=1; outcome=DISCRIMINATION_FAILURE
+OLD_ROOT_CAUSE=LLM can model the code, but failed to model the code in CodeQL
+OLD_WHY_FAILED=Although the advisory is unavailable in the retained TRAIN advisory corpus, the patch directly introduces FilenameUtils.sanitizeFilename and applies it to uploaded/request filenames before attachment/blob handling. This is consistent with the query's broad upload-to-filesystem interpretation, but the final CodeQL model does not recognize the new filename sanitization as a barrier. It therefore reports one path in both vulnerable and patched revisions.
+STRICT_SUCCESS_SEMANTIC_REVIEW=[NOT AVAILABLE]
+EVIDENCE_STATUS=advisory=NOT_AVAILABLE_IN_A_LEVEL_INPUT_OR_PRE_CUTOFF_GHSA_CORPUS; code=BOTH_REMOVED_AND_ADDED_LINES_PRESENT
+
+========================================================================================================================
+CASE_INDEX=4/11
+CVE=CVE-2021-45790
+OUTCOME=DETECTION_FAILURE
+ADVISORY_GROUND_TRUTH=[NOT AVAILABLE]
+VULNERABLE_CODE=[backend/src/main/java/io/metersphere/commons/utils/ShiroUtils.java]         filterChainDefinitionMap.put("/resource/**", "anon");
+PATCHED_CODE=[NOT AVAILABLE]
+PATCH_SHAPE=MODIFICATION
+WHAT_AGENT_WANTED_TO_DETECT=Detect user-controlled request/upload filename data flowing into filesystem write or move operations.
+CODEQL_GENERATED=import java
+import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.TaintTracking
+
+predicate exprHasType(Expr e, string pkg, string name) {
+  exists(RefType t | e.getType() = t and t.hasQualifiedName(pkg, name))
+}
+
+predicate isHttpRequestSourceCall(MethodCall mc) {
+  exists(Method m |
+    m = mc.getMethod() and
+    m.getDeclaringType().hasQualifiedName("javax.servlet.http", "HttpServletRequest") and
+    (
+      m.getName() = "getParameter" or
+      m.getName() = "getHeader" or
+      m.getName() = "getRequestURI" or
+      m.getName() = "getPathInfo" or
+      m.getName() = "getServletPath" or
+      m.getName() = "getContextPath" or
+      m.getName() = "getQueryString"
+    )
+  )
+}
+
+predicate isMultipartFilenameSourceCall(MethodCall mc) {
+  exists(Method m |
+    m = mc.getMethod() and
+    (
+      m.getDeclaringType().hasQualifiedName("javax.servlet.http", "Part") and m.getName() = "getSubmittedFileName" or
+      m.getDeclaringType().hasQualifiedName("org.springframework.web.multipart", "MultipartFile") and m.getName() = "getOriginalFilename" or
+      m.getDeclaringType().hasQualifiedName("org.apache.commons.fileupload", "FileItem") and m.getName() = "getName"
+    )
+  )
+}
+
+predicate isFilesApiCallWithPathArg(Call c, Expr arg) {
+  exists(Method m |
+    m = c.getCallee() and
+    m.getDeclaringType().hasQualifiedName("java.nio.file", "Files") and
+    (
+      m.getName() = "write" or
+      m.getName() = "copy" or
+      m.getName() = "move" or
+      m.getName() = "newOutputStream" or
+      m.getName() = "newBufferedWriter" or
+      m.getName() = "createFile"
+    ) and
+    exists(int i | arg = c.getArgument(i) and exprHasType(arg, "java.nio.file", "Path"))
+  )
+}
+
+predicate isJavaIoWriteConstructor(Call c, Expr arg) {
+  exists(Constructor m |
+    m = c.getCallee() and
+    (
+      m.getDeclaringType().hasQualifiedName("java.io", "FileOutputStream") or
+      m.getDeclaringType().hasQualifiedName("java.io", "FileWriter") or
+      m.getDeclaringType().hasQualifiedName("java.io", "RandomAccessFile")
+    ) and
+    (
+      arg = c.getArgument(0) and (
+        exprHasType(arg, "java.lang", "String") or
+        exprHasType(arg, "java.io", "File") or
+        exprHasType(arg, "java.nio.file", "Path")
+      )
+    )
+  )
+}
+
+predicate isCommonsIoFileUtilsWrite(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and
+    m.getDeclaringType().hasQualifiedName("org.apache.commons.io", "FileUtils") and
+    (
+      m.getName() = "writeByteArrayToFile" or
+      m.getName() = "writeStringToFile" or
+      m.getName() = "copyInputStreamToFile" or
+      m.getName() = "copyFile" or
+      m.getName() = "moveFile"
+    ) and
+    exists(int i | arg = mc.getArgument(i) and (
+      exprHasType(arg, "java.io", "File") or exprHasType(arg, "java.nio.file", "Path")
+    ))
+  )
+}
+
+predicate isFileMoveToDest(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "renameTo" and
+    m.getDeclaringType().hasQualifiedName("java.io", "File") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isServletPartWrite(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "write" and
+    m.getDeclaringType().hasQualifiedName("javax.servlet.http", "Part") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isSpringMultipartTransferTo(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "transferTo" and
+    m.getDeclaringType().hasQualifiedName("org.springframework.web.multipart", "MultipartFile") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isFilesystemWriteSinkExpr(Expr e) {
+  exists(MethodCall mc | isServletPartWrite(mc, e)) or
+  exists(MethodCall mc | isSpringMultipartTransferTo(mc, e)) or
+  exists(MethodCall mc | isCommonsIoFileUtilsWrite(mc, e)) or
+  exists(MethodCall mc | isFileMoveToDest(mc, e)) or
+  exists(Call c | isJavaIoWriteConstructor(c, e)) or
+  exists(Call c, Expr a | isFilesApiCallWithPathArg(c, a) and e = a)
+}
+
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    exists(MethodCall mc |
+      (isHttpRequestSourceCall(mc) or isMultipartFilenameSourceCall(mc)) and
+      source.asExpr() = mc
+    )
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(Expr e | isFilesystemWriteSinkExpr(e) and sink.asExpr() = e)
+  }
+}
+
+module Flow = TaintTracking::Global<Config>;
+
+from Flow::PathNode source, Flow::PathNode sink
+where Flow::flowPath(source, sink)
+select sink.getNode(),
+  "User-controlled value flows into a filesystem write/move path, which may allow unrestricted file upload (CWE-434).",
+  source, sink
+RESULT_OF_AUTO_SKILL=Auto-Skill retrieval primarily supplied CodeQL API/type/receiver compatibility guidance. Final V3 query compiled for this case. Retrieved skills: AUTO_FINAL_PLANNING_RECEIVER_AND_HASBODY_AUDIT; AUTO_FINAL_PLANNING_SYSTEMATIC_REFTYPE_NORMALIZATION; AUTO_FINAL_ATOMIC_METHODCALL_GETQUALIFIER; AUTO_FINAL_FUNCTIONAL_BIND_REFTYPE_FOR_TYPE_SOURCES
+EVALUATION_RESULT=compiled=True; vulnerable_hits=0; patched_hits=7; outcome=DETECTION_FAILURE
+OLD_ROOT_CAUSE=Failed to correctly reason about the program
+OLD_WHY_FAILED=The advisory describes arbitrary file upload by unauthenticated users, but the patch changes the Shiro filter configuration from anonymous access to all /resource/** paths to anonymous access only for /resource/md/get/. The key security mechanism is therefore authorization of the upload/resource endpoint, not taint flow from a filename into a filesystem write sink. The final CWE-434 query models the wrong mechanism.
+STRICT_SUCCESS_SEMANTIC_REVIEW=[NOT AVAILABLE]
+EVIDENCE_STATUS=advisory=AVAILABLE; code=BOTH_REMOVED_AND_ADDED_LINES_PRESENT
+
+========================================================================================================================
+CASE_INDEX=5/11
+CVE=CVE-2021-45808
+OUTCOME=DETECTION_FAILURE
+ADVISORY_GROUND_TRUTH=[NOT AVAILABLE]
+VULNERABLE_CODE=[jpress-model/src/main/java/io/jpress/model/UserTag.java] package io.jpress.model;
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] 
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] import io.jboot.db.annotation.Table;
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] import io.jpress.model.base.BaseUserTag;
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] 
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] /**
+[jpress-model/src/main/java/io/jpress/model/UserTag.java]  * Generated by JPress.
+[jpress-model/src/main/java/io/jpress/model/UserTag.java]  */
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] @Table(tableName = "user_tag", primaryKey = "id")
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] public class UserTag extends BaseUserTag<UserTag> {
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] 
+[jpress-model/src/main/java/io/jpress/model/UserTag.java]     private static final long serialVersionUID = 1L;
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] 
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] 	
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] }
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] package io.jpress.model.base;
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] 
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] import com.jfinal.plugin.activerecord.IBean;
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] import io.jpress.base.BaseOptionsModel;
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] 
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] /**
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java]  * Generated by JPress, do not modify this file.
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java]  */
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] @SuppressWarnings("serial")
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] public abstract class BaseUserTag<M extends BaseUserTag<M>> extends BaseOptionsModel<M> implements IBean {
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] 
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java]     private static final long serialVersionUID = 1L;
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] 
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java]     /**
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java]      * 主键ID
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java]      */
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] 	public void setId(java.lang.Long id) {
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] 		set("id", id);
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] 	}
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] 
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java]     /**
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java]      * 主键ID
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java]      */
+[jpress-mo
+...[TRUNCATED]
+PATCHED_CODE=[NOT AVAILABLE]
+PATCH_SHAPE=MODIFICATION
+WHAT_AGENT_WANTED_TO_DETECT=Detect user-controlled request/upload filename data flowing into filesystem write or move operations.
+CODEQL_GENERATED=import java
+import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.TaintTracking
+
+predicate exprHasType(Expr e, string pkg, string name) {
+  exists(RefType t | e.getType() = t and t.hasQualifiedName(pkg, name))
+}
+
+predicate isHttpRequestSourceCall(MethodCall mc) {
+  exists(Method m |
+    m = mc.getMethod() and
+    m.getDeclaringType().hasQualifiedName("javax.servlet.http", "HttpServletRequest") and
+    (
+      m.getName() = "getParameter" or
+      m.getName() = "getHeader" or
+      m.getName() = "getRequestURI" or
+      m.getName() = "getPathInfo" or
+      m.getName() = "getServletPath" or
+      m.getName() = "getContextPath" or
+      m.getName() = "getQueryString"
+    )
+  )
+}
+
+predicate isMultipartFilenameSourceCall(MethodCall mc) {
+  exists(Method m |
+    m = mc.getMethod() and
+    (
+      m.getDeclaringType().hasQualifiedName("javax.servlet.http", "Part") and m.getName() = "getSubmittedFileName" or
+      m.getDeclaringType().hasQualifiedName("org.springframework.web.multipart", "MultipartFile") and m.getName() = "getOriginalFilename" or
+      m.getDeclaringType().hasQualifiedName("org.apache.commons.fileupload", "FileItem") and m.getName() = "getName"
+    )
+  )
+}
+
+predicate isFilesApiCallWithPathArg(Call c, Expr arg) {
+  exists(Method m |
+    m = c.getCallee() and
+    m.getDeclaringType().hasQualifiedName("java.nio.file", "Files") and
+    (
+      m.getName() = "write" or
+      m.getName() = "copy" or
+      m.getName() = "move" or
+      m.getName() = "newOutputStream" or
+      m.getName() = "newBufferedWriter" or
+      m.getName() = "createFile"
+    ) and
+    exists(int i | arg = c.getArgument(i) and exprHasType(arg, "java.nio.file", "Path"))
+  )
+}
+
+predicate isJavaIoWriteConstructor(Call c, Expr arg) {
+  exists(Constructor m |
+    m = c.getCallee() and
+    (
+      m.getDeclaringType().hasQualifiedName("java.io", "FileOutputStream") or
+      m.getDeclaringType().hasQualifiedName("java.io", "FileWriter") or
+      m.getDeclaringType().hasQualifiedName("java.io", "RandomAccessFile")
+    ) and
+    (
+      arg = c.getArgument(0) and (
+        exprHasType(arg, "java.lang", "String") or
+        exprHasType(arg, "java.io", "File") or
+        exprHasType(arg, "java.nio.file", "Path")
+      )
+    )
+  )
+}
+
+predicate isCommonsIoFileUtilsWrite(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and
+    m.getDeclaringType().hasQualifiedName("org.apache.commons.io", "FileUtils") and
+    (
+      m.getName() = "writeByteArrayToFile" or
+      m.getName() = "writeStringToFile" or
+      m.getName() = "copyInputStreamToFile" or
+      m.getName() = "copyFile" or
+      m.getName() = "moveFile"
+    ) and
+    exists(int i | arg = mc.getArgument(i) and (
+      exprHasType(arg, "java.io", "File") or exprHasType(arg, "java.nio.file", "Path")
+    ))
+  )
+}
+
+predicate isFileMoveToDest(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "renameTo" and
+    m.getDeclaringType().hasQualifiedName("java.io", "File") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isServletPartWrite(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "write" and
+    m.getDeclaringType().hasQualifiedName("javax.servlet.http", "Part") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isSpringMultipartTransferTo(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "transferTo" and
+    m.getDeclaringType().hasQualifiedName("org.springframework.web.multipart", "MultipartFile") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isFilesystemWriteSinkExpr(Expr e) {
+  exists(MethodCall mc | isServletPartWrite(mc, e)) or
+  exists(MethodCall mc | isSpringMultipartTransferTo(mc, e)) or
+  exists(MethodCall mc | isCommonsIoFileUtilsWrite(mc, e)) or
+  exists(MethodCall mc | isFileMoveToDest(mc, e)) or
+  exists(Call c | isJavaIoWriteConstructor(c, e)) or
+  exists(Call c, Expr a | isFilesApiCallWithPathArg(c, a) and e = a)
+}
+
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    exists(MethodCall mc |
+      (isHttpRequestSourceCall(mc) or isMultipartFilenameSourceCall(mc)) and
+      source.asExpr() = mc
+    )
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(Expr e | isFilesystemWriteSinkExpr(e) and sink.asExpr() = e)
+  }
+}
+
+module Flow = TaintTracking::Global<Config>;
+
+from Flow::PathNode source, Flow::PathNode sink
+where Flow::flowPath(source, sink)
+select sink.getNode(),
+  "User-controlled value flows into a filesystem write/move path, which may allow unrestricted file upload (CWE-434).",
+  source, sink
+RESULT_OF_AUTO_SKILL=Auto-Skill retrieval primarily supplied CodeQL API/type/receiver compatibility guidance. Final V3 query compiled for this case. Retrieved skills: AUTO_FINAL_PLANNING_RECEIVER_AND_HASBODY_AUDIT; AUTO_FINAL_PLANNING_SYSTEMATIC_REFTYPE_NORMALIZATION; AUTO_FINAL_ATOMIC_METHODCALL_GETQUALIFIER; AUTO_FINAL_FUNCTIONAL_BIND_REFTYPE_FOR_TYPE_SOURCES
+EVALUATION_RESULT=compiled=True; vulnerable_hits=0; patched_hits=0; outcome=DETECTION_FAILURE
+OLD_ROOT_CAUSE=Other / insufficient evidence
+OLD_WHY_FAILED=The advisory describes arbitrary file upload by registered users, but the retained canonical Java patch evidence shown for this benchmark is dominated by unrelated user model, pagination, and controller changes and does not expose a clear upload-security fix. Because the patch evidence does not sufficiently localize the vulnerability mechanism, assigning program-reasoning versus CodeQL-modelling failure would be speculative.
+STRICT_SUCCESS_SEMANTIC_REVIEW=[NOT AVAILABLE]
+EVIDENCE_STATUS=advisory=AVAILABLE; code=BOTH_REMOVED_AND_ADDED_LINES_PRESENT
+
+========================================================================================================================
+CASE_INDEX=6/11
+CVE=CVE-2021-46115
+OUTCOME=DETECTION_FAILURE
+ADVISORY_GROUND_TRUTH=[NOT AVAILABLE]
+VULNERABLE_CODE=[jpress-model/src/main/java/io/jpress/model/UserTag.java] package io.jpress.model;
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] 
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] import io.jboot.db.annotation.Table;
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] import io.jpress.model.base.BaseUserTag;
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] 
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] /**
+[jpress-model/src/main/java/io/jpress/model/UserTag.java]  * Generated by JPress.
+[jpress-model/src/main/java/io/jpress/model/UserTag.java]  */
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] @Table(tableName = "user_tag", primaryKey = "id")
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] public class UserTag extends BaseUserTag<UserTag> {
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] 
+[jpress-model/src/main/java/io/jpress/model/UserTag.java]     private static final long serialVersionUID = 1L;
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] 
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] 	
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] }
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] package io.jpress.model.base;
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] 
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] import com.jfinal.plugin.activerecord.IBean;
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] import io.jpress.base.BaseOptionsModel;
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] 
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] /**
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java]  * Generated by JPress, do not modify this file.
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java]  */
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] @SuppressWarnings("serial")
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] public abstract class BaseUserTag<M extends BaseUserTag<M>> extends BaseOptionsModel<M> implements IBean {
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] 
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java]     private static final long serialVersionUID = 1L;
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] 
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java]     /**
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java]      * 主键ID
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java]      */
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] 	public void setId(java.lang.Long id) {
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] 		set("id", id);
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] 	}
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] 
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java]     /**
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java]      * 主键ID
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java]      */
+[jpress-mo
+...[TRUNCATED]
+PATCHED_CODE=[NOT AVAILABLE]
+PATCH_SHAPE=MODIFICATION
+WHAT_AGENT_WANTED_TO_DETECT=Detect user-controlled request/upload filename data flowing into filesystem write or move operations.
+CODEQL_GENERATED=import java
+import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.TaintTracking
+
+predicate exprHasType(Expr e, string pkg, string name) {
+  exists(RefType t | e.getType() = t and t.hasQualifiedName(pkg, name))
+}
+
+predicate isHttpRequestSourceCall(MethodCall mc) {
+  exists(Method m |
+    m = mc.getMethod() and
+    m.getDeclaringType().hasQualifiedName("javax.servlet.http", "HttpServletRequest") and
+    (
+      m.getName() = "getParameter" or
+      m.getName() = "getHeader" or
+      m.getName() = "getRequestURI" or
+      m.getName() = "getPathInfo" or
+      m.getName() = "getServletPath" or
+      m.getName() = "getContextPath" or
+      m.getName() = "getQueryString"
+    )
+  )
+}
+
+predicate isMultipartFilenameSourceCall(MethodCall mc) {
+  exists(Method m |
+    m = mc.getMethod() and
+    (
+      m.getDeclaringType().hasQualifiedName("javax.servlet.http", "Part") and m.getName() = "getSubmittedFileName" or
+      m.getDeclaringType().hasQualifiedName("org.springframework.web.multipart", "MultipartFile") and m.getName() = "getOriginalFilename" or
+      m.getDeclaringType().hasQualifiedName("org.apache.commons.fileupload", "FileItem") and m.getName() = "getName"
+    )
+  )
+}
+
+predicate isFilesApiCallWithPathArg(Call c, Expr arg) {
+  exists(Method m |
+    m = c.getCallee() and
+    m.getDeclaringType().hasQualifiedName("java.nio.file", "Files") and
+    (
+      m.getName() = "write" or
+      m.getName() = "copy" or
+      m.getName() = "move" or
+      m.getName() = "newOutputStream" or
+      m.getName() = "newBufferedWriter" or
+      m.getName() = "createFile"
+    ) and
+    exists(int i | arg = c.getArgument(i) and exprHasType(arg, "java.nio.file", "Path"))
+  )
+}
+
+predicate isJavaIoWriteConstructor(Call c, Expr arg) {
+  exists(Constructor m |
+    m = c.getCallee() and
+    (
+      m.getDeclaringType().hasQualifiedName("java.io", "FileOutputStream") or
+      m.getDeclaringType().hasQualifiedName("java.io", "FileWriter") or
+      m.getDeclaringType().hasQualifiedName("java.io", "RandomAccessFile")
+    ) and
+    (
+      arg = c.getArgument(0) and (
+        exprHasType(arg, "java.lang", "String") or
+        exprHasType(arg, "java.io", "File") or
+        exprHasType(arg, "java.nio.file", "Path")
+      )
+    )
+  )
+}
+
+predicate isCommonsIoFileUtilsWrite(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and
+    m.getDeclaringType().hasQualifiedName("org.apache.commons.io", "FileUtils") and
+    (
+      m.getName() = "writeByteArrayToFile" or
+      m.getName() = "writeStringToFile" or
+      m.getName() = "copyInputStreamToFile" or
+      m.getName() = "copyFile" or
+      m.getName() = "moveFile"
+    ) and
+    exists(int i | arg = mc.getArgument(i) and (
+      exprHasType(arg, "java.io", "File") or exprHasType(arg, "java.nio.file", "Path")
+    ))
+  )
+}
+
+predicate isFileMoveToDest(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "renameTo" and
+    m.getDeclaringType().hasQualifiedName("java.io", "File") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isServletPartWrite(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "write" and
+    m.getDeclaringType().hasQualifiedName("javax.servlet.http", "Part") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isSpringMultipartTransferTo(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "transferTo" and
+    m.getDeclaringType().hasQualifiedName("org.springframework.web.multipart", "MultipartFile") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isFilesystemWriteSinkExpr(Expr e) {
+  exists(MethodCall mc | isServletPartWrite(mc, e)) or
+  exists(MethodCall mc | isSpringMultipartTransferTo(mc, e)) or
+  exists(MethodCall mc | isCommonsIoFileUtilsWrite(mc, e)) or
+  exists(MethodCall mc | isFileMoveToDest(mc, e)) or
+  exists(Call c | isJavaIoWriteConstructor(c, e)) or
+  exists(Call c, Expr a | isFilesApiCallWithPathArg(c, a) and e = a)
+}
+
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    exists(MethodCall mc |
+      (isHttpRequestSourceCall(mc) or isMultipartFilenameSourceCall(mc)) and
+      source.asExpr() = mc
+    )
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(Expr e | isFilesystemWriteSinkExpr(e) and sink.asExpr() = e)
+  }
+}
+
+module Flow = TaintTracking::Global<Config>;
+
+from Flow::PathNode source, Flow::PathNode sink
+where Flow::flowPath(source, sink)
+select sink.getNode(),
+  "User-controlled value flows into a filesystem write/move path, which may allow unrestricted file upload (CWE-434).",
+  source, sink
+RESULT_OF_AUTO_SKILL=Auto-Skill retrieval primarily supplied CodeQL API/type/receiver compatibility guidance. Final V3 query compiled for this case. Retrieved skills: AUTO_FINAL_PLANNING_RECEIVER_AND_HASBODY_AUDIT; AUTO_FINAL_PLANNING_SYSTEMATIC_REFTYPE_NORMALIZATION; AUTO_FINAL_ATOMIC_METHODCALL_GETQUALIFIER; AUTO_FINAL_FUNCTIONAL_BIND_REFTYPE_FOR_TYPE_SOURCES
+EVALUATION_RESULT=compiled=True; vulnerable_hits=0; patched_hits=0; outcome=DETECTION_FAILURE
+OLD_ROOT_CAUSE=Other / insufficient evidence
+OLD_WHY_FAILED=The advisory describes RCE through _TemplateController#doUploadFile, but the retained canonical Java patch evidence shown for this benchmark contains unrelated user-service and pagination/controller changes rather than a clear template-upload fix. The available TRAIN evidence is therefore insufficient to determine whether the final query failed because of program reasoning or CodeQL semantic modelling.
+STRICT_SUCCESS_SEMANTIC_REVIEW=[NOT AVAILABLE]
+EVIDENCE_STATUS=advisory=AVAILABLE; code=BOTH_REMOVED_AND_ADDED_LINES_PRESENT
+
+========================================================================================================================
+CASE_INDEX=7/11
+CVE=CVE-2021-46116
+OUTCOME=DETECTION_FAILURE
+ADVISORY_GROUND_TRUTH=[NOT AVAILABLE]
+VULNERABLE_CODE=[jpress-model/src/main/java/io/jpress/model/UserTag.java] package io.jpress.model;
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] 
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] import io.jboot.db.annotation.Table;
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] import io.jpress.model.base.BaseUserTag;
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] 
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] /**
+[jpress-model/src/main/java/io/jpress/model/UserTag.java]  * Generated by JPress.
+[jpress-model/src/main/java/io/jpress/model/UserTag.java]  */
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] @Table(tableName = "user_tag", primaryKey = "id")
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] public class UserTag extends BaseUserTag<UserTag> {
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] 
+[jpress-model/src/main/java/io/jpress/model/UserTag.java]     private static final long serialVersionUID = 1L;
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] 
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] 	
+[jpress-model/src/main/java/io/jpress/model/UserTag.java] }
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] package io.jpress.model.base;
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] 
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] import com.jfinal.plugin.activerecord.IBean;
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] import io.jpress.base.BaseOptionsModel;
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] 
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] /**
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java]  * Generated by JPress, do not modify this file.
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java]  */
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] @SuppressWarnings("serial")
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] public abstract class BaseUserTag<M extends BaseUserTag<M>> extends BaseOptionsModel<M> implements IBean {
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] 
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java]     private static final long serialVersionUID = 1L;
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] 
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java]     /**
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java]      * 主键ID
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java]      */
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] 	public void setId(java.lang.Long id) {
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] 		set("id", id);
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] 	}
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java] 
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java]     /**
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java]      * 主键ID
+[jpress-model/src/main/java/io/jpress/model/base/BaseUserTag.java]      */
+[jpress-mo
+...[TRUNCATED]
+PATCHED_CODE=[NOT AVAILABLE]
+PATCH_SHAPE=MODIFICATION
+WHAT_AGENT_WANTED_TO_DETECT=Detect user-controlled request/upload filename data flowing into filesystem write or move operations.
+CODEQL_GENERATED=import java
+import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.TaintTracking
+
+predicate exprHasType(Expr e, string pkg, string name) {
+  exists(RefType t | e.getType() = t and t.hasQualifiedName(pkg, name))
+}
+
+predicate isHttpRequestSourceCall(MethodCall mc) {
+  exists(Method m |
+    m = mc.getMethod() and
+    m.getDeclaringType().hasQualifiedName("javax.servlet.http", "HttpServletRequest") and
+    (
+      m.getName() = "getParameter" or
+      m.getName() = "getHeader" or
+      m.getName() = "getRequestURI" or
+      m.getName() = "getPathInfo" or
+      m.getName() = "getServletPath" or
+      m.getName() = "getContextPath" or
+      m.getName() = "getQueryString"
+    )
+  )
+}
+
+predicate isMultipartFilenameSourceCall(MethodCall mc) {
+  exists(Method m |
+    m = mc.getMethod() and
+    (
+      m.getDeclaringType().hasQualifiedName("javax.servlet.http", "Part") and m.getName() = "getSubmittedFileName" or
+      m.getDeclaringType().hasQualifiedName("org.springframework.web.multipart", "MultipartFile") and m.getName() = "getOriginalFilename" or
+      m.getDeclaringType().hasQualifiedName("org.apache.commons.fileupload", "FileItem") and m.getName() = "getName"
+    )
+  )
+}
+
+predicate isFilesApiCallWithPathArg(Call c, Expr arg) {
+  exists(Method m |
+    m = c.getCallee() and
+    m.getDeclaringType().hasQualifiedName("java.nio.file", "Files") and
+    (
+      m.getName() = "write" or
+      m.getName() = "copy" or
+      m.getName() = "move" or
+      m.getName() = "newOutputStream" or
+      m.getName() = "newBufferedWriter" or
+      m.getName() = "createFile"
+    ) and
+    exists(int i | arg = c.getArgument(i) and exprHasType(arg, "java.nio.file", "Path"))
+  )
+}
+
+predicate isJavaIoWriteConstructor(Call c, Expr arg) {
+  exists(Constructor m |
+    m = c.getCallee() and
+    (
+      m.getDeclaringType().hasQualifiedName("java.io", "FileOutputStream") or
+      m.getDeclaringType().hasQualifiedName("java.io", "FileWriter") or
+      m.getDeclaringType().hasQualifiedName("java.io", "RandomAccessFile")
+    ) and
+    (
+      arg = c.getArgument(0) and (
+        exprHasType(arg, "java.lang", "String") or
+        exprHasType(arg, "java.io", "File") or
+        exprHasType(arg, "java.nio.file", "Path")
+      )
+    )
+  )
+}
+
+predicate isCommonsIoFileUtilsWrite(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and
+    m.getDeclaringType().hasQualifiedName("org.apache.commons.io", "FileUtils") and
+    (
+      m.getName() = "writeByteArrayToFile" or
+      m.getName() = "writeStringToFile" or
+      m.getName() = "copyInputStreamToFile" or
+      m.getName() = "copyFile" or
+      m.getName() = "moveFile"
+    ) and
+    exists(int i | arg = mc.getArgument(i) and (
+      exprHasType(arg, "java.io", "File") or exprHasType(arg, "java.nio.file", "Path")
+    ))
+  )
+}
+
+predicate isFileMoveToDest(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "renameTo" and
+    m.getDeclaringType().hasQualifiedName("java.io", "File") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isServletPartWrite(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "write" and
+    m.getDeclaringType().hasQualifiedName("javax.servlet.http", "Part") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isSpringMultipartTransferTo(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "transferTo" and
+    m.getDeclaringType().hasQualifiedName("org.springframework.web.multipart", "MultipartFile") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isFilesystemWriteSinkExpr(Expr e) {
+  exists(MethodCall mc | isServletPartWrite(mc, e)) or
+  exists(MethodCall mc | isSpringMultipartTransferTo(mc, e)) or
+  exists(MethodCall mc | isCommonsIoFileUtilsWrite(mc, e)) or
+  exists(MethodCall mc | isFileMoveToDest(mc, e)) or
+  exists(Call c | isJavaIoWriteConstructor(c, e)) or
+  exists(Call c, Expr a | isFilesApiCallWithPathArg(c, a) and e = a)
+}
+
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    exists(MethodCall mc |
+      (isHttpRequestSourceCall(mc) or isMultipartFilenameSourceCall(mc)) and
+      source.asExpr() = mc
+    )
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(Expr e | isFilesystemWriteSinkExpr(e) and sink.asExpr() = e)
+  }
+}
+
+module Flow = TaintTracking::Global<Config>;
+
+from Flow::PathNode source, Flow::PathNode sink
+where Flow::flowPath(source, sink)
+select sink.getNode(),
+  "User-controlled value flows into a filesystem write/move path, which may allow unrestricted file upload (CWE-434).",
+  source, sink
+RESULT_OF_AUTO_SKILL=Auto-Skill retrieval primarily supplied CodeQL API/type/receiver compatibility guidance. Final V3 query compiled for this case. Retrieved skills: AUTO_FINAL_PLANNING_RECEIVER_AND_HASBODY_AUDIT; AUTO_FINAL_PLANNING_SYSTEMATIC_REFTYPE_NORMALIZATION; AUTO_FINAL_ATOMIC_METHODCALL_GETQUALIFIER; AUTO_FINAL_FUNCTIONAL_BIND_REFTYPE_FOR_TYPE_SOURCES
+EVALUATION_RESULT=compiled=True; vulnerable_hits=0; patched_hits=0; outcome=DETECTION_FAILURE
+OLD_ROOT_CAUSE=Other / insufficient evidence
+OLD_WHY_FAILED=The advisory describes RCE through _TemplateController#doInstall, but the retained canonical Java patch evidence shown for this benchmark is dominated by unrelated user-model, user-service, pagination, and controller changes rather than a localized template-install security fix. The available TRAIN evidence is therefore insufficient to distinguish program-reasoning failure from CodeQL-modelling failure reliably.
+STRICT_SUCCESS_SEMANTIC_REVIEW=[NOT AVAILABLE]
+EVIDENCE_STATUS=advisory=AVAILABLE; code=BOTH_REMOVED_AND_ADDED_LINES_PRESENT
+
+========================================================================================================================
+CASE_INDEX=8/11
+CVE=CVE-2022-27047
+OUTCOME=STRICT_SUCCESS
+ADVISORY_GROUND_TRUTH=[NOT AVAILABLE]
+VULNERABLE_CODE=[mogu_utils/src/main/java/com/moxi/mogublog/utils/FileUtils.java] import java.io.File;
+[mogu_utils/src/main/java/com/moxi/mogublog/utils/FileUtils.java] import java.io.IOException;
+PATCHED_CODE=[NOT AVAILABLE]
+PATCH_SHAPE=MODIFICATION
+WHAT_AGENT_WANTED_TO_DETECT=Detect user-controlled request/upload filename data flowing into filesystem write or move operations.
+CODEQL_GENERATED=import java
+import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.TaintTracking
+
+predicate exprHasType(Expr e, string pkg, string name) {
+  exists(RefType t | e.getType() = t and t.hasQualifiedName(pkg, name))
+}
+
+predicate isHttpRequestSourceCall(MethodCall mc) {
+  exists(Method m |
+    m = mc.getMethod() and
+    m.getDeclaringType().hasQualifiedName("javax.servlet.http", "HttpServletRequest") and
+    (
+      m.getName() = "getParameter" or
+      m.getName() = "getHeader" or
+      m.getName() = "getRequestURI" or
+      m.getName() = "getPathInfo" or
+      m.getName() = "getServletPath" or
+      m.getName() = "getContextPath" or
+      m.getName() = "getQueryString"
+    )
+  )
+}
+
+predicate isMultipartFilenameSourceCall(MethodCall mc) {
+  exists(Method m |
+    m = mc.getMethod() and
+    (
+      m.getDeclaringType().hasQualifiedName("javax.servlet.http", "Part") and m.getName() = "getSubmittedFileName" or
+      m.getDeclaringType().hasQualifiedName("org.springframework.web.multipart", "MultipartFile") and m.getName() = "getOriginalFilename" or
+      m.getDeclaringType().hasQualifiedName("org.apache.commons.fileupload", "FileItem") and m.getName() = "getName"
+    )
+  )
+}
+
+predicate isFilesApiCallWithPathArg(Call c, Expr arg) {
+  exists(Method m |
+    m = c.getCallee() and
+    m.getDeclaringType().hasQualifiedName("java.nio.file", "Files") and
+    (
+      m.getName() = "write" or
+      m.getName() = "copy" or
+      m.getName() = "move" or
+      m.getName() = "newOutputStream" or
+      m.getName() = "newBufferedWriter" or
+      m.getName() = "createFile"
+    ) and
+    exists(int i | arg = c.getArgument(i) and exprHasType(arg, "java.nio.file", "Path"))
+  )
+}
+
+predicate isJavaIoWriteConstructor(Call c, Expr arg) {
+  exists(Constructor m |
+    m = c.getCallee() and
+    (
+      m.getDeclaringType().hasQualifiedName("java.io", "FileOutputStream") or
+      m.getDeclaringType().hasQualifiedName("java.io", "FileWriter") or
+      m.getDeclaringType().hasQualifiedName("java.io", "RandomAccessFile")
+    ) and
+    (
+      arg = c.getArgument(0) and (
+        exprHasType(arg, "java.lang", "String") or
+        exprHasType(arg, "java.io", "File") or
+        exprHasType(arg, "java.nio.file", "Path")
+      )
+    )
+  )
+}
+
+predicate isCommonsIoFileUtilsWrite(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and
+    m.getDeclaringType().hasQualifiedName("org.apache.commons.io", "FileUtils") and
+    (
+      m.getName() = "writeByteArrayToFile" or
+      m.getName() = "writeStringToFile" or
+      m.getName() = "copyInputStreamToFile" or
+      m.getName() = "copyFile" or
+      m.getName() = "moveFile"
+    ) and
+    exists(int i | arg = mc.getArgument(i) and (
+      exprHasType(arg, "java.io", "File") or exprHasType(arg, "java.nio.file", "Path")
+    ))
+  )
+}
+
+predicate isFileMoveToDest(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "renameTo" and
+    m.getDeclaringType().hasQualifiedName("java.io", "File") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isServletPartWrite(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "write" and
+    m.getDeclaringType().hasQualifiedName("javax.servlet.http", "Part") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isSpringMultipartTransferTo(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "transferTo" and
+    m.getDeclaringType().hasQualifiedName("org.springframework.web.multipart", "MultipartFile") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isFilesystemWriteSinkExpr(Expr e) {
+  exists(MethodCall mc | isServletPartWrite(mc, e)) or
+  exists(MethodCall mc | isSpringMultipartTransferTo(mc, e)) or
+  exists(MethodCall mc | isCommonsIoFileUtilsWrite(mc, e)) or
+  exists(MethodCall mc | isFileMoveToDest(mc, e)) or
+  exists(Call c | isJavaIoWriteConstructor(c, e)) or
+  exists(Call c, Expr a | isFilesApiCallWithPathArg(c, a) and e = a)
+}
+
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    exists(MethodCall mc |
+      (isHttpRequestSourceCall(mc) or isMultipartFilenameSourceCall(mc)) and
+      source.asExpr() = mc
+    )
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(Expr e | isFilesystemWriteSinkExpr(e) and sink.asExpr() = e)
+  }
+}
+
+module Flow = TaintTracking::Global<Config>;
+
+from Flow::PathNode source, Flow::PathNode sink
+where Flow::flowPath(source, sink)
+select sink.getNode(),
+  "User-controlled value flows into a filesystem write/move path, which may allow unrestricted file upload (CWE-434).",
+  source, sink
+RESULT_OF_AUTO_SKILL=Auto-Skill retrieval primarily supplied CodeQL API/type/receiver compatibility guidance. Final V3 query compiled for this case. Retrieved skills: AUTO_FINAL_PLANNING_RECEIVER_AND_HASBODY_AUDIT; AUTO_FINAL_PLANNING_SYSTEMATIC_REFTYPE_NORMALIZATION; AUTO_FINAL_ATOMIC_METHODCALL_GETQUALIFIER; AUTO_FINAL_FUNCTIONAL_BIND_REFTYPE_FOR_TYPE_SOURCES
+EVALUATION_RESULT=compiled=True; vulnerable_hits=1; patched_hits=0; outcome=STRICT_SUCCESS
+OLD_ROOT_CAUSE=N/A - strict success control
+OLD_WHY_FAILED=[NOT AVAILABLE]
+STRICT_SUCCESS_SEMANTIC_REVIEW=[NOT AVAILABLE]
+EVIDENCE_STATUS=advisory=AVAILABLE; code=BOTH_REMOVED_AND_ADDED_LINES_PRESENT
+
+========================================================================================================================
+CASE_INDEX=9/11
+CVE=CVE-2022-27477
+OUTCOME=STRICT_SUCCESS
+ADVISORY_GROUND_TRUTH=[NOT AVAILABLE]
+VULNERABLE_CODE=[src/main/java/ltd/newbee/mall/controller/common/UploadController.java]     public Result upload(HttpServletRequest httpServletRequest, @RequestParam("file") MultipartFile file) throws URISyntaxException {
+[src/main/java/ltd/newbee/mall/controller/common/UploadController.java]     public Result uploadV2(HttpServletRequest httpServletRequest) throws URISyntaxException {
+[src/main/java/ltd/newbee/mall/controller/common/UploadController.java]                 multipartFiles.add(file);
+[src/main/java/ltd/newbee/mall/controller/common/UploadController.java]             return ResultGenerator.genFailResult("参数异常");
+PATCHED_CODE=[NOT AVAILABLE]
+PATCH_SHAPE=MODIFICATION
+WHAT_AGENT_WANTED_TO_DETECT=Detect user-controlled request/upload filename data flowing into filesystem write or move operations.
+CODEQL_GENERATED=import java
+import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.TaintTracking
+
+predicate exprHasType(Expr e, string pkg, string name) {
+  exists(RefType t | e.getType() = t and t.hasQualifiedName(pkg, name))
+}
+
+predicate isHttpRequestSourceCall(MethodCall mc) {
+  exists(Method m |
+    m = mc.getMethod() and
+    m.getDeclaringType().hasQualifiedName("javax.servlet.http", "HttpServletRequest") and
+    (
+      m.getName() = "getParameter" or
+      m.getName() = "getHeader" or
+      m.getName() = "getRequestURI" or
+      m.getName() = "getPathInfo" or
+      m.getName() = "getServletPath" or
+      m.getName() = "getContextPath" or
+      m.getName() = "getQueryString"
+    )
+  )
+}
+
+predicate isMultipartFilenameSourceCall(MethodCall mc) {
+  exists(Method m |
+    m = mc.getMethod() and
+    (
+      m.getDeclaringType().hasQualifiedName("javax.servlet.http", "Part") and m.getName() = "getSubmittedFileName" or
+      m.getDeclaringType().hasQualifiedName("org.springframework.web.multipart", "MultipartFile") and m.getName() = "getOriginalFilename" or
+      m.getDeclaringType().hasQualifiedName("org.apache.commons.fileupload", "FileItem") and m.getName() = "getName"
+    )
+  )
+}
+
+predicate isFilesApiCallWithPathArg(Call c, Expr arg) {
+  exists(Method m |
+    m = c.getCallee() and
+    m.getDeclaringType().hasQualifiedName("java.nio.file", "Files") and
+    (
+      m.getName() = "write" or
+      m.getName() = "copy" or
+      m.getName() = "move" or
+      m.getName() = "newOutputStream" or
+      m.getName() = "newBufferedWriter" or
+      m.getName() = "createFile"
+    ) and
+    exists(int i | arg = c.getArgument(i) and exprHasType(arg, "java.nio.file", "Path"))
+  )
+}
+
+predicate isJavaIoWriteConstructor(Call c, Expr arg) {
+  exists(Constructor m |
+    m = c.getCallee() and
+    (
+      m.getDeclaringType().hasQualifiedName("java.io", "FileOutputStream") or
+      m.getDeclaringType().hasQualifiedName("java.io", "FileWriter") or
+      m.getDeclaringType().hasQualifiedName("java.io", "RandomAccessFile")
+    ) and
+    (
+      arg = c.getArgument(0) and (
+        exprHasType(arg, "java.lang", "String") or
+        exprHasType(arg, "java.io", "File") or
+        exprHasType(arg, "java.nio.file", "Path")
+      )
+    )
+  )
+}
+
+predicate isCommonsIoFileUtilsWrite(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and
+    m.getDeclaringType().hasQualifiedName("org.apache.commons.io", "FileUtils") and
+    (
+      m.getName() = "writeByteArrayToFile" or
+      m.getName() = "writeStringToFile" or
+      m.getName() = "copyInputStreamToFile" or
+      m.getName() = "copyFile" or
+      m.getName() = "moveFile"
+    ) and
+    exists(int i | arg = mc.getArgument(i) and (
+      exprHasType(arg, "java.io", "File") or exprHasType(arg, "java.nio.file", "Path")
+    ))
+  )
+}
+
+predicate isFileMoveToDest(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "renameTo" and
+    m.getDeclaringType().hasQualifiedName("java.io", "File") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isServletPartWrite(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "write" and
+    m.getDeclaringType().hasQualifiedName("javax.servlet.http", "Part") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isSpringMultipartTransferTo(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "transferTo" and
+    m.getDeclaringType().hasQualifiedName("org.springframework.web.multipart", "MultipartFile") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isFilesystemWriteSinkExpr(Expr e) {
+  exists(MethodCall mc | isServletPartWrite(mc, e)) or
+  exists(MethodCall mc | isSpringMultipartTransferTo(mc, e)) or
+  exists(MethodCall mc | isCommonsIoFileUtilsWrite(mc, e)) or
+  exists(MethodCall mc | isFileMoveToDest(mc, e)) or
+  exists(Call c | isJavaIoWriteConstructor(c, e)) or
+  exists(Call c, Expr a | isFilesApiCallWithPathArg(c, a) and e = a)
+}
+
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    exists(MethodCall mc |
+      (isHttpRequestSourceCall(mc) or isMultipartFilenameSourceCall(mc)) and
+      source.asExpr() = mc
+    )
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(Expr e | isFilesystemWriteSinkExpr(e) and sink.asExpr() = e)
+  }
+}
+
+module Flow = TaintTracking::Global<Config>;
+
+from Flow::PathNode source, Flow::PathNode sink
+where Flow::flowPath(source, sink)
+select sink.getNode(),
+  "User-controlled value flows into a filesystem write/move path, which may allow unrestricted file upload (CWE-434).",
+  source, sink
+RESULT_OF_AUTO_SKILL=Auto-Skill retrieval primarily supplied CodeQL API/type/receiver compatibility guidance. Final V3 query compiled for this case. Retrieved skills: AUTO_FINAL_PLANNING_RECEIVER_AND_HASBODY_AUDIT; AUTO_FINAL_PLANNING_SYSTEMATIC_REFTYPE_NORMALIZATION; AUTO_FINAL_ATOMIC_METHODCALL_GETQUALIFIER; AUTO_FINAL_FUNCTIONAL_BIND_REFTYPE_FOR_TYPE_SOURCES
+EVALUATION_RESULT=compiled=True; vulnerable_hits=2; patched_hits=0; outcome=STRICT_SUCCESS
+OLD_ROOT_CAUSE=N/A - strict success control
+OLD_WHY_FAILED=[NOT AVAILABLE]
+STRICT_SUCCESS_SEMANTIC_REVIEW=[NOT AVAILABLE]
+EVIDENCE_STATUS=advisory=AVAILABLE; code=BOTH_REMOVED_AND_ADDED_LINES_PRESENT
+
+========================================================================================================================
+CASE_INDEX=10/11
+CVE=CVE-2023-40183
+OUTCOME=DISCRIMINATION_FAILURE
+ADVISORY_GROUND_TRUTH=[NOT AVAILABLE]
+VULNERABLE_CODE=[core/backend/src/main/java/io/dataease/service/staticResource/StaticResourceService.java]         if (image == null || image.getWidth() <= 0 || image.getHeight() <= 0) {
+PATCHED_CODE=[NOT AVAILABLE]
+PATCH_SHAPE=MODIFICATION
+WHAT_AGENT_WANTED_TO_DETECT=Detect user-controlled request/upload filename data flowing into filesystem write or move operations.
+CODEQL_GENERATED=import java
+import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.TaintTracking
+
+predicate exprHasType(Expr e, string pkg, string name) {
+  exists(RefType t | e.getType() = t and t.hasQualifiedName(pkg, name))
+}
+
+predicate isHttpRequestSourceCall(MethodCall mc) {
+  exists(Method m |
+    m = mc.getMethod() and
+    m.getDeclaringType().hasQualifiedName("javax.servlet.http", "HttpServletRequest") and
+    (
+      m.getName() = "getParameter" or
+      m.getName() = "getHeader" or
+      m.getName() = "getRequestURI" or
+      m.getName() = "getPathInfo" or
+      m.getName() = "getServletPath" or
+      m.getName() = "getContextPath" or
+      m.getName() = "getQueryString"
+    )
+  )
+}
+
+predicate isMultipartFilenameSourceCall(MethodCall mc) {
+  exists(Method m |
+    m = mc.getMethod() and
+    (
+      m.getDeclaringType().hasQualifiedName("javax.servlet.http", "Part") and m.getName() = "getSubmittedFileName" or
+      m.getDeclaringType().hasQualifiedName("org.springframework.web.multipart", "MultipartFile") and m.getName() = "getOriginalFilename" or
+      m.getDeclaringType().hasQualifiedName("org.apache.commons.fileupload", "FileItem") and m.getName() = "getName"
+    )
+  )
+}
+
+predicate isFilesApiCallWithPathArg(Call c, Expr arg) {
+  exists(Method m |
+    m = c.getCallee() and
+    m.getDeclaringType().hasQualifiedName("java.nio.file", "Files") and
+    (
+      m.getName() = "write" or
+      m.getName() = "copy" or
+      m.getName() = "move" or
+      m.getName() = "newOutputStream" or
+      m.getName() = "newBufferedWriter" or
+      m.getName() = "createFile"
+    ) and
+    exists(int i | arg = c.getArgument(i) and exprHasType(arg, "java.nio.file", "Path"))
+  )
+}
+
+predicate isJavaIoWriteConstructor(Call c, Expr arg) {
+  exists(Constructor m |
+    m = c.getCallee() and
+    (
+      m.getDeclaringType().hasQualifiedName("java.io", "FileOutputStream") or
+      m.getDeclaringType().hasQualifiedName("java.io", "FileWriter") or
+      m.getDeclaringType().hasQualifiedName("java.io", "RandomAccessFile")
+    ) and
+    (
+      arg = c.getArgument(0) and (
+        exprHasType(arg, "java.lang", "String") or
+        exprHasType(arg, "java.io", "File") or
+        exprHasType(arg, "java.nio.file", "Path")
+      )
+    )
+  )
+}
+
+predicate isCommonsIoFileUtilsWrite(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and
+    m.getDeclaringType().hasQualifiedName("org.apache.commons.io", "FileUtils") and
+    (
+      m.getName() = "writeByteArrayToFile" or
+      m.getName() = "writeStringToFile" or
+      m.getName() = "copyInputStreamToFile" or
+      m.getName() = "copyFile" or
+      m.getName() = "moveFile"
+    ) and
+    exists(int i | arg = mc.getArgument(i) and (
+      exprHasType(arg, "java.io", "File") or exprHasType(arg, "java.nio.file", "Path")
+    ))
+  )
+}
+
+predicate isFileMoveToDest(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "renameTo" and
+    m.getDeclaringType().hasQualifiedName("java.io", "File") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isServletPartWrite(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "write" and
+    m.getDeclaringType().hasQualifiedName("javax.servlet.http", "Part") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isSpringMultipartTransferTo(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "transferTo" and
+    m.getDeclaringType().hasQualifiedName("org.springframework.web.multipart", "MultipartFile") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isFilesystemWriteSinkExpr(Expr e) {
+  exists(MethodCall mc | isServletPartWrite(mc, e)) or
+  exists(MethodCall mc | isSpringMultipartTransferTo(mc, e)) or
+  exists(MethodCall mc | isCommonsIoFileUtilsWrite(mc, e)) or
+  exists(MethodCall mc | isFileMoveToDest(mc, e)) or
+  exists(Call c | isJavaIoWriteConstructor(c, e)) or
+  exists(Call c, Expr a | isFilesApiCallWithPathArg(c, a) and e = a)
+}
+
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    exists(MethodCall mc |
+      (isHttpRequestSourceCall(mc) or isMultipartFilenameSourceCall(mc)) and
+      source.asExpr() = mc
+    )
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(Expr e | isFilesystemWriteSinkExpr(e) and sink.asExpr() = e)
+  }
+}
+
+module Flow = TaintTracking::Global<Config>;
+
+from Flow::PathNode source, Flow::PathNode sink
+where Flow::flowPath(source, sink)
+select sink.getNode(),
+  "User-controlled value flows into a filesystem write/move path, which may allow unrestricted file upload (CWE-434).",
+  source, sink
+RESULT_OF_AUTO_SKILL=Auto-Skill retrieval primarily supplied CodeQL API/type/receiver compatibility guidance. Final V3 query compiled for this case. Retrieved skills: AUTO_FINAL_PLANNING_RECEIVER_AND_HASBODY_AUDIT; AUTO_FINAL_PLANNING_SYSTEMATIC_REFTYPE_NORMALIZATION; AUTO_FINAL_ATOMIC_METHODCALL_GETQUALIFIER; AUTO_FINAL_FUNCTIONAL_BIND_REFTYPE_FOR_TYPE_SOURCES
+EVALUATION_RESULT=compiled=True; vulnerable_hits=5; patched_hits=5; outcome=DISCRIMINATION_FAILURE
+OLD_ROOT_CAUSE=LLM can model the code, but failed to model the code in CodeQL
+OLD_WHY_FAILED=Although the advisory is unavailable in the retained TRAIN advisory corpus, the patch clearly strengthens upload validation by requiring the original filename to match an allowlisted image extension in addition to image parsing. This is consistent with the query's broad unrestricted-upload abstraction, but the final CodeQL model does not represent the extension allowlist as a sanitizer or validation barrier. The same five hits therefore remain in both vulnerable and patched revisions.
+STRICT_SUCCESS_SEMANTIC_REVIEW=[NOT AVAILABLE]
+EVIDENCE_STATUS=advisory=NOT_AVAILABLE_IN_A_LEVEL_INPUT_OR_PRE_CUTOFF_GHSA_CORPUS; code=BOTH_REMOVED_AND_ADDED_LINES_PRESENT
+
+========================================================================================================================
+CASE_INDEX=11/11
+CVE=CVE-2023-41009
+OUTCOME=STRICT_SUCCESS
+ADVISORY_GROUND_TRUTH=[NOT AVAILABLE]
+VULNERABLE_CODE=[NOT AVAILABLE]
+PATCHED_CODE=[NOT AVAILABLE]
+PATCH_SHAPE=PURE_ADD_OR_ADD_ONLY_JAVA_DIFF
+WHAT_AGENT_WANTED_TO_DETECT=Detect user-controlled request/upload filename data flowing into filesystem write or move operations.
+CODEQL_GENERATED=import java
+import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.TaintTracking
+
+predicate exprHasType(Expr e, string pkg, string name) {
+  exists(RefType t | e.getType() = t and t.hasQualifiedName(pkg, name))
+}
+
+predicate isHttpRequestSourceCall(MethodCall mc) {
+  exists(Method m |
+    m = mc.getMethod() and
+    m.getDeclaringType().hasQualifiedName("javax.servlet.http", "HttpServletRequest") and
+    (
+      m.getName() = "getParameter" or
+      m.getName() = "getHeader" or
+      m.getName() = "getRequestURI" or
+      m.getName() = "getPathInfo" or
+      m.getName() = "getServletPath" or
+      m.getName() = "getContextPath" or
+      m.getName() = "getQueryString"
+    )
+  )
+}
+
+predicate isMultipartFilenameSourceCall(MethodCall mc) {
+  exists(Method m |
+    m = mc.getMethod() and
+    (
+      m.getDeclaringType().hasQualifiedName("javax.servlet.http", "Part") and m.getName() = "getSubmittedFileName" or
+      m.getDeclaringType().hasQualifiedName("org.springframework.web.multipart", "MultipartFile") and m.getName() = "getOriginalFilename" or
+      m.getDeclaringType().hasQualifiedName("org.apache.commons.fileupload", "FileItem") and m.getName() = "getName"
+    )
+  )
+}
+
+predicate isFilesApiCallWithPathArg(Call c, Expr arg) {
+  exists(Method m |
+    m = c.getCallee() and
+    m.getDeclaringType().hasQualifiedName("java.nio.file", "Files") and
+    (
+      m.getName() = "write" or
+      m.getName() = "copy" or
+      m.getName() = "move" or
+      m.getName() = "newOutputStream" or
+      m.getName() = "newBufferedWriter" or
+      m.getName() = "createFile"
+    ) and
+    exists(int i | arg = c.getArgument(i) and exprHasType(arg, "java.nio.file", "Path"))
+  )
+}
+
+predicate isJavaIoWriteConstructor(Call c, Expr arg) {
+  exists(Constructor m |
+    m = c.getCallee() and
+    (
+      m.getDeclaringType().hasQualifiedName("java.io", "FileOutputStream") or
+      m.getDeclaringType().hasQualifiedName("java.io", "FileWriter") or
+      m.getDeclaringType().hasQualifiedName("java.io", "RandomAccessFile")
+    ) and
+    (
+      arg = c.getArgument(0) and (
+        exprHasType(arg, "java.lang", "String") or
+        exprHasType(arg, "java.io", "File") or
+        exprHasType(arg, "java.nio.file", "Path")
+      )
+    )
+  )
+}
+
+predicate isCommonsIoFileUtilsWrite(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and
+    m.getDeclaringType().hasQualifiedName("org.apache.commons.io", "FileUtils") and
+    (
+      m.getName() = "writeByteArrayToFile" or
+      m.getName() = "writeStringToFile" or
+      m.getName() = "copyInputStreamToFile" or
+      m.getName() = "copyFile" or
+      m.getName() = "moveFile"
+    ) and
+    exists(int i | arg = mc.getArgument(i) and (
+      exprHasType(arg, "java.io", "File") or exprHasType(arg, "java.nio.file", "Path")
+    ))
+  )
+}
+
+predicate isFileMoveToDest(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "renameTo" and
+    m.getDeclaringType().hasQualifiedName("java.io", "File") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isServletPartWrite(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "write" and
+    m.getDeclaringType().hasQualifiedName("javax.servlet.http", "Part") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isSpringMultipartTransferTo(MethodCall mc, Expr arg) {
+  exists(Method m |
+    m = mc.getMethod() and m.getName() = "transferTo" and
+    m.getDeclaringType().hasQualifiedName("org.springframework.web.multipart", "MultipartFile") and
+    arg = mc.getArgument(0)
+  )
+}
+
+predicate isFilesystemWriteSinkExpr(Expr e) {
+  exists(MethodCall mc | isServletPartWrite(mc, e)) or
+  exists(MethodCall mc | isSpringMultipartTransferTo(mc, e)) or
+  exists(MethodCall mc | isCommonsIoFileUtilsWrite(mc, e)) or
+  exists(MethodCall mc | isFileMoveToDest(mc, e)) or
+  exists(Call c | isJavaIoWriteConstructor(c, e)) or
+  exists(Call c, Expr a | isFilesApiCallWithPathArg(c, a) and e = a)
+}
+
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    exists(MethodCall mc |
+      (isHttpRequestSourceCall(mc) or isMultipartFilenameSourceCall(mc)) and
+      source.asExpr() = mc
+    )
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(Expr e | isFilesystemWriteSinkExpr(e) and sink.asExpr() = e)
+  }
+}
+
+module Flow = TaintTracking::Global<Config>;
+
+from Flow::PathNode source, Flow::PathNode sink
+where Flow::flowPath(source, sink)
+select sink.getNode(),
+  "User-controlled value flows into a filesystem write/move path, which may allow unrestricted file upload (CWE-434).",
+  source, sink
+RESULT_OF_AUTO_SKILL=Auto-Skill retrieval primarily supplied CodeQL API/type/receiver compatibility guidance. Final V3 query compiled for this case. Retrieved skills: AUTO_FINAL_PLANNING_RECEIVER_AND_HASBODY_AUDIT; AUTO_FINAL_PLANNING_SYSTEMATIC_REFTYPE_NORMALIZATION; AUTO_FINAL_ATOMIC_METHODCALL_GETQUALIFIER; AUTO_FINAL_FUNCTIONAL_BIND_REFTYPE_FOR_TYPE_SOURCES
+EVALUATION_RESULT=compiled=True; vulnerable_hits=2; patched_hits=0; outcome=STRICT_SUCCESS
+OLD_ROOT_CAUSE=N/A - strict success control
+OLD_WHY_FAILED=[NOT AVAILABLE]
+STRICT_SUCCESS_SEMANTIC_REVIEW=[NOT AVAILABLE]
+EVIDENCE_STATUS=advisory=AVAILABLE; code=ADDED_LINES_PRESENT; NO_REMOVED_JAVA_LINES IN CANONICAL DIFF

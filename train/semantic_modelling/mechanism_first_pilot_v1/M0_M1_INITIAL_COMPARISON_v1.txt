@@ -1,0 +1,33 @@
+MECHANISM-FIRST CWE-639 INITIAL COMPARISON v1
+
+M0 CONTROL
+- compiled: 0/7
+- strict success: 0/7
+- compilation failures: 7/7
+- semantic alignment: 0/7
+- CodeQL runtime: 210.36s
+
+M1 MECHANISM-FIRST
+- compiled: 0/7
+- strict success: 0/7
+- compilation failures: 7/7
+- semantic alignment: 0/7
+- mechanism coverage at planning stage: 6/7
+- plan -> CodeQL translation loss: 6/7
+- CodeQL runtime: 209.03s
+
+INITIAL DIFFERENCE
+- compiled delta M1-M0: 0
+- strict-success delta M1-M0: 0
+- semantic-alignment delta M1-M0: 0
+- CodeQL runtime delta M1-M0: -1.33s
+
+INTERPRETATION
+Mechanism-first planning improved the richness of intermediate mechanism reasoning,
+but not the initial executable query outcome. Both initial queries failed compilation
+on all seven TRAIN pairs and both had 0/7 final-query semantic alignment.
+
+The diagnostic distinction is that M1 represented 6/7 mechanisms in its plan, but
+those semantics were largely lost during unification/CodeQL translation.
+
+This is a single-CWE TRAIN pilot, not a general conclusion.

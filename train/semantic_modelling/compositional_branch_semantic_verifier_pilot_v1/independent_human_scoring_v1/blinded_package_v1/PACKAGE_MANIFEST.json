@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+  "stage": "T3_BLINDED_INDEPENDENT_HUMAN_SCORER_PACKAGE",
+  "scope": "CWE-639 TRAIN ONLY",
+  "purpose": "independent_pre_CodeQL_semantic_scoring",
+  "prior_human_scores_included": false,
+  "prior_semantic_aggregate_included": false,
+  "prior_T0_T1_T2_scores_included": false,
+  "compiler_outcomes_included": false,
+  "vulnerable_patched_hit_comparisons_included": false,
+  "test_information_included": false,
+  "ai_assistance_allowed_for_scorer": false,
+  "source_artifacts": {
+    "final_query_sha256": "6364a2e74e1973e1bba37ffa0b7f6f478371a3aa7220b13de2d6b9938e3828ae",
+    "scoring_packet_sha256": "fcaf785ca09e6d466f2646fa194f4399b10c55f734a26dbcfcde1a02ceecdec5",
+    "blank_score_form_sha256": "6fad9c07fdda32ba2843eef6b595e22d91eeb15d04b0d550e52fce2a6a56fda6"
+  },
+  "package_files": {
+    "00_READ_ME_FIRST.txt": "1f835f4129233103c0cf50cf2bd8a251ef4ed5c7382f0a1227b7a2e14e739fb4",
+    "01_FINAL_T3_QUERY.ql": "6364a2e74e1973e1bba37ffa0b7f6f478371a3aa7220b13de2d6b9938e3828ae",
+    "02_BLINDED_SCORING_PACKET.json": "fcaf785ca09e6d466f2646fa194f4399b10c55f734a26dbcfcde1a02ceecdec5",
+    "03_INDEPENDENT_SCORE_FORM.csv": "6fad9c07fdda32ba2843eef6b595e22d91eeb15d04b0d550e52fce2a6a56fda6"
+  },
+  "model_execution": false,
+  "codeql_execution": false,
+  "query_modification": false,
+  "test_access": "FORBIDDEN"
+}

@@ -1,0 +1,70 @@
+{
+  "verdict": {
+    "schema_version": "1.0",
+    "mechanism_family_id": "improper_authentication_certificate_reuse",
+    "verdict": "PASS",
+    "feedback": "Decisive relation is explicitly encoded by hasWeakMapping: an isCertAttrExpr (X509Certificate subject/SAN/serial or X500Principal.getName linked to getSubjectX500Principal) is directly used as an argument to an authentication/session-establishing call (isAuthEstablish). The required validation condition is explicitly enforced via not hasValidationInScope in the same enclosing callable, checking for certificate-related validation/scoping calls (verify/validate/check/EKU/KeyUsage/issuer/checkValidity, etc.). The subject (certificate holder) and target (authenticated session/identity) are realized by the certificate attribute getters and authentication-establishing methods, respectively. This is not a generic user-controlled surrogate; it is specific to certificate-derived identity mapping and its absence of scoping/constraints."
+  },
+  "metadata": {
+    "schema_version": "1.0",
+    "scope": "CWE-639 TRAIN ONLY",
+    "stage": "T3_INITIAL_SEMANTIC_VERIFIER",
+    "mechanism_family_id": "improper_authentication_certificate_reuse",
+    "model": "openai/gpt-5",
+    "model_call_count": 1,
+    "success_freeze_sha256": "73a917f0f655d8a553a6995ae1209c2ea56069f838d56ae8f630990de739c449",
+    "contract_input_sha256": "9543f4dfa76fcbd5a9525c59fa47272a5e2b7d5d10389ba5b3fee459d0e60696",
+    "input_branch_sha256": "d5982d4d72b403c6fa9b481b3b021f1089f760e9419e737b7a0c2637e5a35193",
+    "input_traceability_canonical_sha256": "ad4fd3ba653d70890cc669acc54045ecc8900c0d3ae70253ea13405c050f92cd",
+    "verdict_sha256": "05d2210bde48daba4f8a9847c3593323f23e7a4fa2c83922534b91b3cd16c84c",
+    "usage": {
+      "input_tokens": 3009,
+      "output_tokens": 1995,
+      "total_tokens": 5004,
+      "raw_usage_metadata": {
+        "input_tokens": 3009,
+        "output_tokens": 1995,
+        "total_tokens": 5004,
+        "input_token_details": {
+          "audio": 0,
+          "cache_read": 1152
+        },
+        "output_token_details": {
+          "audio": 0,
+          "reasoning": 1792
+        }
+      },
+      "raw_response_metadata": {
+        "token_usage": {
+          "completion_tokens": 1995,
+          "prompt_tokens": 3009,
+          "total_tokens": 5004,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 0,
+            "audio_tokens": 0,
+            "reasoning_tokens": 1792,
+            "rejected_prediction_tokens": 0
+          },
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cached_tokens": 1152
+          }
+        },
+        "model_provider": "openai",
+        "model_name": "gpt-5-2025-08-07",
+        "system_fingerprint": null,
+        "id": "chatcmpl-EQBFegLU1jQkkH3e3GBmghA2z71LA",
+        "service_tier": "default",
+        "finish_reason": "tool_calls",
+        "logprobs": null
+      }
+    },
+    "wall_clock_sec": 20.91695453498687,
+    "compiler_outcome_visible": false,
+    "codeql_hit_results_visible": false,
+    "patched_vulnerable_comparison_visible": false,
+    "manual_query_modification": false,
+    "codeql_execution": false,
+    "test_access": "FORBIDDEN"
+  }
+}

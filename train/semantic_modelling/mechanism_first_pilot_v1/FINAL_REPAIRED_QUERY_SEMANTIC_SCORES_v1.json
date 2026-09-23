@@ -1,0 +1,240 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "pilot_cwe": "CWE-639",
+  "stage": "FINAL_REPAIRED_QUERY_SEMANTIC_SCORING",
+  "scoring_policy": {
+    "rubric_sha256": "8cf6219632742f4310e5ddbd9fdcb61944f23bddb4b3f2eeb1e8bfa4e6e9e96d",
+    "semantic_reference": "Frozen Sept18 actual vulnerability mechanisms",
+    "hit_metrics_used_to_assign_semantic_labels": false,
+    "compilation_used_to_assign_semantic_labels": false,
+    "token_cost_used_to_assign_semantic_labels": false,
+    "test_access": "FORBIDDEN"
+  },
+  "repaired_queries": {
+    "M0_CONTROL_CWE_FIRST": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M0_CONTROL_CWE_FIRST/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter1.ql",
+      "sha256": "780e1c69af4a0cefe3acce07f5fbc3d26816b866a62a505a1467094086492284"
+    },
+    "M1_MECHANISM_FIRST": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M1_MECHANISM_FIRST/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter1.ql",
+      "sha256": "acae83472dc5016004077d25c095f5925c5ba1a35a64a1df097952f39bba4382"
+    }
+  },
+  "cases": [
+    {
+      "cve": "CVE-2020-23449",
+      "actual_mechanism": "Authorization depends on binding the requested/target user identity to the authenticated session identity; an arbitrary user ID must not select another user's account.",
+      "m0_label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "m0_rationale": "The repaired M0 query tracks controller-like ID parameters into sensitive operations and only checks for generic authorization signals. It still does not encode equality/ownership between the requested target user and the authenticated session identity.",
+      "m0_generic": "GENERIC_TEMPLATE_MATCH",
+      "m1_label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "m1_rationale": "The repaired M1 query tracks web-request identifiers into ID/key-sensitive operations, but it does not encode the decisive relation binding the selected user to the authenticated session user.",
+      "m1_generic": "GENERIC_TEMPLATE_MATCH",
+      "m1_plan": "PLAN_REPRESENTS_MECHANISM",
+      "m1_plan_rationale": "The plan explicitly describes ownership/authorization over a resource ID and fixed behavior deriving the ID from authenticated context.",
+      "m1_translation": "LOST_IN_CODEQL_TRANSLATION",
+      "m0_hit_outcome": {
+        "vulnerable_hits": 0,
+        "patched_hits": 0,
+        "failure_class": "DETECTION_FAILURE"
+      },
+      "m1_hit_outcome": {
+        "vulnerable_hits": 15,
+        "patched_hits": 15,
+        "failure_class": "DISCRIMINATION_FAILURE"
+      }
+    },
+    {
+      "cve": "CVE-2021-4142",
+      "actual_mechanism": "Authentication must distinguish the permitted Candlepin identity certificate from an SCA certificate using credential/certificate type and OID/attribute validation.",
+      "m0_label": "WRONG_VULNERABILITY_MECHANISM",
+      "m0_rationale": "The repaired M0 query models user-controlled resource identifiers and authorization around resource operations. It contains no certificate-type, credential, OID, or certificate-attribute authentication semantics.",
+      "m0_generic": "GENERIC_TEMPLATE_MATCH",
+      "m1_label": "WRONG_VULNERABILITY_MECHANISM",
+      "m1_rationale": "The repaired M1 query remains a web-input identifier-to-resource-operation taint query and contains no certificate-type/OID validation semantics required by the actual flaw.",
+      "m1_generic": "GENERIC_TEMPLATE_MATCH",
+      "m1_plan": "PLAN_REPRESENTS_MECHANISM",
+      "m1_plan_rationale": "The mechanism-first plan separately identifies improper certificate authentication, SCA certificate use, certificate attributes, and tightened validation/scoping.",
+      "m1_translation": "LOST_IN_CODEQL_TRANSLATION",
+      "m0_hit_outcome": {
+        "vulnerable_hits": 0,
+        "patched_hits": 0,
+        "failure_class": "DETECTION_FAILURE"
+      },
+      "m1_hit_outcome": {
+        "vulnerable_hits": 212,
+        "patched_hits": 212,
+        "failure_class": "DISCRIMINATION_FAILURE"
+      }
+    },
+    {
+      "cve": "CVE-2023-2260",
+      "actual_mechanism": "The authenticated Principal must be propagated and enforced across organization/user/API-key/password administrative operations, preserving subject-scope-target authorization relations.",
+      "m0_label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "m0_rationale": "The repaired M0 query recognizes generic Principal/Authentication signals only as evidence that a callable may be guarded. It does not model propagation of the authenticated Principal or the subject-organization-target-operation authorization relation.",
+      "m0_generic": "GENERIC_TEMPLATE_MATCH",
+      "m1_label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "m1_rationale": "The repaired M1 query reduces the property to web-input ID/key flow and does not represent authenticated-Principal propagation or subject-to-scope authorization.",
+      "m1_generic": "GENERIC_TEMPLATE_MATCH",
+      "m1_plan": "PLAN_REPRESENTS_MECHANISM",
+      "m1_plan_rationale": "Although its Alf.io target description is imprecise, the plan substantively identifies authenticated-principal authorization over the target resource as the decisive security relation.",
+      "m1_translation": "LOST_IN_CODEQL_TRANSLATION",
+      "m0_hit_outcome": {
+        "vulnerable_hits": 0,
+        "patched_hits": 0,
+        "failure_class": "DETECTION_FAILURE"
+      },
+      "m1_hit_outcome": {
+        "vulnerable_hits": 410,
+        "patched_hits": 413,
+        "failure_class": "DISCRIMINATION_FAILURE"
+      }
+    },
+    {
+      "cve": "CVE-2023-30216",
+      "actual_mechanism": "User selection/exposure must be derived from the authenticated session user rather than an externally supplied user identifier.",
+      "m0_label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "m0_rationale": "The repaired M0 query can follow an externally influenced identifier to a sensitive operation, but it does not model the authenticated-session-to-selected-user relation needed to prevent exposure of another user's account.",
+      "m0_generic": "GENERIC_TEMPLATE_MATCH",
+      "m1_label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "m1_rationale": "The repaired M1 query models web input reaching identifier-sensitive operations but does not require the selected user to be the authenticated session user.",
+      "m1_generic": "GENERIC_TEMPLATE_MATCH",
+      "m1_plan": "PLAN_REPRESENTS_MECHANISM",
+      "m1_plan_rationale": "The plan explicitly describes fixed behavior deriving IDs from authenticated context and checking principal authorization over the resource.",
+      "m1_translation": "LOST_IN_CODEQL_TRANSLATION",
+      "m0_hit_outcome": {
+        "vulnerable_hits": 0,
+        "patched_hits": 0,
+        "failure_class": "DETECTION_FAILURE"
+      },
+      "m1_hit_outcome": {
+        "vulnerable_hits": 0,
+        "patched_hits": 0,
+        "failure_class": "DETECTION_FAILURE"
+      }
+    },
+    {
+      "cve": "CVE-2023-32310",
+      "actual_mechanism": "Dashboard/message operations require an ownership/authorization relation between the requester and the target dashboard/message ID.",
+      "m0_label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "m0_rationale": "The repaired M0 query captures a user-controlled ID flowing into mutation-like operations but does not encode the requester-to-dashboard/message ownership or authorization relation.",
+      "m0_generic": "GENERIC_TEMPLATE_MATCH",
+      "m1_label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "m1_rationale": "The repaired M1 query explicitly targets ID/key-sensitive resource operations but still does not test whether the dashboard/message belongs to or is authorized for the requester.",
+      "m1_generic": "GENERIC_TEMPLATE_MATCH",
+      "m1_plan": "PLAN_REPRESENTS_MECHANISM",
+      "m1_plan_rationale": "The plan directly identifies ownership/authorization over the specific resource identified by an ID.",
+      "m1_translation": "LOST_IN_CODEQL_TRANSLATION",
+      "m0_hit_outcome": {
+        "vulnerable_hits": 0,
+        "patched_hits": 0,
+        "failure_class": "DETECTION_FAILURE"
+      },
+      "m1_hit_outcome": {
+        "vulnerable_hits": 158,
+        "patched_hits": 158,
+        "failure_class": "DISCRIMINATION_FAILURE"
+      }
+    },
+    {
+      "cve": "CVE-2023-43668",
+      "actual_mechanism": "Security-sensitive JDBC parameter keys must be filtered/replaced so dangerous parameters such as autoDeserialize/allowLoadLocalInfile cannot bypass the sensitive-parameter checks.",
+      "m0_label": "WRONG_VULNERABILITY_MECHANISM",
+      "m0_rationale": "The repaired M0 query models IDOR-style identifier flow and missing authorization around resource mutation. It does not model filtering or replacement of security-sensitive JDBC parameter keys.",
+      "m0_generic": "GENERIC_TEMPLATE_MATCH",
+      "m1_label": "WRONG_VULNERABILITY_MECHANISM",
+      "m1_rationale": "The repaired M1 query accepts generic ID/key-like inputs and follows them to resource operations, but it does not model the decisive sensitive JDBC parameter-key filtering/replacement mechanism. Its hit-based strict success is therefore not semantic alignment.",
+      "m1_generic": "GENERIC_TEMPLATE_MATCH",
+      "m1_plan": "PLAN_MISSES_MECHANISM",
+      "m1_plan_rationale": "The plan notices InLong sensitive parameter checks but groups the case with missing/optional identity components and skipped authorization. That materially differs from the actual sensitive-key filtering/replacement mechanism.",
+      "m1_translation": "UPSTREAM_PLAN_FAILURE",
+      "m0_hit_outcome": {
+        "vulnerable_hits": 0,
+        "patched_hits": 0,
+        "failure_class": "DETECTION_FAILURE"
+      },
+      "m1_hit_outcome": {
+        "vulnerable_hits": 211,
+        "patched_hits": 0,
+        "failure_class": "STRICT_SUCCESS"
+      }
+    },
+    {
+      "cve": "CVE-2023-44981",
+      "actual_mechanism": "ZooKeeper quorum SASL authorization must still validate the peer when the optional instance component of the SASL authentication ID is absent; missing instance data must not skip authorization.",
+      "m0_label": "WRONG_VULNERABILITY_MECHANISM",
+      "m0_rationale": "The repaired M0 query models controller/resource IDs and generic authorization checks. It contains no quorum SASL identity structure, peer authentication, optional instance component, or conditional authorization-skip semantics.",
+      "m0_generic": "GENERIC_TEMPLATE_MATCH",
+      "m1_label": "WRONG_VULNERABILITY_MECHANISM",
+      "m1_rationale": "The repaired M1 query contains no SASL authentication-ID structure, quorum peer authorization, or logic for the missing instance component that causes the authorization check to be skipped.",
+      "m1_generic": "GENERIC_TEMPLATE_MATCH",
+      "m1_plan": "PLAN_REPRESENTS_MECHANISM",
+      "m1_plan_rationale": "The plan explicitly identifies ZooKeeper SASL instance-part absence, conditional authorization, and the check being skipped when the component is missing.",
+      "m1_translation": "LOST_IN_CODEQL_TRANSLATION",
+      "m0_hit_outcome": {
+        "vulnerable_hits": 0,
+        "patched_hits": 0,
+        "failure_class": "DETECTION_FAILURE"
+      },
+      "m1_hit_outcome": {
+        "vulnerable_hits": 0,
+        "patched_hits": 0,
+        "failure_class": "DETECTION_FAILURE"
+      }
+    }
+  ],
+  "summary": {
+    "M0_final_repaired_query_mechanism_coverage": 0,
+    "M1_final_repaired_query_mechanism_coverage": 0,
+    "M0_semantic_mismatch_count": 7,
+    "M1_semantic_mismatch_count": 7,
+    "M0_generic_template_count": 7,
+    "M1_generic_template_count": 7,
+    "M0_generic_template_collapse": "YES",
+    "M1_generic_template_collapse": "YES",
+    "generic_template_binary_threshold": ">=4/7",
+    "M1_plan_mechanism_coverage": 6,
+    "M1_plan_mechanism_miss_count": 1,
+    "M1_plan_to_CodeQL_translation_loss_count": 6,
+    "M1_upstream_plan_failure_count": 1,
+    "M0_semantic_labels_unchanged_after_compilation_repair": 7,
+    "M1_semantic_labels_unchanged_after_compilation_repair": 7,
+    "semantic_alignment_delta_M1_minus_M0": 0
+  },
+  "separate_operational_outcomes": {
+    "M0": {
+      "compiled": "7/7",
+      "strict_success": "0/7",
+      "detection_failure_count": 7,
+      "discrimination_failure_count": 0,
+      "repair_count": 1,
+      "total_repair_tokens": 17424,
+      "library_lookup_count": 2,
+      "retrieved_skill_count": 4
+    },
+    "M1": {
+      "compiled": "7/7",
+      "strict_success": "1/7",
+      "detection_failure_count": 2,
+      "discrimination_failure_count": 4,
+      "repair_count": 1,
+      "total_repair_tokens": 12162,
+      "library_lookup_count": 0,
+      "retrieved_skill_count": 4
+    }
+  },
+  "diagnostic_case_CVE_2023_43668": {
+    "M1_hit_based_outcome": "STRICT_SUCCESS",
+    "M1_semantic_label": "WRONG_VULNERABILITY_MECHANISM",
+    "interpretation": "The repaired M1 query satisfies the strict hit metric on CVE-2023-43668 but still models generic identifier/key flow rather than sensitive JDBC parameter filtering/replacement. This directly demonstrates that hit-based strict success does not imply semantic correctness in this TRAIN pilot."
+  },
+  "interpretation": "After matched compilation repair, both M0 and M1 achieve 7/7 compilation, but neither repaired final query is semantically aligned with any of the seven actual CWE-639 TRAIN mechanisms under the frozen rubric. M1 mechanism-first planning represented 6/7 mechanisms, yet all six are still lost during unification/CodeQL translation. The compilation repair therefore changed executability and hit behavior without improving semantic alignment in this single-CWE TRAIN pilot.",
+  "limitations": [
+    "This is a single CWE-639 TRAIN pilot.",
+    "No TEST information was accessed.",
+    "The result does not establish generalization to other CWEs.",
+    "Historical V3 human blinding is not claimed because of the previously frozen Step16A deviation.",
+    "M1's 1/7 strict hit-based success is reported separately and is not treated as semantic alignment."
+  ]
+}

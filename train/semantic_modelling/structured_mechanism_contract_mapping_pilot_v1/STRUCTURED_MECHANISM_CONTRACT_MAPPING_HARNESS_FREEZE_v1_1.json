@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "stage": "T2_STRUCTURED_CONTRACT_MAPPING_HARNESS_FREEZE_V1_1",
+  "status": "FROZEN_READY_FOR_ONE_GENERATION_CALL",
+  "preregistration": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/STRUCTURED_MECHANISM_CONTRACT_MAPPING_PREREGISTRATION_v1.json",
+    "sha256": "42e1a2ff920fe40b7db407bb24f6a901ef264c1a401936ee068ac74e0a191fee"
+  },
+  "runner": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/STRUCTURED_MECHANISM_CONTRACT_MAPPING_RUNNER_v1_1.py",
+    "sha256": "00c461b1f5f7ae1e5b89dbe95b2f7a86b208cc0fe77230fb6741a82f0727e832"
+  },
+  "recovery_amendment": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/STRUCTURED_MECHANISM_CONTRACT_MAPPING_HARNESS_RECOVERY_AMENDMENT_v1.json",
+    "sha256": "cbebb0da7348bc6dc83d4d22db63e2587837aae211152dfc0e55599720b5b21a"
+  },
+  "self_check": {
+    "status": "PASS",
+    "checks": {
+      "prereg_exists": true,
+      "old_runner_exists": true,
+      "plan_exists": true,
+      "evidence_exists": true,
+      "prereg_sha_frozen": true,
+      "plan_sha_frozen": true,
+      "evidence_sha_frozen": true,
+      "old_runner_import": true,
+      "model_present": true,
+      "system_prompt_present": true,
+      "parse_model_usage_present": true,
+      "output_root_absent": true,
+      "contract_absent": true,
+      "query_absent": true,
+      "metadata_absent": true,
+      "requires_contract_fields": true,
+      "requires_mapping_fields": true,
+      "forbids_generic_silent_collapse": true,
+      "requires_unencodable_marker": true,
+      "one_cwe_query_required": true,
+      "one_generation_call_required": true,
+      "no_test_instruction": true,
+      "prompt_inputs_only_plan_evidence_treatment": true,
+      "no_prior_result_artifact_reference": true
+    },
+    "model_call_budget": 1,
+    "generation_inputs": [
+      "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/synthesis_inputs/CWE-639_A_LEVEL_INPUT_v1.json",
+      "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/arm_outputs_v1/M1_MECHANISM_FIRST/CWE-639/planning_stage.txt",
+      "T2 treatment instruction"
+    ],
+    "generation_outputs": [
+      "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/t2_generation_v1/CWE-639/structured_contract_mapping.json",
+      "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/t2_generation_v1/CWE-639/iter0.ql",
+      "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/t2_generation_v1/CWE-639/T2_STRUCTURED_CONTRACT_GENERATION_METADATA.json"
+    ],
+    "model_execution": false,
+    "codeql_execution": false,
+    "test_access": "FORBIDDEN"
+  },
+  "generation_protocol": {
+    "model_call_budget": 1,
+    "structured_contract_required": true,
+    "explicit_CodeQL_mapping_required": true,
+    "one_CWE_level_query": true,
+    "generic_silent_collapse_forbidden": true,
+    "pre_CodeQL_mapping_audit_required": true,
+    "pre_CodeQL_semantic_scoring_required": true
+  },
+  "controls": {
+    "model_execution": false,
+    "codeql_execution": false,
+    "query_generation": false,
+    "scientific_rerun": false,
+    "test_access": "FORBIDDEN"
+  }
+}

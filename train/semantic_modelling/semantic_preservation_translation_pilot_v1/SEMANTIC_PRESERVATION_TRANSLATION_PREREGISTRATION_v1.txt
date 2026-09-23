@@ -1,0 +1,42 @@
+SEMANTIC-PRESERVATION TRANSLATION PILOT — PREREGISTRATION v1
+
+SCOPE
+TRAIN ONLY
+CWE-639
+7 TRAIN vulnerable-patched pairs
+TEST forbidden
+
+RESEARCH QUESTION
+Given the exact same frozen M1 mechanism-first plan, can an explicit
+semantic-preservation translation contract reduce plan-to-CodeQL translation
+loss and generic-template collapse while retaining compilability?
+
+BASELINE
+T0 = frozen original M1 plan-to-CodeQL translation.
+Plan SHA256: ea609259a9f8bbed4319249de29915e640fac59cf3631fc664452d092c16368f
+Query SHA256: 5d4afa480a9002eac886791c1beb18bdc064e9d51a45caa299b6b0344afce7bb
+
+TREATMENT
+T1 = same frozen M1 plan, but query synthesis must preserve each planned
+mechanism family through explicit mechanism contracts and CodeQL traceability.
+
+KEY CONTROL
+No Sept18 human actual-mechanism labels, hit results, CodeQL outcomes,
+patch/source B/C evidence, TEST information, or per-CVE tuning may be supplied
+to T1 generation.
+
+PRIMARY OUTCOMES
+Semantic alignment coverage
+Semantic mismatch count
+Generic-template count/collapse
+Plan-to-CodeQL translation-loss count
+
+SECONDARY OUTCOMES
+Compilation
+Strict hit success
+Detection/discrimination failure
+Repairs
+Tokens/time/lookups/skills
+
+CLAIM SCOPE
+CWE-639 TRAIN translation pilot only.

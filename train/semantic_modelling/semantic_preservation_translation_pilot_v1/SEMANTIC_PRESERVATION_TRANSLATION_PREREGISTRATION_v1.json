@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "pilot_cwe": "CWE-639",
+  "train_case_count": 7,
+  "motivation": "The frozen mechanism-first pilot showed that M1 represented 6/7 actual mechanisms at the planning stage but achieved 0/7 final semantic alignment, with 6/7 plan-to-CodeQL translation losses. Both M0 and M1 also exhibited 7/7 generic-template collapse.",
+  "research_question": "Given the exact same frozen mechanism-first plan, can an explicit semantic-preservation translation contract reduce plan-to-CodeQL translation loss and generic-template collapse compared with the original M1 translation, while retaining compilability?",
+  "experimental_unit": "One CWE-level CodeQL query applied uniformly to all seven CWE-639 TRAIN vulnerable-patched pairs.",
+  "baseline_translation": {
+    "name": "T0_ORIGINAL_M1_TRANSLATION",
+    "plan_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/arm_outputs_v1/M1_MECHANISM_FIRST/CWE-639/planning_stage.txt",
+    "plan_sha256": "ea609259a9f8bbed4319249de29915e640fac59cf3631fc664452d092c16368f",
+    "query_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M1_MECHANISM_FIRST/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter0.ql",
+    "query_sha256": "5d4afa480a9002eac886791c1beb18bdc064e9d51a45caa299b6b0344afce7bb",
+    "status": "FROZEN_EXISTING_BASELINE_NO_RERUN"
+  },
+  "treatment_translation": {
+    "name": "T1_SEMANTIC_PRESERVATION_TRANSLATION",
+    "same_frozen_plan_as_T0": true,
+    "same_A_level_evidence": true,
+    "new_model_call_count_for_translation": 1,
+    "intervention": [
+      "Before writing CodeQL, convert every mechanism family already present in the frozen M1 plan into an explicit mechanism contract.",
+      "Each mechanism contract must identify security subject/context, attacker-controlled input or trigger, protected object/state, decisive authorization/validation/relation, and sensitive effect.",
+      "Create an explicit traceability mapping from every mechanism contract to at least one CodeQL predicate or query branch.",
+      "Do not replace heterogeneous mechanism contracts with a single generic user-controlled ID/key -> sensitive operation abstraction.",
+      "A multi-branch CWE-level query is allowed and preferred when different mechanism families require different security predicates.",
+      "If CodeQL cannot faithfully encode a planned mechanism, the translation must preserve that limitation explicitly rather than silently replacing it with a generic IDOR heuristic."
+    ]
+  },
+  "generation_exclusions": {
+    "sept18_human_actual_mechanism_reference_visible": false,
+    "sept18_human_semantic_labels_visible": false,
+    "M0_or_M1_hit_results_visible": false,
+    "M0_or_M1_CodeQL_evaluation_results_visible": false,
+    "TEST_information_visible": false,
+    "patch_or_source_BC_evidence_visible": false,
+    "per_CVE_manual_tuning": false
+  },
+  "matched_conditions": {
+    "same_frozen_M1_plan": true,
+    "same_A_level_evidence": true,
+    "same_model_family": true,
+    "same_CodeQL_version": true,
+    "same_java_all_version": true,
+    "same_qlpack": true,
+    "same_V3_library_plus_auto_skill_repair_support": true,
+    "MAX_REPAIRS": 4,
+    "same_frozen_semantic_rubric": true,
+    "one_CWE_level_query": true,
+    "TRAIN_only": true
+  },
+  "primary_outcomes": {
+    "semantic_alignment_coverage": "0-7 ALIGNED cases",
+    "semantic_mismatch_count": "0-7 mismatch/unclear cases",
+    "generic_template_count": "0-7 GENERIC_TEMPLATE_MATCH cases",
+    "generic_template_collapse_rule": "YES iff >=4/7",
+    "plan_to_CodeQL_translation_loss_count": "0-7"
+  },
+  "secondary_outcomes": {
+    "compiled_pair_count": "0-7",
+    "strict_success_count": "0-7",
+    "detection_failure_count": "0-7",
+    "discrimination_failure_count": "0-7",
+    "repair_convergence": "number of repairs to full compilation or MAX_REPAIRS",
+    "tokens": true,
+    "model_calls": true,
+    "agent_wall_clock": true,
+    "CodeQL_runtime": true,
+    "library_lookups": true,
+    "retrieved_skills": true
+  },
+  "diagnostic_case_policy": {
+    "cve": "CVE-2023-43668",
+    "rule": "Hit-based strict success must remain separate from semantic correctness. Do not assign semantic alignment from hit results."
+  },
+  "scoring_policy": {
+    "rubric": "Reuse the already-frozen MECHANISM_FIRST_SEMANTIC_SCORING_RUBRIC_v1.json.",
+    "semantic_scoring_independent_of_hit_metrics": true,
+    "semantic_scoring_independent_of_compilation": true,
+    "no_blinding_claim_for_human_scorer": true
+  },
+  "success_interpretation": {
+    "support_for_translation_intervention": "T1 shows higher semantic alignment and/or lower translation-loss and generic-template counts than frozen T0 under the same plan.",
+    "no_support": "T1 does not improve those semantic outcomes despite the explicit preservation contract.",
+    "compilation_only_improvement_not_semantic_success": true
+  },
+  "claim_scope": "Any result is limited to this CWE-639 TRAIN translation pilot. No claim to other CWEs or TEST is permitted without replication.",
+  "frozen_inputs": {
+    "previous_final_manifest_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/FINAL_MECHANISM_FIRST_PILOT_FREEZE_MANIFEST_v1.json",
+    "previous_final_manifest_sha256": "24ce1e38cd176601254af49fccf82db287992940701026a898526995bce285e8",
+    "M1_plan_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/arm_outputs_v1/M1_MECHANISM_FIRST/CWE-639/planning_stage.txt",
+    "M1_plan_sha256": "ea609259a9f8bbed4319249de29915e640fac59cf3631fc664452d092c16368f",
+    "T0_original_M1_query_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M1_MECHANISM_FIRST/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter0.ql",
+    "T0_original_M1_query_sha256": "5d4afa480a9002eac886791c1beb18bdc064e9d51a45caa299b6b0344afce7bb"
+  },
+  "model_execution": false,
+  "codeql_execution": false,
+  "test_access": "FORBIDDEN"
+}

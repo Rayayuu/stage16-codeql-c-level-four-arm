@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0",
+  "scope": "CWE-639 TRAIN ONLY",
+  "stage": "T3_INITIAL_BRANCH_GENERATION",
+  "mechanism_family_id": "improper_authentication_certificate_reuse",
+  "model": "openai/gpt-5",
+  "model_call_count": 1,
+  "input_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/compositional_branch_semantic_verifier_pilot_v1/branch_inputs_v1/improper_authentication_certificate_reuse/branch_input.json",
+  "input_sha256": "891e242e059315421e70142d0d39ff6ae15b60a759717d964dc4ab8ca948ed89",
+  "branch_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/compositional_branch_semantic_verifier_pilot_v1/branch_generation_v1/improper_authentication_certificate_reuse/branch.ql",
+  "branch_sha256": "d5982d4d72b403c6fa9b481b3b021f1089f760e9419e737b7a0c2637e5a35193",
+  "traceability_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/compositional_branch_semantic_verifier_pilot_v1/branch_generation_v1/improper_authentication_certificate_reuse/traceability.json",
+  "traceability_sha256": "437859469f1e553b89719a1267485813794b5dc616ce3bc7f57ae410aecf6733",
+  "usage": {
+    "input_tokens": 3163,
+    "output_tokens": 5768,
+    "total_tokens": 8931,
+    "raw_usage_metadata": {
+      "input_tokens": 3163,
+      "output_tokens": 5768,
+      "total_tokens": 8931,
+      "input_token_details": {
+        "audio": 0,
+        "cache_read": 0
+      },
+      "output_token_details": {
+        "audio": 0,
+        "reasoning": 4352
+      }
+    },
+    "raw_response_metadata": {
+      "token_usage": {
+        "completion_tokens": 5768,
+        "prompt_tokens": 3163,
+        "total_tokens": 8931,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 4352,
+          "rejected_prediction_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        }
+      },
+      "model_provider": "openai",
+      "model_name": "gpt-5-2025-08-07",
+      "system_fingerprint": null,
+      "id": "chatcmpl-EQAwjQLCADXIY9x7Vj3vgokXR8Cj0",
+      "service_tier": "default",
+      "finish_reason": "tool_calls",
+      "logprobs": null
+    }
+  },
+  "wall_clock_sec": 52.82530923601007,
+  "manual_query_modification": false,
+  "codeql_execution": false,
+  "test_access": "FORBIDDEN"
+}

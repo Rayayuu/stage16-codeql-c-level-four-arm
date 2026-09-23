@@ -1,0 +1,131 @@
+========================================================================================================================
+CVE=CVE-2017-12617
+OUTCOME=DISCRIMINATION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=With HTTP PUT enabled, Apache Tomcat could accept a specially crafted request that caused a JSP file to be written to the server and later executed. The retained analysis indicates that the fix changes path-resolution validation rather than eliminating the underlying file-write operation.
+B_QUERY_SECURITY_PROPERTY=User-controlled HTTP/request or multipart filename data should not flow into filesystem write, move, transfer, or file-path operations.
+C_CONCRETE_MISMATCH=The generated query captures the broad request-to-filesystem-write behavior, but it does not model the path-resolution validation that distinguishes the fixed implementation. Therefore the generic taint path remains present in both vulnerable and patched revisions.
+NEW_ROOT_CAUSE_CATEGORY=Missing validation semantics
+CATEGORY_RATIONALE=The vulnerable behavior is broadly represented, but the path validation introduced by the fix is missing.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_STATUS=YES
+TEMPLATE_COLLAPSE_EVIDENCE=A path-resolution-specific upload vulnerability is represented only as generic request-to-filesystem taint.
+
+========================================================================================================================
+CVE=CVE-2020-13128
+OUTCOME=DETECTION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=GWTUpload accepted a user-controlled delay parameter that caused the upload servlet thread to sleep. Repeated abuse could exhaust server threads and cause denial of service.
+B_QUERY_SECURITY_PROPERTY=User-controlled HTTP/request or multipart filename data should not flow into filesystem write, move, transfer, or file-path operations.
+C_CONCRETE_MISMATCH=The query searches for request/upload filename data reaching filesystem writes, while the actual vulnerability is resource exhaustion caused by a user-controlled delay parameter. No file-write security property is required for exploitation.
+NEW_ROOT_CAUSE_CATEGORY=Wrong vulnerability mechanism
+CATEGORY_RATIONALE=The generated upload-taint property is unrelated to the actual delay/resource-exhaustion mechanism.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_STATUS=YES
+TEMPLATE_COLLAPSE_EVIDENCE=A resource-exhaustion vulnerability grouped under CWE-434 is forced into the generic file-upload template.
+
+========================================================================================================================
+CVE=CVE-2021-21245
+OUTCOME=DISCRIMINATION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=Uploaded or request-derived filenames were used in attachment/blob handling without the filename sanitization later introduced by FilenameUtils.sanitizeFilename.
+B_QUERY_SECURITY_PROPERTY=User-controlled HTTP/request or multipart filename data should not flow into filesystem write, move, transfer, or file-path operations.
+C_CONCRETE_MISMATCH=The query correctly models user-controlled filename data reaching upload/filesystem handling, but it does not recognize FilenameUtils.sanitizeFilename as a sanitization barrier. Consequently the same flow is reported in both vulnerable and patched revisions.
+NEW_ROOT_CAUSE_CATEGORY=Missing validation semantics
+CATEGORY_RATIONALE=The broad mechanism is correct, but the concrete filename sanitization that separates fixed from vulnerable code is absent from the CodeQL model.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_STATUS=YES
+TEMPLATE_COLLAPSE_EVIDENCE=Filename-sanitization semantics are flattened into generic upload-to-filesystem taint.
+
+========================================================================================================================
+CVE=CVE-2021-45790
+OUTCOME=DETECTION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=Metersphere allowed unauthenticated users to reach an arbitrary-file-upload resource because the Shiro configuration exposed the relevant /resource/** scope anonymously. The fix narrows anonymous access to a specific resource path.
+B_QUERY_SECURITY_PROPERTY=User-controlled HTTP/request or multipart filename data should not flow into filesystem write, move, transfer, or file-path operations.
+C_CONCRETE_MISMATCH=The generated query models filename/request data flowing to a filesystem write, but the decisive security property is whether the upload/resource endpoint is authorized for the requester. The query therefore looks for the wrong mechanism.
+NEW_ROOT_CAUSE_CATEGORY=Wrong vulnerability mechanism
+CATEGORY_RATIONALE=The vulnerability is caused by endpoint authorization scope, not by existence of an upload-to-filesystem flow.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_STATUS=YES
+TEMPLATE_COLLAPSE_EVIDENCE=Authorization of the upload endpoint is collapsed into a generic filename-to-filesystem template.
+
+========================================================================================================================
+CVE=CVE-2021-45808
+OUTCOME=DETECTION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=The advisory identifies arbitrary file upload by registered JPress users, but the retained canonical Java patch evidence does not expose a localized upload-security change.
+B_QUERY_SECURITY_PROPERTY=User-controlled HTTP/request or multipart filename data should not flow into filesystem write, move, transfer, or file-path operations.
+C_CONCRETE_MISMATCH=The query models generic upload-to-filesystem flow, but the retained TRAIN evidence is insufficient to identify the concrete security mechanism fixed by the patch and therefore insufficient to determine the exact semantic mismatch.
+NEW_ROOT_CAUSE_CATEGORY=Insufficient evidence / unclear
+CATEGORY_RATIONALE=The advisory describes the outcome, but the retained patch evidence does not establish the specific mechanism.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_STATUS=UNDETERMINED
+TEMPLATE_COLLAPSE_EVIDENCE=No reliable template-collapse conclusion is assigned because the concrete patch mechanism is not localized.
+
+========================================================================================================================
+CVE=CVE-2021-46115
+OUTCOME=DETECTION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=The advisory describes remote code execution through JPress _TemplateController#doUploadFile, where malicious template content can be uploaded. The retained canonical patch evidence does not expose a clear security fix for that upload path.
+B_QUERY_SECURITY_PROPERTY=User-controlled HTTP/request or multipart filename data should not flow into filesystem write, move, transfer, or file-path operations.
+C_CONCRETE_MISMATCH=Although the generic query targets upload-to-filesystem flow, the available TRAIN evidence does not show which source, validation step, authorization condition, content restriction, or other mechanism was actually repaired.
+NEW_ROOT_CAUSE_CATEGORY=Insufficient evidence / unclear
+CATEGORY_RATIONALE=The concrete semantic mismatch cannot be established reliably from the retained evidence.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_STATUS=UNDETERMINED
+TEMPLATE_COLLAPSE_EVIDENCE=The generic template exists, but there is insufficient retained mechanism evidence to judge collapse for this case.
+
+========================================================================================================================
+CVE=CVE-2021-46116
+OUTCOME=DETECTION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=The advisory describes remote code execution through JPress _TemplateController#doInstall, where malicious template code can be installed. The retained canonical Java patch evidence does not expose a localized template-install security fix.
+B_QUERY_SECURITY_PROPERTY=User-controlled HTTP/request or multipart filename data should not flow into filesystem write, move, transfer, or file-path operations.
+C_CONCRETE_MISMATCH=The generated query assumes the problem is request/upload data reaching a filesystem write, but the retained evidence is insufficient to determine which concrete install-time security property was fixed.
+NEW_ROOT_CAUSE_CATEGORY=Insufficient evidence / unclear
+CATEGORY_RATIONALE=A mechanism-level category stronger than insufficient evidence would be speculative.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_STATUS=UNDETERMINED
+TEMPLATE_COLLAPSE_EVIDENCE=The generic template exists, but the real repaired mechanism cannot be established from retained evidence.
+
+========================================================================================================================
+CVE=CVE-2022-27047
+OUTCOME=STRICT_SUCCESS
+A_ACTUAL_VULNERABILITY_MECHANISM=Mogu Blog CMS allowed arbitrary files to be uploaded without adequate limitation. The broad vulnerable behavior is therefore unrestricted user-controlled upload reaching server-side storage.
+B_QUERY_SECURITY_PROPERTY=User-controlled HTTP/request or multipart filename data should not flow into filesystem write, move, transfer, or file-path operations.
+C_CONCRETE_MISMATCH=No failure mismatch is demonstrated by the metric result: the generated upload-to-filesystem property produced a vulnerable hit and no patched hit. The retained evidence supports broad alignment, although it does not justify a more specific failure-root-cause classification.
+NEW_ROOT_CAUSE_CATEGORY=N/A - strict success / no failure root cause
+CATEGORY_RATIONALE=This case satisfies the strict success criterion and is retained as a positive control rather than a failure.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_STATUS=ALIGNED
+TEMPLATE_COLLAPSE_EVIDENCE=The actual broad unrestricted-upload mechanism is consistent with the generic query abstraction.
+
+========================================================================================================================
+CVE=CVE-2022-27477
+OUTCOME=STRICT_SUCCESS
+A_ACTUAL_VULNERABILITY_MECHANISM=Newbee-Mall exposed an arbitrary file upload through the /admin/goods/edit upload functionality. The retained code confirms MultipartFile-based upload handling, but the exact patch security mechanism is not sufficiently detailed in the retained evidence.
+B_QUERY_SECURITY_PROPERTY=User-controlled HTTP/request or multipart filename data should not flow into filesystem write, move, transfer, or file-path operations.
+C_CONCRETE_MISMATCH=The query achieved 2 vulnerable hits and 0 patched hits, but the retained evidence does not establish whether the disappearing flow corresponds exactly to the same semantic mechanism repaired by the patch. Metric success therefore cannot be treated as proof of semantic equivalence.
+NEW_ROOT_CAUSE_CATEGORY=N/A - strict success / semantic alignment requires caution
+CATEGORY_RATIONALE=This is not a failure root cause; the issue is uncertainty about semantic alignment despite strict metric success.
+CONFIDENCE=MEDIUM_HIGH
+GENERIC_TEMPLATE_STATUS=UNDETERMINED
+TEMPLATE_COLLAPSE_EVIDENCE=The generic query succeeds metrically, but the exact repaired security property is not sufficiently localized to determine whether generic-template collapse occurred.
+
+========================================================================================================================
+CVE=CVE-2023-40183
+OUTCOME=DISCRIMINATION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=The upload path was strengthened by requiring the original filename to match an allowlisted image extension in addition to successfully parsing as an image.
+B_QUERY_SECURITY_PROPERTY=User-controlled HTTP/request or multipart filename data should not flow into filesystem write, move, transfer, or file-path operations.
+C_CONCRETE_MISMATCH=The generated query captures upload/request data reaching filesystem operations, but it does not model the extension allowlist as a validation barrier. Therefore the same five generic upload flows remain in both vulnerable and patched revisions.
+NEW_ROOT_CAUSE_CATEGORY=Missing validation semantics
+CATEGORY_RATIONALE=The query captures the vulnerable behavior broadly but omits the specific file-extension validation that separates patched from vulnerable behavior.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_STATUS=YES
+TEMPLATE_COLLAPSE_EVIDENCE=Extension/content validation is reduced to generic upload-to-filesystem taint.
+
+========================================================================================================================
+CVE=CVE-2023-41009
+OUTCOME=STRICT_SUCCESS
+A_ACTUAL_VULNERABILITY_MECHANISM=The advisory describes a file-upload vulnerability in bolo-solo in which a crafted script supplied through the Authorization header could lead to arbitrary code execution.
+B_QUERY_SECURITY_PROPERTY=User-controlled HTTP/request or multipart filename data should not flow into filesystem write, move, transfer, or file-path operations.
+C_CONCRETE_MISMATCH=The generated query can treat request headers as sources and achieved 2 vulnerable hits and 0 patched hits, but the retained Java diff contains only added lines and does not provide enough mechanism-level evidence to prove that the detected flow is exactly the security mechanism repaired by the patch.
+NEW_ROOT_CAUSE_CATEGORY=N/A - strict success / semantic alignment requires caution
+CATEGORY_RATIONALE=This case is metrically successful, so no failure root cause is assigned; semantic equivalence remains unproven.
+CONFIDENCE=MEDIUM_HIGH
+GENERIC_TEMPLATE_STATUS=UNDETERMINED
+TEMPLATE_COLLAPSE_EVIDENCE=The query succeeds metrically, but retained evidence is insufficient to determine whether this is genuine mechanism alignment or incidental discrimination.

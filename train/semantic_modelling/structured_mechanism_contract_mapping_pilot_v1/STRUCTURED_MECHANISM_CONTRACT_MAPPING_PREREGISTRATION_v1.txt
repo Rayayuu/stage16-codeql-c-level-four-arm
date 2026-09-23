@@ -1,0 +1,41 @@
+STRUCTURED MECHANISM CONTRACT -> CODEQL MAPPING PILOT
+
+SCOPE
+CWE-639 TRAIN only. TEST access forbidden.
+
+RESEARCH QUESTION
+Given the exact same frozen mechanism-first plan, can a structured mechanism-contract-to-CodeQL mapping intervention reduce plan-to-CodeQL translation loss and generic-template collapse relative to frozen T1?
+
+FROZEN COMPARATOR
+T1 semantic-preservation translation is frozen and will not be rerun.
+
+NEW TREATMENT
+T2 requires each represented mechanism family to be decomposed into:
+- security subject/principal
+- protected target/security object
+- attacker-controlled input/trigger
+- decisive security relation
+- validation/authorization condition
+- security-sensitive effect
+
+Each family must then be mapped to explicit CodeQL predicates, relations, validation conditions, or dedicated query branches.
+
+Silent replacement with a generic ID/key -> sensitive-operation taint abstraction is forbidden.
+If faithful encoding is unavailable, the limitation must be explicitly marked rather than hidden by a generic surrogate.
+
+PRIMARY OUTCOMES
+Semantic alignment; semantic mismatch; generic-template collapse;
+plan-to-CodeQL translation loss; mechanism-contract coverage;
+actual CodeQL mapping coverage.
+
+SECONDARY OUTCOMES
+Compilation; strict success; detection/discrimination failure;
+repair convergence; tokens; wall time; CodeQL runtime;
+library lookups; retrieved skills.
+
+REPAIR
+Same V3_LIBRARY_PLUS_AUTO_SKILL repair protocol, MAX_REPAIRS=4,
+only if the fresh T2 initial query does not fully compile.
+
+NO HUMAN SEMANTIC LABELS OR HIT RESULTS ARE VISIBLE DURING GENERATION.
+NO TEST.

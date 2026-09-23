@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "pilot_cwe": "CWE-639",
+  "research_question": "Given the exact same frozen mechanism-first plan, can an explicit semantic-preservation translation contract reduce plan-to-CodeQL translation loss and generic-template collapse compared with the original M1 translation while retaining compilability?",
+  "primary_semantic_comparison": {
+    "T0_original_M1_translation": {
+      "semantic_alignment": 0,
+      "semantic_mismatch": 7,
+      "generic_template_count": 7,
+      "translation_loss": 6
+    },
+    "T1_semantic_preservation_pre_repair": {
+      "semantic_alignment": 0,
+      "semantic_mismatch": 7,
+      "generic_template_count": 7,
+      "translation_loss": 6
+    },
+    "T1_semantic_preservation_post_repair": {
+      "semantic_alignment": 0,
+      "semantic_mismatch": 7,
+      "generic_template_count": 7,
+      "translation_loss": 6
+    }
+  },
+  "operational_T1": {
+    "initial_compilation": "0/7",
+    "final_compilation": "7/7",
+    "repair_count": 2,
+    "strict_success": "0/7",
+    "detection_failure": "7/7",
+    "discrimination_failure": "0/7",
+    "repair_tokens": {
+      "input_tokens": 24082,
+      "cached_input_tokens": 9600,
+      "uncached_input_tokens": 14482,
+      "output_tokens": 5825,
+      "reasoning_tokens": 3776,
+      "total_tokens": 29907,
+      "model_call_count": 3
+    },
+    "repair_wall_clock_sec": 49.470251,
+    "repair_codeql_runtime_sec": 357.05,
+    "library_lookup_count": 2,
+    "retrieved_skill_count": 8
+  },
+  "answer_to_research_question": "NO IMPROVEMENT OBSERVED IN THIS CWE-639 TRAIN PILOT. T1 preserved the same 0/7 semantic alignment, 7/7 generic-template collapse, and 6/7 translation loss as T0. Matched V3 repair restored full compilation but did not recover semantic alignment or detection.",
+  "main_observed_bottleneck": "Semantic information represented at the planning stage is not preserved during unification into one CWE-level CodeQL query. Compiler-oriented repair can recover CodeQL executability without recovering the missing security relations or validation semantics.",
+  "scientific_boundary": "This is a single CWE-639 TRAIN pilot. It does not establish generalization to other CWEs or TEST.",
+  "test_access": "FORBIDDEN"
+}

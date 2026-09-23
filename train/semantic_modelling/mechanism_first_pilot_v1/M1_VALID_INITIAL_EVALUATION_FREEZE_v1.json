@@ -1,0 +1,107 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "pilot_cwe": "CWE-639",
+  "treatment_arm": "M1_MECHANISM_FIRST",
+  "stage": "VALID_INITIAL_EVALUATION",
+  "status": "FROZEN_VALID_M1_INITIAL_OUTCOME",
+  "query": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M1_MECHANISM_FIRST/shared_initial/CWE-639/iter0.ql",
+    "sha256": "5d4afa480a9002eac886791c1beb18bdc064e9d51a45caa299b6b0344afce7bb",
+    "iteration": 0
+  },
+  "evaluation": {
+    "namespace": "query_evaluations_valid1",
+    "aggregate_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M1_MECHANISM_FIRST/query_evaluations_valid1/CWE-639/shared_initial/aggregate.json",
+    "aggregate_sha256": "86739ba5b7e484888f1c1bff3c6e62e89f077d64449039ddeb4a2b7e40a8d3f3",
+    "pair_results_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M1_MECHANISM_FIRST/query_evaluations_valid1/CWE-639/shared_initial/pair_results.csv",
+    "pair_results_sha256": "8b1e0742ab4b72be536598bfde15b1e6fae7a6ff2123bc758fb30c6693db31e5",
+    "shared_state_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M1_MECHANISM_FIRST/shared_initial/CWE-639/SHARED_INITIAL_EVALUATION_STATE.json",
+    "shared_state_sha256": "0a1eecf4a6c15f6f40d4204df80a200af52ff498a7792f8e3a051a017c3a4652",
+    "train_case_count": 7,
+    "compiled_pair_count": 0,
+    "successful_pair_count": 0,
+    "compilation_failure_count": 7,
+    "detection_failure_count": 0,
+    "discrimination_failure_count": 0,
+    "all_pairs_success": false,
+    "codeql_runtime_sec": 209.03,
+    "success_definition": "compile AND vulnerable_hits>=1 AND patched_hits=0"
+  },
+  "per_case": [
+    {
+      "cve_id": "CVE-2020-23449",
+      "compiled": false,
+      "vulnerable_hits": 0,
+      "patched_hits": 0,
+      "pair_success": false,
+      "failure_class": "COMPILATION_FAILURE",
+      "vulnerable_returncode": 2,
+      "patched_returncode": 2
+    },
+    {
+      "cve_id": "CVE-2021-4142",
+      "compiled": false,
+      "vulnerable_hits": 0,
+      "patched_hits": 0,
+      "pair_success": false,
+      "failure_class": "COMPILATION_FAILURE",
+      "vulnerable_returncode": 2,
+      "patched_returncode": 2
+    },
+    {
+      "cve_id": "CVE-2023-2260",
+      "compiled": false,
+      "vulnerable_hits": 0,
+      "patched_hits": 0,
+      "pair_success": false,
+      "failure_class": "COMPILATION_FAILURE",
+      "vulnerable_returncode": 2,
+      "patched_returncode": 2
+    },
+    {
+      "cve_id": "CVE-2023-30216",
+      "compiled": false,
+      "vulnerable_hits": 0,
+      "patched_hits": 0,
+      "pair_success": false,
+      "failure_class": "COMPILATION_FAILURE",
+      "vulnerable_returncode": 2,
+      "patched_returncode": 2
+    },
+    {
+      "cve_id": "CVE-2023-32310",
+      "compiled": false,
+      "vulnerable_hits": 0,
+      "patched_hits": 0,
+      "pair_success": false,
+      "failure_class": "COMPILATION_FAILURE",
+      "vulnerable_returncode": 2,
+      "patched_returncode": 2
+    },
+    {
+      "cve_id": "CVE-2023-43668",
+      "compiled": false,
+      "vulnerable_hits": 0,
+      "patched_hits": 0,
+      "pair_success": false,
+      "failure_class": "COMPILATION_FAILURE",
+      "vulnerable_returncode": 2,
+      "patched_returncode": 2
+    },
+    {
+      "cve_id": "CVE-2023-44981",
+      "compiled": false,
+      "vulnerable_hits": 0,
+      "patched_hits": 0,
+      "pair_success": false,
+      "failure_class": "COMPILATION_FAILURE",
+      "vulnerable_returncode": 2,
+      "patched_returncode": 2
+    }
+  ],
+  "interpretation": "The frozen M1 mechanism-first initial CWE-level query failed to compile on all seven TRAIN pairs. Therefore zero vulnerable/patched hits are not classified as detection failures. Initial outcome: 7/7 compilation failures and 0/7 strict successes.",
+  "repair_execution": false,
+  "model_execution": false,
+  "test_access": "FORBIDDEN"
+}

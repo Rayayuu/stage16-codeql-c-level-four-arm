@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "stage": "T2_MAPPING_AUDIT_SEMANTIC_INTERPRETATION_ADDENDUM",
+  "mapping_audit_sha256": "1257b3052fbef88bc873d967b4d6786659f3ce1e1bc9c31f57da4622f965cb12",
+  "lexical_audit_result": {
+    "actual_decisive_relation_encoded_count": 1,
+    "all_encoded_claims_supported": true
+  },
+  "semantic_interpretation": {
+    "faithfully_encoded_decisive_relation_count": 0,
+    "reason": "The static mapping audit counted ownership/authorization lexical signals and the hasAuthorizationContext exclusion heuristic. The executable predicate structure does not establish the required principal-to-target ownership, session-identity, or equivalent authorization relation. Comments/select text are not treated as implemented semantics.",
+    "mapping_audit_artifact_modified": false
+  },
+  "codeql_outcome_visible": false,
+  "test_access": "FORBIDDEN"
+}

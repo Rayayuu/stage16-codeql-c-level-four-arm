@@ -1,0 +1,363 @@
+MECHANISM-FIRST PRE-CURRENT-CODEQL SEMANTIC AUDIT PACKET v1
+
+SCIENTIFIC STATUS:
+- M0 and M1 generation outputs are frozen.
+- No CURRENT M0/M1 CodeQL evaluation or repair has occurred.
+- Step 16A accidentally exposed historical V3 diagnostic fields to the human scorer.
+- Therefore this audit is NOT claimed blinded to historical V3 labels.
+- It remains blinded to CURRENT M0/M1 CodeQL outcomes.
+- Only Actual Vulnerability Mechanism below is authorized as semantic reference.
+
+===== FROZEN ACTUAL-MECHANISM REFERENCE =====
+
+[CVE-2020-23449]
+Newbee-Mall trusted a user identifier supplied through the update request when selecting which user record to modify. The patch instead obtains the authenticated user's identity from the HTTP session and uses that identity to select the update target.
+
+[CVE-2021-4142]
+Candlepin could accept an Entitlement or SCA certificate for authentication where an Identity certificate was required. The patch inspects certificate OID extensions and rejects invalid certificate types.
+
+[CVE-2023-2260]
+Alf.io administrative operations did not consistently carry the authenticated Principal into organization, user, API-key, password, and related operations. The patch propagates Principal so authorization decisions can be evaluated against the acting subject and target scope.
+
+[CVE-2023-30216]
+Newbee-Mall's updateUserInfo behavior could expose another user's account information because the relevant user object was selected through an externally influenced user ID rather than being strictly bound to the authenticated user's session identity.
+
+[CVE-2023-32310]
+DataEase allowed a requester to replace a dashboard-share or message identifier with another user's identifier and delete or modify that other user's resource. The security requirement is that the requested dashboard/message belongs to, or is authorized for, the authenticated requester.
+
+[CVE-2023-43668]
+Apache InLong could allow sensitive JDBC parameter checks to be bypassed through user-controlled parameter keys such as autoDeserialize and allowLoadLocalInfile. The patch changes the filtering/replacement logic applied to those sensitive parameter keys.
+
+[CVE-2023-44981]
+ZooKeeper quorum SASL authorization could be skipped when the instance component of the SASL authentication ID was absent. This allowed an unauthorized endpoint to join the quorum and gain cluster-level read/write capability.
+
+
+===== M0 CONTROL: GENERIC CWE-FIRST PLAN =====
+PLAN_SHA256=f61f65f0c1787ba1ef44e0889eb035cc5eb4b9fd66e12157a01d3c534fa79e90
+
+CWE-639 (Authorization Bypass Through User-Controlled Key / IDOR) — CWE-level Java CodeQL pattern plan
+
+Generic vulnerability pattern:
+- A user-controlled identifier (for example: id, userId, uid, messageId, dashboardId, key, token), typically received in a web/API entrypoint, is used directly to access, modify, or delete server-side resources without verifying that the authenticated principal is authorized for that identifier.
+- Commonly appears in controller/resource/endpoint methods (e.g., Spring MVC) that take an ID parameter from a path or request parameter and pass it to service/repository/DAO methods like delete/remove/update/modify/*ById without an ownership/authorization check tied to the current user.
+
+Likely sources (taint origins):
+- Method parameters of public web entrypoints (classes named *Controller/*Resource/*Endpoint) whose parameter names contain “id” (case-insensitive) and whose types are primitive numeric, boxed numeric, String, or UUID.
+- (Optional if available) Parameters explicitly annotated as @PathVariable or @RequestParam, but we will primarily rely on parameter names/types to avoid framework-API coupling and maintain robustness.
+
+Likely sinks (sensitive use):
+- Arguments to mutating or privileged operations where authorization is required, e.g., methods with names matching:
+  - delete*, remove*, update*, modify*, set*, change*, mark*, grant*, revoke*
+  - or repository-style CRUD-with-identifier methods: *ById (e.g., deleteById, updateById, removeById)
+
+Authoritative/mitigating checks to recognize and exclude (to reduce false positives and better align with patched states):
+- Presence of method/class-level security annotations indicating pre-authorization enforcement: @PreAuthorize, @Secured, @RolesAllowed.
+- Use of security-aware parameters or context within the same handler method, e.g., method parameters typed as java.security.Principal or org.springframework.security.core.Authentication, or calls that reference Spring Security context (SecurityContextHolder), indicating the method likely ties the requested identifier to the current principal.
+- Presence of explicit authorization/ownership checks in the same method prior to the sink, heuristically detected by calls whose names suggest checks (e.g., check*, verify*, ensure*, assert*) especially when mentioning owner/auth/perm/access/role/priv/authorize.
+
+Reusable implementation strategy (Java CodeQL):
+- Build a TaintTracking::Global configuration.
+- Sources: DataFlow::parameterNode(p) for parameters p that:
+  - belong to public methods in types whose names end with Controller/Resource/Endpoint; and
+  - have id-like names (regex case-insensitive ".*id"); and
+  - have id-like types (primitive numeric, boxed numeric, String, UUID).
+- Sinks: DataFlow::exprNode(arg) where arg is an argument to a Call whose callee name matches the mutating/privileged operation regex (case-insensitive):
+  - (delete|remove|update|modify|set|change|mark|grant|revoke).* OR .*(ById)$
+- Scope/guards: Restrict to flows where the enclosing method has no obvious security guard:
+  - no @PreAuthorize, @Secured, @RolesAllowed annotations; and
+  - no Principal/Authentication parameter; and
+  - no invocations of SecurityContextHolder; and
+  - no invocations suggesting explicit authorization/ownership checks (regex on callee names: (check|verify|ensure|assert).*(owner|auth|perm|access|role|priv|authorize)).
+
+Selection and message:
+- Report the sink call site with a concise message like: "User-controlled identifier flows into a sensitive operation without an authorization check." Also reference the specific parameter name and callee name to aid review.
+
+Generalization notes:
+- Avoid any repository/project-specific strings, IDs, or paths.
+- Focus on naming conventions and control/data-flow semantics common across Java web services.
+- Keep the query limited to clear controller-like entrypoints and mutating sinks to reduce noise and facilitate convergence between vulnerable vs patched states across the TRAIN cases.
+
+
+===== M0 CONTROL: INITIAL CODEQL QUERY =====
+QUERY_SHA256=dcd8019966eccd400d875fe33dc62366101ca6815ddff69e6886799b303f5b95
+
+import java
+import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.TaintTracking
+
+/**
+ * CWE-639: Authorization Bypass Through User-Controlled Key (IDOR)
+ *
+ * Heuristic: Track controller-like ID parameters flowing into sensitive
+ * mutating operations (e.g., delete/remove/update/*ById) without
+ * evidence of authorization/ownership checks.
+ */
+
+/** Controller-like type (by naming convention). */
+private predicate controllerLike(TypeDecl td) {
+  td.getName().matches("(?i).*(Controller|Resource|Endpoint)$")
+}
+
+/** Parameter name that looks like a user-controlled identifier. */
+private predicate isIdLikeParam(Parameter p) {
+  p.getName().matches("(?i).*(id|uuid|guid|token|key).*")
+}
+
+/** Mutating/privileged callable names commonly requiring authorization. */
+private predicate isSensitiveCallee(Callable callee) {
+  callee.getName().matches(
+    "(?i)(delete|remove|update|modify|set|change|mark|grant|revoke).*|.*By(Id|Uuid|Guid)$"
+  )
+}
+
+/** Presence of security context/identity parameter suggests auth is enforced. */
+private predicate hasSecurityContextParam(Callable c) {
+  exists(Parameter p, RefType t |
+    p = c.getAParameter() and
+    t = p.getType() and
+    (
+      t.hasQualifiedName("java.security", "Principal") or
+      t.hasQualifiedName("org.springframework.security.core", "Authentication")
+    )
+  )
+}
+
+/** Calls to SecurityContextHolder in the same callable suggest auth usage. */
+private predicate hasSecurityContextCall(Callable c) {
+  exists(Call call, Callable target, RefType rt |
+    call.getEnclosingCallable() = c and
+    target = call.getCallee() and
+    rt = target.getDeclaringType() and
+    rt.hasQualifiedName("org.springframework.security.core.context", "SecurityContextHolder")
+  )
+}
+
+/** Explicit authorization/ownership check by name heuristic. */
+private predicate hasAuthzCheckCall(Callable c) {
+  exists(Call call, Callable target |
+    call.getEnclosingCallable() = c and
+    target = call.getCallee() and
+    target.getName().matches("(?i)(check|verify|ensure|assert).*(owner|auth|perm|access|role|priv|authoriz).*")
+  )
+}
+
+/** Callable lacks obvious authorization signals. */
+private predicate isUnguarded(Callable c) {
+  not hasSecurityContextParam(c) and
+  not hasSecurityContextCall(c) and
+  not hasAuthzCheckCall(c)
+}
+
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    exists(Parameter p, Callable c, TypeDecl td |
+      source = DataFlow::parameterNode(p) and
+      c = p.getDeclaringCallable() and
+      td = c.getDeclaringType() and
+      controllerLike(td) and
+      isIdLikeParam(p) and
+      isUnguarded(c)
+    )
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(Call call, Callable target, Expr arg, Callable c |
+      c = call.getEnclosingCallable() and
+      isUnguarded(c) and
+      target = call.getCallee() and
+      isSensitiveCallee(target) and
+      exists(int i |
+        arg = call.getArgument(i) and
+        sink = DataFlow::exprNode(arg)
+      )
+    )
+  }
+}
+
+module Flow = TaintTracking::Global<Config>;
+
+from Flow::PathNode source, Flow::PathNode sink
+where Flow::flowPath(source, sink)
+select sink.getNode(),
+  "User-controlled identifier flows into a sensitive operation without an authorization check (CWE-639).",
+  source,
+  sink
+
+/*
+@name IDOR: User-controlled identifier reaches sensitive operation without authorization (CWE-639)
+@description Tracks flows from controller-like ID parameters to sensitive mutating operations (delete/remove/update/*ById) without clear authorization checks.
+@kind path-problem
+@problem.severity warning
+@id jsa/cwe-639/idor/controller-sink-taint
+*/
+
+
+===== M1 TREATMENT: MECHANISM-FIRST PLAN =====
+PLAN_SHA256=ea609259a9f8bbed4319249de29915e640fac59cf3631fc664452d092c16368f
+
+Inferred vulnerability mechanism families for CWE-639 (Authorization Bypass Through User-Controlled Key) from TRAIN advisories:
+
+1) Classic IDOR via user-supplied identifier in web request
+- Subject/principal: Authenticated or unauthenticated web user
+- Target resource: User profile/info (newbee-mall), dashboards/messages/shares (DataEase), sensitive indexes (alf.io)
+- Security relation: Ownership or authorization over the specific resource identified by an ID
+- Validation/authorization boundary: Server-side controller/service must verify the current principal’s right to act on the resource ID
+- Propagation/context: Identifier taken directly from HTTP request (query parameter, path variable, header/body) flows to service/DAO calls performing update/delete/modify operations
+- Vulnerable vs fixed: Vulnerable versions accept user-controlled IDs; fixed versions derive the ID from the authenticated context or add an ownership/authorization check before invoking the operation
+- Representable by user-controlled-ID → resource-operation taint template: Yes
+
+2) Bypass due to missing/optional identity component causing skipped authorization (ZooKeeper SASL instance part, InLong sensitive param checks)
+- Subject/principal: Cluster peer or client presenting an identity or configuration keys
+- Target resource: Cluster membership/data tree (ZooKeeper) or security-sensitive configuration (InLong)
+- Security relation: Authorization contingent on presence/value of a key/instance component
+- Validation/authorization boundary: Authorization check branches based on optional/missing key; missing value leads to skip
+- Propagation/context: User-controlled/missing key flows into authorization logic influencing whether checks execute
+- Vulnerable vs fixed: Fix enforces presence/validation of the key and prevents bypass
+- Representable by simple user-controlled-ID → operation taint template: Only partially; direct data-flow into sensitive actions still applies when the key value is used without robust validation, but full control-flow-based skip is harder to encode generically without repository context
+
+3) Improper authentication via certificate reuse (Candlepin)
+- Subject/principal: Holder of SCA certificate
+- Target resource: Candlepin service authenticated session
+- Security relation: Authentication based on certificate attributes
+- Validation/authorization boundary: Server must ensure correct mapping/constraints on certificate use
+- Propagation/context: Certificate-derived identity used as key for authorization/authentication
+- Vulnerable vs fixed: Fix tightens validation and scoping of certificate use
+- Representable by simple user-controlled-ID → operation taint template: Not directly (more about authn) but overlapping theme is trust in externally supplied identity key
+
+Unified CWE-level semantic abstraction for query:
+- Model user-controlled identifiers extracted from HTTP requests (Servlet API and common Java web annotations) as taint sources.
+- Report flows where such tainted identifiers are used as arguments to methods whose names indicate security-sensitive resource modification operations (delete/remove/update/modify), and where the argument position or variable name is ID-like (id/userId/...ID), indicating it functions as an access key to a resource.
+- Heuristically reduce false positives and better differentiate patched code by excluding cases where the enclosing method clearly accesses an authentication context (e.g., uses SecurityContextHolder or has a Principal/Authentication parameter), a common pattern in fixed code where the ID is derived/validated against the current principal.
+
+This abstraction avoids repository-specific constants while capturing the core CWE-639 pattern: using a user-controlled key to directly drive sensitive operations without proper authorization checks.
+
+
+===== M1 TREATMENT: INITIAL CODEQL QUERY =====
+QUERY_SHA256=5d4afa480a9002eac886791c1beb18bdc064e9d51a45caa299b6b0344afce7bb
+
+import java
+import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.TaintTracking
+
+/**
+ * CWE-639: Authorization Bypass Through User-Controlled Key (IDOR)
+ *
+ * This query tracks user-controlled identifiers coming from typical Java web inputs
+ * (Servlet API and common web-framework annotations) to security-sensitive operations
+ * such as delete/remove/update/modify/share and repository-style methods (e.g., deleteById).
+ */
+
+/** Identify Servlet request-reading methods. */
+predicate methodIsHttpServletRequestReader(Method m) {
+  exists(TypeDecl td |
+    td = m.getDeclaringType() and
+    (
+      td.hasQualifiedName("javax.servlet.http", "HttpServletRequest") or
+      td.hasQualifiedName("jakarta.servlet.http", "HttpServletRequest")
+    ) and
+    (
+      m.getName() = "getParameter" or
+      m.getName() = "getHeader" or
+      m.getName() = "getQueryString" or
+      m.getName() = "getPathInfo" or
+      m.getName() = "getRequestURI"
+    )
+  )
+}
+
+/** Web-annotation indicating request-derived data. */
+predicate annotationIsWebInput(Annotation a) {
+  exists(string n | n = a.getType().getName() and (
+    n = "RequestParam" or n = "PathVariable" or n = "RequestHeader" or n = "RequestBody" or n = "CookieValue" or
+    n = "QueryParam" or n = "PathParam" or n = "FormParam" or n = "HeaderParam" or n = "CookieParam"
+  ))
+}
+
+/** Sensitive operation names that typically act on resources identified by keys/IDs. */
+predicate isSensitiveOperation(Method m) {
+  exists(string n | n = m.getName() and (
+    // direct modification operations
+    n.matches("delete%") or n.matches("remove%") or n.matches("update%") or n.matches("modify%") or
+    n.matches("set%") or n.matches("save%") or n.matches("grant%") or n.matches("share%") or n.matches("unshare%") or
+    // repository-style accessors by identifier
+    n.matches("get%ById%") or n.matches("get%ByID%") or n.matches("get%ByKey%") or n.matches("get%ByUuid%") or n.matches("get%ByGUID%") or
+    n.matches("find%ById%") or n.matches("find%ByID%") or n.matches("find%ByKey%") or n.matches("find%ByUuid%") or n.matches("find%ByGUID%") or
+    n.matches("delete%ById%") or n.matches("remove%ById%") or n.matches("update%ById%")
+  ))
+}
+
+/** Heuristic: parameter names that look like identifiers/keys. */
+predicate hasIdLikeName(Parameter p) {
+  exists(string pn | pn = p.getName() and (
+    pn = "id" or pn = "Id" or pn = "ID" or
+    pn = "uid" or pn = "Uid" or pn = "UID" or
+    pn = "userId" or pn = "UserId" or pn = "userID" or pn = "UserID" or
+    pn = "uuid" or pn = "UUID" or pn = "guid" or pn = "GUID" or
+    pn = "key" or pn = "Key" or pn = "KEY" or
+    pn.matches("%id%") or pn.matches("%Id%") or pn.matches("%ID%") or
+    pn.matches("%key%") or pn.matches("%Key%") or pn.matches("%KEY%") or
+    pn.matches("%uuid%") or pn.matches("%UUID%") or pn.matches("%guid%") or pn.matches("%GUID%")
+  ))
+}
+
+/**
+ * A call argument is treated as an ID-like sink position if either the corresponding formal is ID-like
+ * or the callee name suggests identifier-based operation (e.g., deleteById, findByKey).
+ */
+predicate isIdRelatedArg(Method m, int i) {
+  exists(Parameter p | p = m.getParameter(i) and hasIdLikeName(p)) or
+  exists(string mn | mn = m.getName() and (
+    mn.matches("%ById%") or mn.matches("%ByID%") or
+    mn.matches("%ByKey%") or mn.matches("%ByUuid%") or mn.matches("%ByUUID%") or
+    mn.matches("%ByGuid%") or mn.matches("%ByGUID%") or
+    mn.matches("%Id") or mn.matches("%ID")
+  ))
+}
+
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    // Servlet request readers
+    exists(MethodCall call, Method m |
+      m = call.getMethod() and methodIsHttpServletRequestReader(m) and
+      source = DataFlow::exprNode(call)
+    )
+    or
+    // Web-framework annotated parameters
+    exists(Parameter p, Annotation a |
+      a = p.getAnAnnotation() and annotationIsWebInput(a) and
+      source = DataFlow::parameterNode(p)
+    )
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(MethodCall call, Method m, Expr arg, int i |
+      m = call.getMethod() and isSensitiveOperation(m) and
+      arg = call.getArgument(i) and isIdRelatedArg(m, i) and
+      sink = DataFlow::exprNode(arg)
+    )
+  }
+}
+
+module Flow = TaintTracking::Global<Config>;
+
+from Flow::PathNode source, Flow::PathNode sink
+where Flow::flowPath(source, sink)
+select sink.getNode(),
+  "User-controlled identifier flows to a sensitive resource operation; verify authorization/ownership checks.",
+  source, sink
+
+/*
+@name CWE-639: User-controlled identifier used in sensitive operation (possible IDOR)
+@description Flags flows from web-request inputs to ID/Key parameters of sensitive operations (delete/remove/update/findById/etc.), indicating potential authorization bypass through user-controlled keys.
+@kind path-problem
+@problem.severity warning
+@id java/cwe-639/user-controlled-key-to-sensitive-operation
+*/
+
+
+===== FROZEN SCORING INSTRUCTION =====
+Score M0 and M1 using MECHANISM_FIRST_SEMANTIC_SCORING_RUBRIC_v1.json.
+Use only the Actual Vulnerability Mechanism reference above.
+Do NOT use historical V3 hit outcomes/categories/mismatches.
+Do NOT use any current compilation/hit result because none has been run.
+Freeze semantic scores before CURRENT CodeQL evaluation.

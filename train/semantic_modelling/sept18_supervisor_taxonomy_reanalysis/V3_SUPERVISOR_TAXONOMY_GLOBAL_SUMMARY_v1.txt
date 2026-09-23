@@ -1,0 +1,18 @@
+SEPT18 SUPERVISOR TAXONOMY GLOBAL SUMMARY
+
+Cases reviewed: 39/39
+Strict metric outcomes: 4 strict success, 35 failures
+
+Cases assigned one of supervisor's five semantic categories: 38/39
+Semantically aligned strict-success control with no failure category: 1/39
+
+Taxonomy among cases requiring a semantic category:
+- Wrong vulnerability mechanism: 9/38 (23.7%)
+- Incomplete vulnerability mechanism: 4/38 (10.5%)
+- Missing validation semantics: 7/38 (18.4%)
+- Missing relational/contextual semantics: 11/38 (28.9%)
+- Insufficient evidence / unclear: 7/38 (18.4%)
+
+Generic-template hypothesis: outputs are consistent with within-CWE semantic over-generalization/template collapse. Evidence comes from heterogeneous actual mechanisms being repeatedly represented by one shared generic security abstraction, not merely from the fact that the experimental protocol uses one query per CWE.
+
+Important metric-validity finding: CVE-2023-43668 achieved 446 vulnerable hits and 0 patched hits but was semantically misaligned; the query modeled generic IDOR while the actual mechanism was sensitive JDBC parameter-key filtering.

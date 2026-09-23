@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "pilot_cwe": "CWE-639",
+  "train_case_count": 7,
+  "purpose": "Pre-register semantic scoring before any M0/M1 model execution.",
+  "semantic_reference_policy": {
+    "reference": "Frozen Sept18 supervisor-taxonomy analysis",
+    "visible_during_generation": false,
+    "used_only_after_arm_outputs_frozen": true,
+    "hit_metrics_used_to_assign_semantic_label": false
+  },
+  "primary_arm_comparison": {
+    "unit": "case",
+    "arms": [
+      "M0_CONTROL_CWE_FIRST",
+      "M1_MECHANISM_FIRST"
+    ],
+    "final_query_labels": [
+      "ALIGNED",
+      "WRONG_VULNERABILITY_MECHANISM",
+      "INCOMPLETE_VULNERABILITY_MECHANISM",
+      "MISSING_VALIDATION_SEMANTICS",
+      "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "INSUFFICIENT_EVIDENCE_UNCLEAR"
+    ],
+    "mechanism_coverage_definition": "Count of the 7 cases labelled ALIGNED for the final query.",
+    "semantic_mismatch_count_definition": "Count of cases assigned any of the five supervisor mismatch/unclear categories.",
+    "primary_direction": "M1 higher ALIGNED coverage and lower mismatch count than M0."
+  },
+  "m1_plan_diagnostic": {
+    "applies_to": "M1 only because M0 has no mandatory explicit mechanism-decomposition stage.",
+    "plan_case_labels": [
+      "PLAN_REPRESENTS_MECHANISM",
+      "PLAN_MISSES_MECHANISM",
+      "PLAN_UNCLEAR"
+    ],
+    "plan_coverage_definition": "Count of cases whose actual mechanism is substantively represented by the frozen M1 semantic plan.",
+    "translation_labels": [
+      "PRESERVED_IN_CODEQL",
+      "LOST_IN_CODEQL_TRANSLATION",
+      "UPSTREAM_PLAN_FAILURE",
+      "UNRESOLVED"
+    ],
+    "translation_rule": "If M1 plan represents a case mechanism but final query does not, classify LOST_IN_CODEQL_TRANSLATION. If plan itself misses it, classify UPSTREAM_PLAN_FAILURE."
+  },
+  "generic_template_collapse": {
+    "case_level_generic_template": "User-controlled identifier -> ID-like resource access/modification without the decisive case-specific relation, validation, authorization, credential, protocol, or security-object semantics.",
+    "case_label": [
+      "GENERIC_TEMPLATE_MATCH",
+      "NOT_GENERIC_TEMPLATE_MATCH",
+      "UNCLEAR"
+    ],
+    "overall_binary_rule": "GENERIC_TEMPLATE_COLLAPSE=YES only if the generic-template mismatch is present in at least 4 of the 7 TRAIN cases; always report the raw 0-7 count as well."
+  },
+  "compile_handling": {
+    "semantic_scoring_independent_of_compilation": true,
+    "rule": "A non-compiling query may still be semantically inspected if its intended security property is clear. Compilation failure alone does not imply semantic mismatch. If intended property cannot be determined, use INSUFFICIENT_EVIDENCE_UNCLEAR."
+  },
+  "strict_success_policy": {
+    "strict_metric": "compile AND vulnerable_hits>=1 AND patched_hits=0",
+    "semantic_success_not_implied_by_strict_success": true,
+    "diagnostic_case": "CVE-2023-43668",
+    "rule": "Always report hit-based outcome separately from semantic label."
+  },
+  "anti_flexibility_rules": [
+    "Do not change labels after viewing M0/M1 outcomes.",
+    "Do not use token cost, compilation outcome, vulnerable hits, or patched hits to decide semantic alignment.",
+    "Do not credit a query merely for mentioning generic ID/resource vocabulary; decisive vulnerability semantics must be represented.",
+    "Do not penalize a query solely because one CWE-level query contains multiple branches; multi-family abstraction is permitted.",
+    "Do not use TEST information.",
+    "Do not expose frozen Sept18 human labels to either generation arm."
+  ],
+  "reporting": {
+    "required": [
+      "per-case final-query semantic label",
+      "per-case rationale",
+      "M0 mechanism coverage 0-7",
+      "M1 mechanism coverage 0-7",
+      "M0 semantic mismatch count",
+      "M1 semantic mismatch count",
+      "generic-template count per arm",
+      "generic-template binary per arm",
+      "M1 plan coverage 0-7",
+      "M1 plan-to-CodeQL translation diagnosis",
+      "compilation and strict-hit results separately",
+      "token/time/lookup/skill costs separately"
+    ]
+  },
+  "source_integrity": {
+    "preregistration_sha256": "4044946dda8ec9f798f32e776a56d5aaf53f405202ef1722ad8f85f397e78cec",
+    "evidence_snapshot_manifest_sha256": "d8eac85319eb7ede709da9422309ac9c5fb42188abb6a23d412524484d9a1043",
+    "evidence_snapshot_sha256": "c2b12964eab7af408e3ae46b2f2bfe1a5c5f8b4aafbc1a3e38b0e510c3a760cf"
+  },
+  "model_execution": false,
+  "codeql_execution": false,
+  "test_access": "FORBIDDEN"
+}

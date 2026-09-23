@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0",
+  "scope": "CWE-639 TRAIN ONLY",
+  "stage": "T3_BRANCH_INPUT_SLICING",
+  "preregistration_sha256": "7b26ad8ea5945b1e3c2fd4134f71d303cdeaaea2ae9c55c8d36cbf34e861dd87",
+  "source_hashes": {
+    "T2_contract": "65a4b3fd725a646b7300242253a482fbc0a9305fbb5ea8ae1de49dbe202a844b",
+    "M1_plan": "ea609259a9f8bbed4319249de29915e640fac59cf3631fc664452d092c16368f",
+    "A_level_evidence": "c2b12964eab7af408e3ae46b2f2bfe1a5c5f8b4aafbc1a3e38b0e510c3a760cf"
+  },
+  "branches": {
+    "idor_user_controlled_identifier_to_resource_operation": {
+      "input_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/compositional_branch_semantic_verifier_pilot_v1/branch_inputs_v1/idor_user_controlled_identifier_to_resource_operation/branch_input.json",
+      "input_sha256": "d154431c39985ddde3b40c792ffe2248dfe2dc97308e8dbb3e74ed809012298b",
+      "required_module_name": "T3BranchIdor",
+      "cves": [
+        "CVE-2020-23449",
+        "CVE-2023-2260",
+        "CVE-2023-30216",
+        "CVE-2023-32310"
+      ],
+      "A_level_record_count": 4,
+      "M1_section": 1
+    },
+    "bypass_via_missing_or_optional_identity_component": {
+      "input_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/compositional_branch_semantic_verifier_pilot_v1/branch_inputs_v1/bypass_via_missing_or_optional_identity_component/branch_input.json",
+      "input_sha256": "1cfa704277bd03b14d39287885736711aff4458c5e5fbf15f20fb417eb8a09e4",
+      "required_module_name": "T3BranchOptionalIdentity",
+      "cves": [
+        "CVE-2023-43668",
+        "CVE-2023-44981"
+      ],
+      "A_level_record_count": 2,
+      "M1_section": 2
+    },
+    "improper_authentication_certificate_reuse": {
+      "input_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/compositional_branch_semantic_verifier_pilot_v1/branch_inputs_v1/improper_authentication_certificate_reuse/branch_input.json",
+      "input_sha256": "891e242e059315421e70142d0d39ff6ae15b60a759717d964dc4ab8ca948ed89",
+      "required_module_name": "T3BranchCertificateReuse",
+      "cves": [
+        "CVE-2021-4142"
+      ],
+      "A_level_record_count": 1,
+      "M1_section": 3
+    }
+  },
+  "test_access": "FORBIDDEN"
+}

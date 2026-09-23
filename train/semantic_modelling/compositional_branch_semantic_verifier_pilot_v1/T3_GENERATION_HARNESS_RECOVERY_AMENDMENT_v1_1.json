@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "stage": "T3_GENERATION_HARNESS_RECOVERY_V1_1",
+  "scope": "TRAIN_ONLY",
+  "test_access": "FORBIDDEN",
+  "recovery_class": "HARNESS_API_REFERENCE_CORRECTION",
+  "scientific_treatment_changed": false,
+  "scientific_result_invalidated": false,
+  "model_execution": false,
+  "codeql_execution": false,
+  "query_generation": false,
+  "query_modification": false,
+  "scientific_rerun": false,
+  "failed_v1_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/compositional_branch_semantic_verifier_pilot_v1/COMPOSITIONAL_BRANCH_GENERATION_RUNNER_v1.py",
+  "failed_v1_sha256": "16a78fa1bbc352e790b8b2aa5077eefb0323957c0e2d3898b9c8d1d036846d47",
+  "corrected_v1_1_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/compositional_branch_semantic_verifier_pilot_v1/COMPOSITIONAL_BRANCH_GENERATION_RUNNER_v1_1.py",
+  "corrected_v1_1_sha256": "68fc5eda4e36cca3a89f94a1ffb94236566f377d63ff122b20d54d2aad5e89de",
+  "t2_runner_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/STRUCTURED_MECHANISM_CONTRACT_MAPPING_RUNNER_v1_1.py",
+  "t2_runner_sha256": "00c461b1f5f7ae1e5b89dbe95b2f7a86b208cc0fe77230fb6741a82f0727e832",
+  "original_runner_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/four_arm_runs_v1/implementation/run_four_arm_compilation_experiment_v1_3.py",
+  "original_runner_sha256": "07cd1058784778a2589d6301fbed4e4f78af4476c61b41b6606045c692388b63",
+  "step_2c_observation": "T2 uses orig.base.SYSTEM_PROMPT and original runner uses base.SYSTEM_PROMPT.",
+  "step_2e_observation": "T3 v1 get_system_prompt incorrectly resolved original.SYSTEM_PROMPT.",
+  "exact_recovery": "get_system_prompt now resolves original.base.SYSTEM_PROMPT.",
+  "helper_patch_count": 1,
+  "frozen_input_hashes": {
+    "preregistration": "7b26ad8ea5945b1e3c2fd4134f71d303cdeaaea2ae9c55c8d36cbf34e861dd87",
+    "idor": "d154431c39985ddde3b40c792ffe2248dfe2dc97308e8dbb3e74ed809012298b",
+    "optional_identity": "1cfa704277bd03b14d39287885736711aff4458c5e5fbf15f20fb417eb8a09e4",
+    "certificate": "891e242e059315421e70142d0d39ff6ae15b60a759717d964dc4ab8ca948ed89"
+  },
+  "next_allowed_action_after_successful_freeze": "IDOR_BRANCH_EXACTLY_ONE_INITIAL_GENERATION_CALL_ONLY"
+}

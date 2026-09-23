@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "pilot_cwe": "CWE-639",
+  "stage": "PRE_CODEQL_SEMANTIC_AUDIT",
+  "deviation": "Step 16A schema-diagnosis output printed complete historical Sept18 V3 CWE-639 rows, including historical V3 outcome/hit/category/mismatch fields, instead of only printing schema names.",
+  "impact": {
+    "M0_generation_contaminated": false,
+    "M1_generation_contaminated": false,
+    "current_M0_CodeQL_outcomes_exposed": false,
+    "current_M1_CodeQL_outcomes_exposed": false,
+    "TEST_exposed": false,
+    "human_semantic_scorer_historical_V3_blinding_preserved": false,
+    "pre_current_CodeQL_outcome_blinding_preserved": true
+  },
+  "recovery_policy": [
+    "Do not claim the human semantic audit was blinded to historical V3 labels.",
+    "Do claim that semantic scoring occurred before any CURRENT M0/M1 CodeQL evaluation.",
+    "Use only the frozen Actual Vulnerability Mechanism field as semantic reference.",
+    "Do not use historical V3 Outcome, Compiled, Vulnerable Hits, Patched Hits, Query Security Property, Concrete Mismatch, Root Cause Category, or Template Collapse fields to score M0/M1.",
+    "Freeze M0/M1 semantic scores before running current M0/M1 CodeQL evaluation."
+  ],
+  "scientific_status": "RECOVERABLE_PRE_OUTCOME_AUDIT_DEVIATION",
+  "model_execution": false,
+  "codeql_execution": false,
+  "test_access": "FORBIDDEN"
+}

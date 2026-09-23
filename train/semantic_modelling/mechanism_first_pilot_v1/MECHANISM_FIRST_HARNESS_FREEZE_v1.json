@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "pilot_cwe": "CWE-639",
+  "status": "PRE_EXECUTION_HARNESS_FROZEN",
+  "runner": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/MECHANISM_FIRST_PILOT_RUNNER_v1.py",
+    "sha256": "3499c92468e51894cae3b5e178461744396a31e01b49b4c264aea3493dd11a26"
+  },
+  "preregistration": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/MECHANISM_FIRST_EXPERIMENT_PREREGISTRATION_v1.json",
+    "sha256": "4044946dda8ec9f798f32e776a56d5aaf53f405202ef1722ad8f85f397e78cec"
+  },
+  "semantic_scoring_rubric": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/MECHANISM_FIRST_SEMANTIC_SCORING_RUBRIC_v1.json",
+    "sha256": "8cf6219632742f4310e5ddbd9fdcb61944f23bddb4b3f2eeb1e8bfa4e6e9e96d"
+  },
+  "matched_call_amendment": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/MECHANISM_FIRST_MATCHED_CALL_AMENDMENT_v1.json",
+    "sha256": "820a07ddc1246e56bdb3abebd1a8568c6acc544702c26d043c7afe3856fa594c"
+  },
+  "fixed_evidence_snapshot": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/fixed_evidence_snapshot_v1/CWE-639_A_LEVEL_INPUT_v1.json",
+    "sha256": "c2b12964eab7af408e3ae46b2f2bfe1a5c5f8b4aafbc1a3e38b0e510c3a760cf"
+  },
+  "fixed_evidence_snapshot_manifest": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/fixed_evidence_snapshot_v1/FIXED_EVIDENCE_SNAPSHOT_MANIFEST_v1.json",
+    "sha256": "d8eac85319eb7ede709da9422309ac9c5fb42188abb6a23d412524484d9a1043"
+  },
+  "treatment_arms": [
+    "M0_CONTROL_CWE_FIRST",
+    "M1_MECHANISM_FIRST"
+  ],
+  "support_stack_arm": "V3_LIBRARY_PLUS_AUTO_SKILL",
+  "max_repairs": 4,
+  "model_execution": false,
+  "codeql_execution": false,
+  "test_access": "FORBIDDEN"
+}

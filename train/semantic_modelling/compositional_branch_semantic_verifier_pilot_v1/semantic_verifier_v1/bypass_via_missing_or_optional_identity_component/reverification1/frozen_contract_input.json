@@ -1,0 +1,9 @@
+{
+  "mechanism_family_id": "bypass_via_missing_or_optional_identity_component",
+  "security_subject_or_principal": "Peer/client or user presenting identity/configuration keys",
+  "protected_target_or_security_object": "Cluster membership or security-sensitive configuration options",
+  "attacker_controlled_input_or_trigger": "User-controlled identity component (e.g., SASL instance part) or configuration key whose absence/value influences authorization",
+  "decisive_security_relation": "Authorization logic branches based on presence/value of the key; missing/optional component causes checks to be skipped",
+  "required_validation_or_authorization_condition": "Enforce presence and validation of the key/identity component before allowing privileged operation",
+  "security_sensitive_effect": "Join a cluster or toggle sensitive parameters without proper authorization"
+}

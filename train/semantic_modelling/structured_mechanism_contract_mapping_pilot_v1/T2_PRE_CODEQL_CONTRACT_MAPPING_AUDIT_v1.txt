@@ -1,0 +1,12 @@
+T2 PRE-CODEQL CONTRACT->QUERY MAPPING AUDIT
+
+Mechanism contracts: 3
+Claimed ENCODED: 1
+Claimed UNENCODABLE_OR_BOUNDED: 2
+Actual decisive relation encoded: 1
+Generic flow without decisive relation: 0
+Actual not encoded: 2
+All ENCODED claims supported: YES
+
+No T2 CodeQL outcome was viewed.
+TRAIN only. TEST not accessed.

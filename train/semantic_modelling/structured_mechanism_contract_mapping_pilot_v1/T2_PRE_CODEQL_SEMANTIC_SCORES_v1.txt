@@ -1,0 +1,30 @@
+T2 STRUCTURED-CONTRACT PRE-CODEQL SEMANTIC SCORING
+
+T2 semantic alignment: 0/7
+T2 semantic mismatches: 7/7
+Labels unchanged vs frozen T1: 7/7
+T2 plan-to-CodeQL translation loss: 6/7
+T2 upstream plan failure: 1/7
+
+Contract-family diagnostics:
+- Mechanism families generated: 3
+- Explicitly marked UNENCODABLE_OR_BOUNDED: 2/3
+- Semantically faithful mechanism-family encodings: 0/3
+
+Important distinction:
+The Step 4 lexical mapping audit reported one relation as encoded because
+ownership/authorization language and hasAuthorizationContext were present.
+Under semantic scoring, this does not count as a principal-to-target ownership
+or session-identity relation. Comments/select messages do not implement security
+semantics, and excluding methods with an auth context is not equivalent to
+checking ownership.
+
+RESULT:
+No semantic alignment improvement over T1 before CodeQL evaluation.
+
+POSITIVE DIAGNOSTIC CHANGE:
+T2 exposes two mechanism families as UNENCODABLE_OR_BOUNDED rather than silently
+claiming that a generic surrogate faithfully represents them.
+
+No T2 CodeQL outcome was viewed.
+TRAIN only. TEST not accessed.

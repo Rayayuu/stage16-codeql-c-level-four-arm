@@ -1,0 +1,14 @@
+SEPT18 STRICT-SUCCESS CATEGORY POLICY
+
+1. A hit-based STRICT_SUCCESS does not automatically imply semantic correctness.
+2. If a concrete mechanism/query mismatch is established, the case receives one of the supervisor's five categories.
+3. If retained TRAIN evidence is insufficient to establish semantic alignment, use 'Insufficient evidence / unclear'.
+4. N/A is reserved only for a strict-success case where no semantic mismatch is established and the evidence supports alignment.
+
+Final strict-success treatment:
+- CVE-2022-27047: N/A - semantically aligned strict success
+- CVE-2022-27477: Insufficient evidence / unclear
+- CVE-2023-41009: Insufficient evidence / unclear
+- CVE-2023-43668: Wrong vulnerability mechanism
+
+This policy separates hit-based outcome from semantic correctness and follows the supervisor's instruction to assign categories based on the actual mechanism/query mismatch.

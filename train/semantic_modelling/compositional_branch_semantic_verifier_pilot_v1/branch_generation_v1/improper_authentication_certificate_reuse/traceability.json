@@ -1,0 +1,43 @@
+{
+  "security_subject_or_principal": {
+    "executable_ql_elements": [
+      "isX509CertMethod(m)",
+      "isCertAttributeGetter(m)"
+    ],
+    "implementation_summary": "Identifies X509Certificate methods whose attributes (subject/SAN/serial) represent the holder's certificate used for authentication."
+  },
+  "protected_target_or_security_object": {
+    "executable_ql_elements": [
+      "isAuthEstablish(c.getCallee().(Method))"
+    ],
+    "implementation_summary": "Targets calls that establish or set an authenticated identity/session (authenticate/login/createSession/etc.)."
+  },
+  "attacker_controlled_input_or_trigger": {
+    "executable_ql_elements": [
+      "isCertAttrExpr(id)"
+    ],
+    "implementation_summary": "Treats certificate-derived attributes (subject/SAN/serial or X500Principal.getName) as externally supplied identity keys used to trigger authentication mapping."
+  },
+  "decisive_security_relation": {
+    "executable_ql_elements": [
+      "hasWeakMapping(c, id)",
+      "exists(int i | id = c.getArgument(i))",
+      "isCertAttrExpr(id)",
+      "isAuthEstablish(c.getCallee().(Method))"
+    ],
+    "implementation_summary": "Encodes the too-permissive mapping where certificate attributes are directly used as the identity argument in authentication/session-establishing calls."
+  },
+  "required_validation_or_authorization_condition": {
+    "executable_ql_elements": [
+      "not hasValidationInScope(c.getEnclosingCallable())"
+    ],
+    "implementation_summary": "Requires absence of validation/scoping in the same scope (e.g., verify/validate/check or EKU/KeyUsage/issuer/basic constraints checks) before mapping certificate attributes to identity."
+  },
+  "security_sensitive_effect": {
+    "executable_ql_elements": [
+      "result(DataFlow::Node sink)",
+      "sink = DataFlow::exprNode(id)"
+    ],
+    "implementation_summary": "Reports the certificate-derived identity reaching an authentication sink, implying potential abuse of authenticated access beyond intended scope."
+  }
+}

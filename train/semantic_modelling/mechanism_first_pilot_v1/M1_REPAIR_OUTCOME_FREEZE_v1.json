@@ -1,0 +1,113 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "pilot_cwe": "CWE-639",
+  "treatment_arm": "M1_MECHANISM_FIRST",
+  "support_stack_arm": "V3_LIBRARY_PLUS_AUTO_SKILL",
+  "stage": "MATCHED_REPAIR",
+  "status": "FROZEN_M1_REPAIR_OUTCOME",
+  "trajectory": {
+    "initial_compiled": "0/7",
+    "final_compiled": "7/7",
+    "initial_strict_success": "0/7",
+    "final_strict_success": "1/7",
+    "repair_count": 1,
+    "terminal_reason": "FULL_COMPILATION_REACHED",
+    "MAX_REPAIRS": 4,
+    "unused_repair_budget": 3
+  },
+  "final_failure_structure": {
+    "compilation_failure_count": 0,
+    "detection_failure_count": 2,
+    "discrimination_failure_count": 4,
+    "strict_success_count": 1
+  },
+  "repair1": {
+    "query_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M1_MECHANISM_FIRST/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter1.ql",
+    "query_sha256": "acae83472dc5016004077d25c095f5925c5ba1a35a64a1df097952f39bba4382",
+    "aggregate_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M1_MECHANISM_FIRST/query_evaluations_valid1/CWE-639/V3_LIBRARY_PLUS_AUTO_SKILL_repair1/aggregate.json",
+    "aggregate_sha256": "65c8c36f80c715def54d7ebc901ee35a91ae069e038659c58483d376cce07d32",
+    "pair_results_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M1_MECHANISM_FIRST/query_evaluations_valid1/CWE-639/V3_LIBRARY_PLUS_AUTO_SKILL_repair1/pair_results.csv",
+    "pair_results_sha256": "26b2189aa1ea4531d8d45c0a8132b544a0b7cef4daf2b22640193beffd72fe22",
+    "per_case": [
+      {
+        "cve_id": "CVE-2020-23449",
+        "compiled": true,
+        "vulnerable_hits": 15,
+        "patched_hits": 15,
+        "pair_success": false,
+        "failure_class": "DISCRIMINATION_FAILURE"
+      },
+      {
+        "cve_id": "CVE-2021-4142",
+        "compiled": true,
+        "vulnerable_hits": 212,
+        "patched_hits": 212,
+        "pair_success": false,
+        "failure_class": "DISCRIMINATION_FAILURE"
+      },
+      {
+        "cve_id": "CVE-2023-2260",
+        "compiled": true,
+        "vulnerable_hits": 410,
+        "patched_hits": 413,
+        "pair_success": false,
+        "failure_class": "DISCRIMINATION_FAILURE"
+      },
+      {
+        "cve_id": "CVE-2023-30216",
+        "compiled": true,
+        "vulnerable_hits": 0,
+        "patched_hits": 0,
+        "pair_success": false,
+        "failure_class": "DETECTION_FAILURE"
+      },
+      {
+        "cve_id": "CVE-2023-32310",
+        "compiled": true,
+        "vulnerable_hits": 158,
+        "patched_hits": 158,
+        "pair_success": false,
+        "failure_class": "DISCRIMINATION_FAILURE"
+      },
+      {
+        "cve_id": "CVE-2023-43668",
+        "compiled": true,
+        "vulnerable_hits": 211,
+        "patched_hits": 0,
+        "pair_success": true,
+        "failure_class": "STRICT_SUCCESS"
+      },
+      {
+        "cve_id": "CVE-2023-44981",
+        "compiled": true,
+        "vulnerable_hits": 0,
+        "patched_hits": 0,
+        "pair_success": false,
+        "failure_class": "DETECTION_FAILURE"
+      }
+    ]
+  },
+  "cost": {
+    "input_tokens": 7171,
+    "cached_input_tokens": 3200,
+    "uncached_input_tokens": 3971,
+    "output_tokens": 4991,
+    "reasoning_tokens": 3584,
+    "total_tokens": 12162,
+    "model_call_count": 1,
+    "whole_agent_wall_clock_sec": 43.372815,
+    "codeql_runtime_sec": 237.75,
+    "library_lookup_count": 0,
+    "retrieved_skill_count": 4,
+    "retrieved_skill_ids": [
+      "AUTO_FINAL_PLANNING_SYSTEMATIC_REFTYPE_NORMALIZATION",
+      "AUTO_FINAL_FUNCTIONAL_REPLACE_TYPEDECL_WITH_REFTYPE",
+      "AUTO_FINAL_PLANNING_RECEIVER_AND_HASBODY_AUDIT",
+      "AUTO_FINAL_ATOMIC_BIND_REFTYPE_BEFORE_NAME_CHECKS"
+    ]
+  },
+  "interpretation": "M1 required one V3-support repair to restore compilation from 0/7 to 7/7. Strict hit-based success increased from 0/7 to 1/7. This is a descriptive repair-stage outcome only; semantic correctness of the repaired query must be evaluated separately.",
+  "manual_query_modification": false,
+  "test_access": "FORBIDDEN"
+}

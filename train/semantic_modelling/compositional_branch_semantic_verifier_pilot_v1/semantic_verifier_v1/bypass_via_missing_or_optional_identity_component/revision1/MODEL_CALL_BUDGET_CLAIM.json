@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "scope": "CWE-639 TRAIN ONLY",
+  "stage": "T3_SINGLE_VERIFIER_GUIDED_REVISION",
+  "mechanism_family_id": "bypass_via_missing_or_optional_identity_component",
+  "model_call_budget_claimed": 1,
+  "model_call_may_execute_after_this_marker": true,
+  "automatic_rerun_allowed": false,
+  "compiler_outcome_visible": false,
+  "codeql_hit_results_visible": false,
+  "patched_vulnerable_comparison_visible": false,
+  "test_access": "FORBIDDEN"
+}

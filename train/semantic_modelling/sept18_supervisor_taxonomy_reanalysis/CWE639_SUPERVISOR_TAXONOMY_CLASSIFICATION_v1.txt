@@ -1,0 +1,83 @@
+========================================================================================================================
+CVE=CVE-2020-23449
+OUTCOME=DISCRIMINATION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=Newbee-Mall trusted a user identifier supplied through the update request when selecting which user record to modify. The patch instead obtains the authenticated user's identity from the HTTP session and uses that identity to select the update target.
+B_QUERY_SECURITY_PROPERTY=A user-controlled request identifier should not flow into an identifier-like parameter of a resource access or modification method.
+C_CONCRETE_MISMATCH=The query detects user-controlled identifiers reaching ID-like resource operations, but the actual security property is relational: the target user must be the same user as the authenticated session identity. Generic identifier taint alone cannot express that ownership relation.
+NEW_ROOT_CAUSE_CATEGORY=Missing relational/contextual semantics
+CATEGORY_RATIONALE=The missing information is the relationship between requested target identity and authenticated session identity.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_COLLAPSE_CANDIDATE=YES
+TEMPLATE_COLLAPSE_EVIDENCE=A requester-to-target identity relation is reduced to generic user-controlled-ID taint.
+
+========================================================================================================================
+CVE=CVE-2021-4142
+OUTCOME=DISCRIMINATION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=Candlepin could accept an Entitlement or SCA certificate for authentication where an Identity certificate was required. The patch inspects certificate OID extensions and rejects invalid certificate types.
+B_QUERY_SECURITY_PROPERTY=A user-controlled request identifier should not flow into an identifier-like parameter of a resource access or modification method.
+C_CONCRETE_MISMATCH=The generated query searches for request identifiers reaching ID-like resource operations. The actual vulnerability concerns authentication credential type and certificate validation, which is a different security property.
+NEW_ROOT_CAUSE_CATEGORY=Wrong vulnerability mechanism
+CATEGORY_RATIONALE=The query models IDOR-style resource identifiers while the vulnerability is certificate-type authentication.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_COLLAPSE_CANDIDATE=YES
+TEMPLATE_COLLAPSE_EVIDENCE=Certificate authentication is incorrectly collapsed into the generic CWE-639 identifier-flow template.
+
+========================================================================================================================
+CVE=CVE-2023-2260
+OUTCOME=DISCRIMINATION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=Alf.io administrative operations did not consistently carry the authenticated Principal into organization, user, API-key, password, and related operations. The patch propagates Principal so authorization decisions can be evaluated against the acting subject and target scope.
+B_QUERY_SECURITY_PROPERTY=A user-controlled request identifier should not flow into an identifier-like parameter of a resource access or modification method.
+C_CONCRETE_MISMATCH=The query tracks user-controlled identifiers into ID-like parameters, but it does not model the relationship among the authenticated Principal, organization scope, target resource, and permitted operation.
+NEW_ROOT_CAUSE_CATEGORY=Missing relational/contextual semantics
+CATEGORY_RATIONALE=The security decision depends on acting subject and resource/organization scope, not merely identifier taint.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_COLLAPSE_CANDIDATE=YES
+TEMPLATE_COLLAPSE_EVIDENCE=Principal-to-organization/resource authorization context is flattened into generic ID flow.
+
+========================================================================================================================
+CVE=CVE-2023-30216
+OUTCOME=DETECTION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=Newbee-Mall's updateUserInfo behavior could expose another user's account information because the relevant user object was selected through an externally influenced user ID rather than being strictly bound to the authenticated user's session identity.
+B_QUERY_SECURITY_PROPERTY=A user-controlled request identifier should not flow into an identifier-like parameter of a resource access or modification method.
+C_CONCRETE_MISMATCH=The query looks only for request identifiers reaching ID-like methods. The actual security property requires relating the authenticated session user, selected user record, and the user whose data is returned.
+NEW_ROOT_CAUSE_CATEGORY=Missing relational/contextual semantics
+CATEGORY_RATIONALE=The generic source/sink model omits ownership and session-identity relationships.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_COLLAPSE_CANDIDATE=YES
+TEMPLATE_COLLAPSE_EVIDENCE=Session ownership semantics are reduced to a generic identifier-flow template.
+
+========================================================================================================================
+CVE=CVE-2023-32310
+OUTCOME=DISCRIMINATION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=DataEase allowed a requester to replace a dashboard-share or message identifier with another user's identifier and delete or modify that other user's resource. The security requirement is that the requested dashboard/message belongs to, or is authorized for, the authenticated requester.
+B_QUERY_SECURITY_PROPERTY=A user-controlled request identifier should not flow into an identifier-like parameter of a resource access or modification method.
+C_CONCRETE_MISMATCH=The query captures the existence of a user-controlled identifier flowing into a resource operation, but it does not express the ownership relation between authenticated requester and dashboard/message. Therefore the same generic ID flows remain even when proper ownership enforcement is present.
+NEW_ROOT_CAUSE_CATEGORY=Missing relational/contextual semantics
+CATEGORY_RATIONALE=This is a classic requester-to-resource ownership property that cannot be represented by ID taint alone.
+CONFIDENCE=MEDIUM_HIGH
+GENERIC_TEMPLATE_COLLAPSE_CANDIDATE=YES
+TEMPLATE_COLLAPSE_EVIDENCE=The actual IDOR ownership check is collapsed into generic user-controlled-ID flow.
+
+========================================================================================================================
+CVE=CVE-2023-43668
+OUTCOME=STRICT_SUCCESS
+A_ACTUAL_VULNERABILITY_MECHANISM=Apache InLong could allow sensitive JDBC parameter checks to be bypassed through user-controlled parameter keys such as autoDeserialize and allowLoadLocalInfile. The patch changes the filtering/replacement logic applied to those sensitive parameter keys.
+B_QUERY_SECURITY_PROPERTY=A user-controlled request identifier should not flow into an identifier-like parameter of a resource access or modification method.
+C_CONCRETE_MISMATCH=The generated query models IDOR-style flow from a user-controlled resource identifier into an ID-like resource operation. The actual vulnerability is sensitive JDBC parameter-key filtering, which is a different security mechanism. Although the query achieved 446/0 strict metric success, the semantic mechanism does not align with the vulnerability.
+NEW_ROOT_CAUSE_CATEGORY=Wrong vulnerability mechanism
+CATEGORY_RATIONALE=The strict hit-based result is successful, but the query models a different security property from the patch; this is a metric success with semantic mismatch.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_COLLAPSE_CANDIDATE=YES
+TEMPLATE_COLLAPSE_EVIDENCE=Sensitive configuration-key filtering is collapsed into the same generic CWE-639 IDOR template, showing that hit-based success can occur despite semantic template mismatch.
+
+========================================================================================================================
+CVE=CVE-2023-44981
+OUTCOME=DETECTION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=ZooKeeper quorum SASL authorization could be skipped when the instance component of the SASL authentication ID was absent. This allowed an unauthorized endpoint to join the quorum and gain cluster-level read/write capability.
+B_QUERY_SECURITY_PROPERTY=A user-controlled request identifier should not flow into an identifier-like parameter of a resource access or modification method.
+C_CONCRETE_MISMATCH=The generated query searches for user-controlled resource identifiers flowing into ID-like access methods. The actual mechanism is conditional SASL peer authentication/authorization based on the structure of the authentication identity and quorum configuration.
+NEW_ROOT_CAUSE_CATEGORY=Wrong vulnerability mechanism
+CATEGORY_RATIONALE=The final query models an IDOR-style resource-access property unrelated to the quorum SASL authorization bypass.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_COLLAPSE_CANDIDATE=YES
+TEMPLATE_COLLAPSE_EVIDENCE=SASL quorum-peer authorization is incorrectly collapsed into generic resource-identifier taint.

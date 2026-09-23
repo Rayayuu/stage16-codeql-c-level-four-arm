@@ -1,0 +1,46 @@
+T3 COMPOSITIONAL BRANCH GENERATION + SEMANTIC VERIFIER
+
+Scope
+CWE-639 TRAIN only. TEST remains forbidden.
+
+Research question
+Given the exact frozen T2 mechanism contracts, can we reduce semantic loss by
+generating one CodeQL branch per mechanism family, semantically verifying each
+branch before composition, and then deterministically composing only accepted
+branches into the required single CWE-level query?
+
+Frozen comparator
+T2:
+- semantic alignment: 0/7
+- translation loss: 6/7
+- faithfully encoded mechanism families: 0/3
+- initial compilation: 0/7
+- final compilation after V3 repair: 7/7
+- strict success: 0/7
+- detection failure: 7/7
+
+Treatment
+1. Three independent mechanism-family branch generations.
+2. One semantic verifier call per generated branch.
+3. At most one verifier-guided semantic revision per rejected branch.
+4. Exactly one reverification after such a revision.
+5. Rejected branches are not replaced by generic surrogates.
+6. Accepted branch code is deterministically composed without model rewriting.
+7. Independent human semantic scoring is frozen before any T3 CodeQL result.
+8. Only afterwards is TRAIN CodeQL evaluation allowed.
+9. If compilation fails, the same V3 compiler-repair protocol may run with
+   MAX_REPAIRS=4.
+10. Any repaired final query is semantically rescored.
+
+Primary outcome
+Does pre-CodeQL semantic alignment improve above frozen T2 0/7, or does
+translation loss fall below frozen T2 6/7?
+
+Important control
+The T3 generator receives the semantic mechanism contracts but does NOT receive
+T2 codeql_mappings, T2 encoded-status decisions, prior queries, hit results,
+human semantic labels, repair trajectories, repository source, B/C evidence,
+or TEST data.
+
+The final scientific requirement remains one CWE-level query for all seven
+CWE-639 TRAIN pairs.

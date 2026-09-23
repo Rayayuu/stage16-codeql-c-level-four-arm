@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "status": "FINAL_MECHANISM_FIRST_PILOT_FROZEN",
+  "artifacts": {
+    "synthesis_json": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/FINAL_MECHANISM_FIRST_PILOT_SYNTHESIS_v1.json",
+      "sha256": "022fd57287f713b58fcf4c8aed46d42c903f06dfc5e5c36f22081ea6ddcd9004"
+    },
+    "synthesis_txt": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/FINAL_MECHANISM_FIRST_PILOT_SYNTHESIS_v1.txt",
+      "sha256": "6a0d8e65b9f014f251513d880665996ef80b894a56f1b97f6e33c782276e1d61"
+    },
+    "supervisor_report_md": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/FINAL_MECHANISM_FIRST_PILOT_SUPERVISOR_REPORT_v1.md",
+      "sha256": "f98adbe4b451c6d8cb2a7a2238183f5b0f3030e575576fa0bf4c59a7e24b336c"
+    }
+  },
+  "source_artifacts": {
+    "prereg": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/MECHANISM_FIRST_EXPERIMENT_PREREGISTRATION_v1.txt",
+      "sha256": "450a9b92f1f07e277349d0e85156dc4926964ae5c763733e071610c6ecc6a8d6"
+    },
+    "rubric": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/MECHANISM_FIRST_SEMANTIC_SCORING_RUBRIC_v1.json",
+      "sha256": "8cf6219632742f4310e5ddbd9fdcb61944f23bddb4b3f2eeb1e8bfa4e6e9e96d"
+    },
+    "pre_semantic": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/PRE_CODEQL_SEMANTIC_SCORES_v1.json",
+      "sha256": "af8714c27e966fb646b2a857d29e26385b13de2c5450275003362dff22184204"
+    },
+    "m0_initial_freeze": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/M0_VALID_INITIAL_EVALUATION_FREEZE_v1.json",
+      "sha256": "b37cfc5230a92111260461468bc693d583ac7d12b4ce879ab56af8c43c3c2374"
+    },
+    "m1_initial_freeze": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/M1_VALID_INITIAL_EVALUATION_FREEZE_v1.json",
+      "sha256": "e768ac1c399a929f336fe4e537cf07fcf7f38ffb9fa69f308ec33e9b4eea621c"
+    },
+    "initial_compare": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/M0_M1_INITIAL_COMPARISON_v1.json",
+      "sha256": "012d97c636dbf6d41a615a383bca55cfae887002aa8ec12358200ba190e553a8"
+    },
+    "m0_repair_freeze": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/M0_REPAIR_OUTCOME_FREEZE_v1.json",
+      "sha256": "d7bc42fb1a0f8ed5614e303fd298806bcaef3d30063a1d836418fa7eb47cdc40"
+    },
+    "m1_repair_freeze": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/M1_REPAIR_OUTCOME_FREEZE_v1.json",
+      "sha256": "c20ca06a54c42676f9a359fc9602385af6f6119d1b11c98c75540b9840b09947"
+    },
+    "repair_compare": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/M0_M1_REPAIR_COMPARISON_v1.json",
+      "sha256": "df82597125794efd43489c4fbd343e42a192685991deaa9a4225078759444543"
+    },
+    "final_semantic": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/FINAL_REPAIRED_QUERY_SEMANTIC_SCORES_v1.json",
+      "sha256": "90bfb01ca1fc9e4477e9ab63c51fc525587f50a9aaee538151675240dfd8e0f4"
+    },
+    "final_semantic_freeze": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/FINAL_REPAIRED_QUERY_SEMANTIC_SCORING_FREEZE_v1.json",
+      "sha256": "3aabdbc80370b5dc3b8c2e5d226293c7d739d8db34d3f0ac6199a3aaae655d99"
+    }
+  },
+  "scientific_status": {
+    "CWE639_train_pilot_complete": true,
+    "semantic_claim_allowed_for_CWE639_train_pilot": true,
+    "generalization_to_other_CWEs_allowed": false,
+    "test_access_allowed": false
+  },
+  "test_access": "FORBIDDEN"
+}

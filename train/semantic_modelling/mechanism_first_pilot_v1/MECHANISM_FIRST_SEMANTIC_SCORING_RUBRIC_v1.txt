@@ -1,0 +1,24 @@
+MECHANISM-FIRST SEMANTIC SCORING RUBRIC v1
+
+PRIMARY COMPARISON
+- Score final M0 and M1 queries independently on all 7 frozen CWE-639 TRAIN mechanisms.
+- ALIGNED count = mechanism coverage.
+- Other five supervisor categories = semantic mismatch/unclear.
+
+M1-ONLY DIAGNOSTIC
+- Score the explicit mechanism-first plan before considering generated CodeQL.
+- PLAN_REPRESENTS_MECHANISM + final ALIGNED => PRESERVED_IN_CODEQL.
+- PLAN_REPRESENTS_MECHANISM + final mismatch => LOST_IN_CODEQL_TRANSLATION.
+- PLAN_MISSES_MECHANISM => UPSTREAM_PLAN_FAILURE.
+
+GENERIC TEMPLATE COLLAPSE
+- Per case: generic user-ID -> ID-like resource operation without decisive relation/validation/context semantics.
+- Report raw count 0-7.
+- Overall YES only if present in >=4/7 cases.
+
+GUARDRAILS
+- Semantic score is independent of compile/hit metrics.
+- Strict hit success does not imply semantic correctness.
+- CVE-2023-43668 must be inspected explicitly.
+- Sept18 human analysis is post-run reference only.
+- TEST remains forbidden.

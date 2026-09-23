@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "stage": "T2_INITIAL_COMPILATION_FAILURE_AUDIT",
+  "initial_query_sha256": "0f3188139935f0cec116efab018b3d0035ebd01a9fc0b81d68ae80a194ac1631",
+  "initial_aggregate_sha256": "0bb82947000cc76474f4c7746b5110e38228dbacc8d85185391c5c94f63d6a89",
+  "initial_compact_result": {
+    "train_case_count": 7,
+    "compiled_pair_count": 0,
+    "successful_pair_count": 0,
+    "all_pairs_success": false,
+    "codeql_runtime_sec": 209.11
+  },
+  "compiler_feedback_item_count": 4,
+  "normalized_signature_count": 4,
+  "normalized_signatures": [
+    "{\"cve_id\": \"CVE\", \"log_tail\": \" =====\\n<PATH> query run --database=<PATH> --output=<PATH> --search-path=<PATH> <PATH> data extensions.\\nFinished resolving data extensions.\\nLoading data extensions.\\nFinished loading data extensions.\\nNot caching stages during query-loading, since max heap size is only 1566 MB.\\nCompiling query plan for <PATH> QLDoc comment is not attached to any QL element (<PATH> getDeclaringCallable() cannot be resolved for type Variable::Parameter (<PATH> could not resolve type VariableAccess (<PATH> getTarget() cannot be resolved for type Expr::FieldAccess (<PATH> getDeclaringCallable() cannot be resolved for type Variable::Parameter (<PATH> 'n' is not bound to a value. (<PATH> 'n' is not bound to a value. (<PATH>\", \"side\": \"patched\"}",
+    "{\"cve_id\": \"CVE\", \"log_tail\": \"=====\\n<PATH> query run --database=<PATH> --output=<PATH> --search-path=<PATH> <PATH> data extensions.\\nFinished resolving data extensions.\\nLoading data extensions.\\nFinished loading data extensions.\\nNot caching stages during query-loading, since max heap size is only 1748 MB.\\nCompiling query plan for <PATH> QLDoc comment is not attached to any QL element (<PATH> getDeclaringCallable() cannot be resolved for type Variable::Parameter (<PATH> could not resolve type VariableAccess (<PATH> getTarget() cannot be resolved for type Expr::FieldAccess (<PATH> getDeclaringCallable() cannot be resolved for type Variable::Parameter (<PATH> 'n' is not bound to a value. (<PATH> 'n' is not bound to a value. (<PATH>\", \"side\": \"patched\"}",
+    "{\"cve_id\": \"CVE\", \"log_tail\": \"===\\n<PATH> query run --database=<PATH> --output=<PATH> --search-path=<PATH> <PATH> data extensions.\\nFinished resolving data extensions.\\nLoading data extensions.\\nFinished loading data extensions.\\nNot caching stages during query-loading, since max heap size is only 1566 MB.\\nCompiling query plan for <PATH> QLDoc comment is not attached to any QL element (<PATH> getDeclaringCallable() cannot be resolved for type Variable::Parameter (<PATH> could not resolve type VariableAccess (<PATH> getTarget() cannot be resolved for type Expr::FieldAccess (<PATH> getDeclaringCallable() cannot be resolved for type Variable::Parameter (<PATH> 'n' is not bound to a value. (<PATH> 'n' is not bound to a value. (<PATH>\", \"side\": \"vulnerable\"}",
+    "{\"cve_id\": \"CVE\", \"log_tail\": \"==\\n<PATH> query run --database=<PATH> --output=<PATH> --search-path=<PATH> <PATH> data extensions.\\nFinished resolving data extensions.\\nLoading data extensions.\\nFinished loading data extensions.\\nNot caching stages during query-loading, since max heap size is only 1748 MB.\\nCompiling query plan for <PATH> QLDoc comment is not attached to any QL element (<PATH> getDeclaringCallable() cannot be resolved for type Variable::Parameter (<PATH> could not resolve type VariableAccess (<PATH> getTarget() cannot be resolved for type Expr::FieldAccess (<PATH> getDeclaringCallable() cannot be resolved for type Variable::Parameter (<PATH> 'n' is not bound to a value. (<PATH> 'n' is not bound to a value. (<PATH>\", \"side\": \"vulnerable\"}"
+  ],
+  "interpretation": "The initial T2 query fails compilation for all seven TRAIN pairs. The repair protocol therefore operates from the exact frozen initial query and frozen compiler feedback without rerunning the initial CodeQL evaluation.",
+  "model_execution": false,
+  "codeql_execution": false,
+  "test_access": "FORBIDDEN"
+}

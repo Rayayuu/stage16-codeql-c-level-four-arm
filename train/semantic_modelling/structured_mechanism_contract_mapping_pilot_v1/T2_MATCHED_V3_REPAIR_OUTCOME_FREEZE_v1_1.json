@@ -1,0 +1,127 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "pilot": "T2_STRUCTURED_CONTRACT_MAPPING",
+  "stage": "T2_MATCHED_V3_REPAIR_OUTCOME_V1_1",
+  "status": "FROZEN",
+  "provenance_recovery": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/STRUCTURED_MECHANISM_CONTRACT_T2_MATCHED_V3_PROVENANCE_RECOVERY_v1_1.json",
+    "sha256": "78df00a2eb995c6410c46363920c201899b2d526aaddf079d5d24748bf9e76f3",
+    "full_provenance_valid": true
+  },
+  "initial": {
+    "query_sha256": "0f3188139935f0cec116efab018b3d0035ebd01a9fc0b81d68ae80a194ac1631",
+    "compiled_pair_count": 0,
+    "semantic_alignment": "0/7",
+    "initial_CodeQL_rerun": false
+  },
+  "repair": {
+    "support_arm": "V3_LIBRARY_PLUS_AUTO_SKILL",
+    "max_repairs": 4,
+    "repair_count": 2,
+    "terminal_reason": "FULL_COMPILATION_REACHED",
+    "final_query_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter2.ql",
+    "final_query_sha256": "1588edf8750d913766c2004e8c25e8ae28e158f99d26a55c305263018a0c88bc",
+    "final_aggregate_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/query_evaluations/CWE-639/V3_LIBRARY_PLUS_AUTO_SKILL_repair2/aggregate.json",
+    "final_aggregate_sha256": "1a424d4ff2b6938bde1491532331576aa4727e4e44e0141d40314da57ed59013",
+    "final_compiled_pair_count": 7,
+    "strict_success_count": 0,
+    "compilation_failure_count": 0,
+    "detection_failure_count": 7,
+    "discrimination_failure_count": 0,
+    "per_case": [
+      {
+        "cve_id": "CVE-2020-23449",
+        "compiled": true,
+        "vulnerable_hits": 0,
+        "patched_hits": 0,
+        "pair_success": false,
+        "failure_class": "DETECTION_FAILURE"
+      },
+      {
+        "cve_id": "CVE-2021-4142",
+        "compiled": true,
+        "vulnerable_hits": 0,
+        "patched_hits": 0,
+        "pair_success": false,
+        "failure_class": "DETECTION_FAILURE"
+      },
+      {
+        "cve_id": "CVE-2023-2260",
+        "compiled": true,
+        "vulnerable_hits": 0,
+        "patched_hits": 0,
+        "pair_success": false,
+        "failure_class": "DETECTION_FAILURE"
+      },
+      {
+        "cve_id": "CVE-2023-30216",
+        "compiled": true,
+        "vulnerable_hits": 0,
+        "patched_hits": 0,
+        "pair_success": false,
+        "failure_class": "DETECTION_FAILURE"
+      },
+      {
+        "cve_id": "CVE-2023-32310",
+        "compiled": true,
+        "vulnerable_hits": 0,
+        "patched_hits": 0,
+        "pair_success": false,
+        "failure_class": "DETECTION_FAILURE"
+      },
+      {
+        "cve_id": "CVE-2023-43668",
+        "compiled": true,
+        "vulnerable_hits": 0,
+        "patched_hits": 0,
+        "pair_success": false,
+        "failure_class": "DETECTION_FAILURE"
+      },
+      {
+        "cve_id": "CVE-2023-44981",
+        "compiled": true,
+        "vulnerable_hits": 0,
+        "patched_hits": 0,
+        "pair_success": false,
+        "failure_class": "DETECTION_FAILURE"
+      }
+    ]
+  },
+  "repair_stage_cost": {
+    "tokens": {
+      "input_tokens": 25198,
+      "cached_input_tokens": 8704,
+      "uncached_input_tokens": 16494,
+      "output_tokens": 11821,
+      "reasoning_tokens": 8192,
+      "total_tokens": 37019,
+      "model_call_count": 3
+    },
+    "whole_agent_wall_clock_sec": 153.382146,
+    "codeql_runtime_sec": 370.1,
+    "library_lookup_count": 1,
+    "retrieved_skill_count": 8
+  },
+  "artifacts": {
+    "arm_outcome": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/ARM_OUTCOME.json",
+      "sha256": "cb7ca6d07b7fe13e77724e0c34324a20934cfcd0b98577748f753e09055a9e84"
+    },
+    "process_log": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/T2_MATCHED_V3_REPAIR_V1_1_PROCESS_LOG.txt",
+      "sha256": "e457e47d2a351927351331844fae232cf657483ff47d7e68a07b3e80d2b54cc6"
+    }
+  },
+  "semantic_status": {
+    "pre_CodeQL_semantic_alignment": "0/7",
+    "pre_CodeQL_translation_loss": "6/7",
+    "pre_CodeQL_semantic_score_modified_by_hits": false,
+    "post_repair_semantic_scoring_pending": true
+  },
+  "controls": {
+    "manual_query_modification": false,
+    "scientific_rerun": false,
+    "test_access": "FORBIDDEN"
+  }
+}

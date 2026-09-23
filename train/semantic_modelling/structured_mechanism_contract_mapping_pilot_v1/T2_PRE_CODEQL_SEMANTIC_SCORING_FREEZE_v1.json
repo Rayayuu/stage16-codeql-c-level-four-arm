@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "status": "FROZEN_PRE_CODEQL_SEMANTIC_SCORING",
+  "query": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/t2_generation_v1/CWE-639/iter0.ql",
+    "sha256": "0f3188139935f0cec116efab018b3d0035ebd01a9fc0b81d68ae80a194ac1631"
+  },
+  "contract": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/t2_generation_v1/CWE-639/structured_contract_mapping.json",
+    "sha256": "65a4b3fd725a646b7300242253a482fbc0a9305fbb5ea8ae1de49dbe202a844b"
+  },
+  "mapping_audit": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/T2_PRE_CODEQL_CONTRACT_MAPPING_AUDIT_v1.json",
+    "sha256": "1257b3052fbef88bc873d967b4d6786659f3ce1e1bc9c31f57da4622f965cb12"
+  },
+  "mapping_semantic_addendum": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/T2_MAPPING_AUDIT_SEMANTIC_INTERPRETATION_ADDENDUM_v1.json",
+    "sha256": "3cd2cef1154e1bd2ceab403497c6f1638153f53453f8bcca809166771dd00e8e"
+  },
+  "semantic_scores": {
+    "json": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/T2_PRE_CODEQL_SEMANTIC_SCORES_v1.json",
+      "sha256": "1b7262f2ac9961718f315df0aed29e1416b46f87d945f67daf5f1b2cbd09b947"
+    },
+    "csv": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/T2_PRE_CODEQL_SEMANTIC_SCORES_v1.csv",
+      "sha256": "eef502171accfbac4fc30d452b696154b4827de65ab732dfe6d4b43d53fc420e"
+    },
+    "txt": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/T2_PRE_CODEQL_SEMANTIC_SCORES_v1.txt",
+      "sha256": "e3c811a5bf138a2e50f2e9530193ce6e63ac58c9e8ccca5d516aea6aa131f316"
+    }
+  },
+  "summary": {
+    "T2_semantic_alignment": 0,
+    "T2_semantic_mismatch_count": 7,
+    "semantic_label_unchanged_vs_T1": 7,
+    "T2_generic_template_case_count": 5,
+    "T2_plan_to_CodeQL_translation_loss": 6,
+    "T2_upstream_plan_failure_count": 1,
+    "contract_families_claimed_unencodable_or_bounded": 2,
+    "faithfully_encoded_mechanism_family_count": 0,
+    "semantic_alignment_improvement_vs_T1": 0
+  },
+  "codeql_outcome_visible_before_scoring": false,
+  "model_execution": false,
+  "codeql_execution": false,
+  "test_access": "FORBIDDEN"
+}

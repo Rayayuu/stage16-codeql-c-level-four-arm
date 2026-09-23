@@ -1,0 +1,163 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "pilot_name": "STRUCTURED_MECHANISM_CONTRACT_TO_CODEQL_MAPPING",
+  "pilot_cwe": "CWE-639",
+  "research_question": "Given the exact same frozen mechanism-first plan, can a structured mechanism-contract-to-CodeQL mapping intervention reduce plan-to-CodeQL semantic translation loss and generic-template collapse compared with the frozen T1 semantic-preservation translation?",
+  "motivation_from_frozen_prior_results": {
+    "mechanism_first_plan_coverage": "6/7",
+    "T0_semantic_alignment": "0/7",
+    "T1_pre_repair_semantic_alignment": "0/7",
+    "T1_post_repair_semantic_alignment": "0/7",
+    "T1_generic_template_count": "7/7",
+    "T1_translation_loss": "6/7",
+    "T1_compilation_initial": "0/7",
+    "T1_compilation_final": "7/7",
+    "T1_strict_success_final": "0/7",
+    "T1_detection_failure_final": "7/7",
+    "frozen_interpretation": "Prompt-only semantic-preservation instructions did not preserve mechanism semantics. Compilation repair restored executability without restoring semantic alignment."
+  },
+  "arms": {
+    "T1_FROZEN_COMPARATOR": {
+      "status": "FROZEN_NO_RERUN",
+      "description": "Existing semantic-preservation translation treatment. All generation, evaluation, repair and semantic results remain frozen."
+    },
+    "T2_STRUCTURED_CONTRACT_MAPPING": {
+      "status": "NEW_TREATMENT",
+      "description": "Use the exact same frozen M1 mechanism-first plan, but require an explicit structured mechanism contract and a one-to-one mapping from each represented mechanism family to concrete CodeQL predicates and/or query branches before producing the single CWE-level query."
+    }
+  },
+  "fixed_inputs": {
+    "frozen_M1_plan_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/arm_outputs_v1/M1_MECHANISM_FIRST/CWE-639/planning_stage.txt",
+    "frozen_M1_plan_sha256": "ea609259a9f8bbed4319249de29915e640fac59cf3631fc664452d092c16368f",
+    "A_level_evidence_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/synthesis_inputs/CWE-639_A_LEVEL_INPUT_v1.json",
+    "A_level_evidence_sha256": "c2b12964eab7af408e3ae46b2f2bfe1a5c5f8b4aafbc1a3e38b0e510c3a760cf",
+    "semantic_rubric_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/MECHANISM_FIRST_SEMANTIC_SCORING_RUBRIC_v1.json",
+    "semantic_rubric_sha256": "8cf6219632742f4310e5ddbd9fdcb61944f23bddb4b3f2eeb1e8bfa4e6e9e96d",
+    "same_model_family": "openai/gpt-5",
+    "same_cwe": "CWE-639",
+    "same_train_cases": 7,
+    "same_CodeQL_environment": true,
+    "same_java_all_version": "9.0.3",
+    "same_pack_aware_evaluation": true,
+    "same_V3_repair_support_stack": true,
+    "same_MAX_REPAIRS": 4,
+    "one_CWE_level_query": true
+  },
+  "T2_intervention": {
+    "required_mechanism_contract_fields": [
+      "mechanism_family_id",
+      "security_subject_or_principal",
+      "protected_target_or_security_object",
+      "attacker_controlled_input_or_trigger",
+      "decisive_security_relation",
+      "required_validation_or_authorization_condition",
+      "security_sensitive_effect"
+    ],
+    "required_translation_mapping_fields": [
+      "mechanism_family_id",
+      "source_predicate_or_condition",
+      "target_predicate_or_condition",
+      "relation_or_validation_predicate",
+      "query_branch_or_join_condition",
+      "encoded_status",
+      "bounded_limitation_if_not_encoded"
+    ],
+    "generation_constraints": [
+      "Every mechanism family represented in the frozen plan must receive its own explicit mechanism contract.",
+      "Every represented mechanism family must map to an explicit CodeQL predicate, relation, validation condition, or dedicated query branch.",
+      "Distinct mechanisms may not be silently collapsed into one generic user-controlled-ID/key to sensitive-operation taint template unless their security subject, target, decisive relation, validation condition, and effect are actually equivalent.",
+      "A generic identifier flow is not sufficient evidence of encoding ownership, session identity, certificate validation, JDBC parameter filtering, SASL protocol semantics, or organization scope.",
+      "If a mechanism cannot be faithfully encoded using the available CodeQL model, it must be explicitly marked UNENCODABLE_OR_BOUNDED rather than replaced with a generic surrogate.",
+      "The final output remains one CWE-level query; multi-branch structure is allowed and preferred when mechanisms are heterogeneous.",
+      "CVE IDs, repository paths, commit hashes, per-CVE hard-coded constants and per-CVE queries remain forbidden."
+    ],
+    "generation_output_requirement": "One model call must produce both a machine-readable contract/mapping artifact and exactly one CWE-level CodeQL query through a controlled write tool. No automatic semantic regeneration is permitted."
+  },
+  "blinding_and_leakage_controls": {
+    "generation_must_not_see": [
+      "Sept18 human semantic labels",
+      "human actual-mechanism reference labels",
+      "T0 semantic scores",
+      "T1 semantic scores",
+      "T1 CodeQL hits",
+      "T1 repair trajectories",
+      "patched-source B evidence",
+      "bounded-source C evidence",
+      "repository source",
+      "TEST data"
+    ],
+    "generation_may_see": [
+      "frozen M1 mechanism-first plan",
+      "same A-level TRAIN evidence",
+      "structured contract/mapping instructions"
+    ],
+    "post_generation_semantic_scoring_before_CodeQL": true,
+    "post_generation_contract_mapping_audit_before_CodeQL": true
+  },
+  "primary_outcomes": [
+    "semantic_alignment_count",
+    "semantic_mismatch_count",
+    "generic_template_count",
+    "generic_template_collapse",
+    "plan_to_CodeQL_translation_loss_count",
+    "represented_mechanism_contract_coverage",
+    "represented_mechanism_actual_CodeQL_mapping_coverage"
+  ],
+  "secondary_outcomes": [
+    "compiled_pair_count",
+    "strict_success_count",
+    "detection_failure_count",
+    "discrimination_failure_count",
+    "repair_count",
+    "repair_convergence",
+    "model_tokens",
+    "model_wall_clock_sec",
+    "CodeQL_runtime_sec",
+    "library_lookup_count",
+    "retrieved_skill_count"
+  ],
+  "success_criteria_for_intervention": {
+    "primary": "T2 must reduce plan-to-CodeQL translation loss and/or increase semantic alignment relative to frozen T1 without relying solely on hit-based success.",
+    "generic_collapse": "Reduction in generic-template matches is treated as supporting evidence, not sufficient by itself.",
+    "compilation": "Compilation is secondary. A semantically better but initially non-compiling query may undergo the same frozen V3 repair protocol."
+  },
+  "semantic_scoring_policy": {
+    "same_frozen_rubric": true,
+    "pre_CodeQL_scoring_required": true,
+    "post_repair_scoring_required_if_repair_occurs": true,
+    "hit_metrics_do_not_override_semantic_labels": true,
+    "strict_success_does_not_imply_semantic_correctness": true
+  },
+  "repair_policy": {
+    "only_if_initial_query_not_fully_compiled": true,
+    "support_arm": "V3_LIBRARY_PLUS_AUTO_SKILL",
+    "MAX_REPAIRS": 4,
+    "manual_query_modification": false,
+    "per_CVE_tuning": false,
+    "stop_when_full_compilation_reached": true
+  },
+  "scientific_boundaries": {
+    "claim_scope": "CWE-639 TRAIN pilot only",
+    "generalization_to_other_CWEs": false,
+    "generalization_to_TEST": false,
+    "TEST_access": "FORBIDDEN",
+    "no_rerun_of_frozen_T0_or_T1": true
+  },
+  "planned_sequence": [
+    "freeze preregistration",
+    "build T2 generation harness",
+    "dry self-check and leakage audit",
+    "run exactly one T2 structured contract+query generation call",
+    "freeze generation artifacts",
+    "perform pre-CodeQL contract mapping audit",
+    "perform pre-CodeQL semantic scoring",
+    "run initial TRAIN CodeQL evaluation",
+    "if required run matched V3 repair",
+    "perform post-repair semantic scoring",
+    "freeze final T1-vs-T2 synthesis"
+  ],
+  "model_execution": false,
+  "codeql_execution": false,
+  "test_access": "FORBIDDEN"
+}

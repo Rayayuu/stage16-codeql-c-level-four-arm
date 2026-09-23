@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "pilot_cwe": "CWE-639",
+  "treatment_arm": "M0_CONTROL_CWE_FIRST",
+  "stage": "INITIAL_CODEQL_EVALUATION",
+  "status": "INVALID_PARTIAL_INFRASTRUCTURE_ATTEMPT",
+  "discovered_during": "STEP_19A_EXISTING_OUTPUT_AUDIT",
+  "provenance_note": "The exact originating invocation of this partial directory is not assigned from the current terminal trace. The filesystem artifacts demonstrate that CodeQL was launched for two database evaluations before the evaluator stopped without producing aggregate.json or pair_results.csv.",
+  "partial_directory": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M0_CONTROL_CWE_FIRST/query_evaluations/CWE-639/shared_initial",
+  "codeql_execution": {
+    "occurred": true,
+    "observed_log_count": 2,
+    "complete_train_evaluation": false,
+    "aggregate_exists": false,
+    "pair_results_exists": false,
+    "shared_initial_state_exists": false
+  },
+  "observed_logs": {
+    "vulnerable": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M0_CONTROL_CWE_FIRST/query_evaluations/CWE-639/shared_initial/CVE-2020-23449_vulnerable.log",
+      "sha256": "becc5e6c0645728cf0384750ca28d40e6b7f91edd6c839a02742639f23667f84",
+      "size": 2462,
+      "compile_errors": [
+        "ERROR: could not resolve type TypeDecl (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M0_CONTROL_CWE_FIRST/shared_initial/CWE-639/iter0.ql:70,37-45)",
+        "ERROR: getDeclaringCallable() cannot be resolved for type Variable::Parameter (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M0_CONTROL_CWE_FIRST/shared_initial/CWE-639/iter0.ql:72,13-33)",
+        "ERROR: could not resolve type TypeDecl (/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M0_CONTROL_CWE_FIRST/shared_initial/CWE-639/iter0.ql:14,34-42)"
+      ],
+      "interpretation": "The first vulnerable database reached query compilation and reported CodeQL compilation errors."
+    },
+    "patched": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M0_CONTROL_CWE_FIRST/query_evaluations/CWE-639/shared_initial/CVE-2020-23449_patched.log",
+      "sha256": "e005f91e62cc1467d45dde3eaba1e7b0dd3c017a86849ad5d48d604f61f9377b",
+      "size": 818,
+      "reached_resolving_data_extensions": true,
+      "compile_outcome_observed": false,
+      "interpretation": "The patched database invocation started but the log ended before a compilation outcome was recorded."
+    }
+  },
+  "scientific_policy": {
+    "counts_as_valid_initial_evaluation": false,
+    "counts_toward_compilation_metric": false,
+    "counts_toward_detection_metric": false,
+    "counts_toward_discrimination_metric": false,
+    "counts_toward_strict_success": false,
+    "repair_feedback_allowed": false,
+    "query_modification_allowed_from_this_attempt": false
+  },
+  "recovery_policy": {
+    "delete_partial_directory": false,
+    "overwrite_partial_directory": false,
+    "reuse_partial_results": false,
+    "next_valid_evaluation_requires_new_output_namespace": true,
+    "proposed_namespace": "M0_CONTROL_CWE_FIRST/query_evaluations_valid1",
+    "same_frozen_iter0_query_required": true,
+    "same_evaluator_semantics_required": true
+  },
+  "test_access": "FORBIDDEN"
+}

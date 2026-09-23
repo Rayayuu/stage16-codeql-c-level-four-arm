@@ -1,0 +1,35 @@
+MECHANISM-FIRST CWE-639 MATCHED REPAIR COMPARISON v1
+
+M0 CONTROL
+- repairs: 1
+- final compiled: 7/7
+- final strict success: 0/7
+- compilation failures: 0/7
+- detection failures: 7/7
+- discrimination failures: 0/7
+- total repair tokens: 17424
+- model calls: 2
+- library lookups: 2
+- retrieved skills: 4
+- agent wall: 28.613034s
+- CodeQL runtime: 149.11s
+
+M1 MECHANISM-FIRST
+- repairs: 1
+- final compiled: 7/7
+- final strict success: 1/7
+- compilation failures: 0/7
+- detection failures: 2/7
+- discrimination failures: 4/7
+- total repair tokens: 12162
+- model calls: 1
+- library lookups: 0
+- retrieved skills: 4
+- agent wall: 43.372815s
+- CodeQL runtime: 237.75s
+
+INTERPRETATION
+Both arms restored full compilation after one repair.
+M1 has one strict hit-based success while M0 has zero.
+This is descriptive only because repair targeted compilation, not semantic correctness.
+Final semantic scoring is required before any mechanism-first semantic claim.

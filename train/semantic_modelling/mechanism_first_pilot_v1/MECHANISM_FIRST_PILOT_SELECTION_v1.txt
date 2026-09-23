@@ -1,0 +1,15 @@
+MECHANISM-FIRST PILOT SELECTION
+
+Selected pilot: CWE-639
+
+Research question:
+Can mechanism-first semantic planning reduce within-CWE generic-template over-generalization and improve semantic alignment while preserving compilation success?
+
+Selection criteria:
+1. Strong template-collapse evidence.
+2. Minimal insufficient evidence.
+3. Small TRAIN scope.
+4. Coverage of relational/contextual semantics.
+5. Diagnostic strict-success semantic mismatch.
+
+Constraint: one CWE-level query must still cover all TRAIN pairs; TEST remains forbidden.

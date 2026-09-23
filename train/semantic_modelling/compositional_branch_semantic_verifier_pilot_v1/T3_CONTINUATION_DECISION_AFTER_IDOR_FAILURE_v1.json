@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "stage": "T3_CONTINUATION_DECISION_AFTER_IDOR_FAILURE",
+  "scope": "CWE-639 TRAIN ONLY",
+  "test_access": "FORBIDDEN",
+  "decision": "CONTINUE_REMAINING_PREREGISTERED_MECHANISM_FAMILIES",
+  "basis": "The preregistered treatment defines three independently generated mechanism families, exactly one initial generation call per family, and no cross-family stopping rule after one branch failure.",
+  "idor_status": {
+    "family": "idor_user_controlled_identifier_to_resource_operation",
+    "initial_call_consumed": true,
+    "rerun_allowed": false,
+    "usable_branch": false,
+    "semantic_verifier_applicable": false,
+    "failure_class": "INITIAL_GENERATION_OUTPUT_PROTOCOL_FAILURE"
+  },
+  "remaining_families": [
+    "bypass_via_missing_or_optional_identity_component",
+    "improper_authentication_certificate_reuse"
+  ],
+  "remaining_initial_generation_call_budget": 2,
+  "continuation_constraints": {
+    "idor_must_not_be_rerun": true,
+    "exactly_one_initial_call_per_remaining_family": true,
+    "generate_one_family_at_a_time": true,
+    "freeze_and_audit_each_family_before_next": true,
+    "no_manual_query_modification": true,
+    "no_per_CVE_tuning": true,
+    "no_CodeQL_before_pre_CodeQL_semantic_freeze": true,
+    "test_access": "FORBIDDEN"
+  },
+  "next_allowed_action": "OPTIONAL_IDENTITY_BRANCH_EXACTLY_ONE_INITIAL_GENERATION_CALL_ONLY",
+  "certificate_generation_allowed_before_optional_identity_freeze": false,
+  "evidence": {
+    "preregistration_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/compositional_branch_semantic_verifier_pilot_v1/COMPOSITIONAL_BRANCH_SEMANTIC_VERIFIER_PREREGISTRATION_v1.json",
+    "preregistration_sha256": "7b26ad8ea5945b1e3c2fd4134f71d303cdeaaea2ae9c55c8d36cbf34e861dd87",
+    "idor_failure_freeze_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/compositional_branch_semantic_verifier_pilot_v1/T3_IDOR_SINGLE_CALL_PROTOCOL_FAILURE_FREEZE_v1.json",
+    "idor_failure_freeze_sha256": "4fa1efb5200ab3952aa254e6190cfaa1edea31731f6cc79461b445396d0e079e",
+    "runner_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/compositional_branch_semantic_verifier_pilot_v1/COMPOSITIONAL_BRANCH_GENERATION_RUNNER_v1_1.py",
+    "runner_sha256": "68fc5eda4e36cca3a89f94a1ffb94236566f377d63ff122b20d54d2aad5e89de",
+    "harness_freeze_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/compositional_branch_semantic_verifier_pilot_v1/T3_GENERATION_HARNESS_V1_1_FREEZE.json",
+    "harness_freeze_sha256": "d720054d4d707092060349bd4827131d37372d63a039722e02615b86007e18d4"
+  },
+  "model_execution": false,
+  "codeql_execution": false,
+  "query_modification": false,
+  "scientific_rerun": false
+}

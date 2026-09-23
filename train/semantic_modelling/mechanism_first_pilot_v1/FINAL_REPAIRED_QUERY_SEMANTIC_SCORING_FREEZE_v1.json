@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "stage": "FINAL_REPAIRED_QUERY_SEMANTIC_SCORING_FREEZE",
+  "status": "FROZEN",
+  "artifacts": {
+    "json": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/FINAL_REPAIRED_QUERY_SEMANTIC_SCORES_v1.json",
+      "sha256": "90bfb01ca1fc9e4477e9ab63c51fc525587f50a9aaee538151675240dfd8e0f4"
+    },
+    "csv": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/FINAL_REPAIRED_QUERY_SEMANTIC_SCORES_v1.csv",
+      "sha256": "13ff0a04826d44acfe5871031829235970ea24071adf93c0902c0932f8af55c3"
+    },
+    "txt": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/FINAL_REPAIRED_QUERY_SEMANTIC_SCORES_v1.txt",
+      "sha256": "cf93bcc987b04e7bae7a8afa72160164df81a7703138bebe7bd8622f0213747d"
+    }
+  },
+  "inputs": {
+    "rubric": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/MECHANISM_FIRST_SEMANTIC_SCORING_RUBRIC_v1.json",
+      "sha256": "8cf6219632742f4310e5ddbd9fdcb61944f23bddb4b3f2eeb1e8bfa4e6e9e96d"
+    },
+    "pre": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/PRE_CODEQL_SEMANTIC_SCORES_v1.json",
+      "sha256": "af8714c27e966fb646b2a857d29e26385b13de2c5450275003362dff22184204"
+    },
+    "m0q": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M0_CONTROL_CWE_FIRST/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter1.ql",
+      "sha256": "780e1c69af4a0cefe3acce07f5fbc3d26816b866a62a505a1467094086492284"
+    },
+    "m1q": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M1_MECHANISM_FIRST/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter1.ql",
+      "sha256": "acae83472dc5016004077d25c095f5925c5ba1a35a64a1df097952f39bba4382"
+    },
+    "m0f": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/M0_REPAIR_OUTCOME_FREEZE_v1.json",
+      "sha256": "d7bc42fb1a0f8ed5614e303fd298806bcaef3d30063a1d836418fa7eb47cdc40"
+    },
+    "m1f": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/M1_REPAIR_OUTCOME_FREEZE_v1.json",
+      "sha256": "c20ca06a54c42676f9a359fc9602385af6f6119d1b11c98c75540b9840b09947"
+    },
+    "repair_compare": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/M0_M1_REPAIR_COMPARISON_v1.json",
+      "sha256": "df82597125794efd43489c4fbd343e42a192685991deaa9a4225078759444543"
+    }
+  },
+  "primary_result": {
+    "M0_semantic_alignment": "0/7",
+    "M1_semantic_alignment": "0/7",
+    "M0_semantic_mismatches": "7/7",
+    "M1_semantic_mismatches": "7/7",
+    "M0_generic_template_collapse": "YES",
+    "M1_generic_template_collapse": "YES",
+    "M1_plan_mechanism_coverage": "6/7",
+    "M1_plan_to_CodeQL_translation_loss": "6/7",
+    "M1_upstream_plan_failure": "1/7"
+  },
+  "diagnostic": {
+    "CVE-2023-43668_M1_strict_hit_success": true,
+    "CVE-2023-43668_M1_semantically_aligned": false
+  },
+  "test_access": "FORBIDDEN"
+}

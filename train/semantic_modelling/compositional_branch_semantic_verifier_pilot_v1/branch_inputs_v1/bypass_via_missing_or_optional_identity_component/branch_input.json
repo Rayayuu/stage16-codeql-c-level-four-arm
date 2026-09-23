@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0",
+  "pilot": "T3_COMPOSITIONAL_BRANCH_GENERATION_PLUS_SEMANTIC_VERIFIER",
+  "scope": "CWE-639 TRAIN ONLY",
+  "mechanism_family_id": "bypass_via_missing_or_optional_identity_component",
+  "required_module_name": "T3BranchOptionalIdentity",
+  "required_branch_interface": "predicate result(DataFlow::Node sink)",
+  "preregistered_train_cves": [
+    "CVE-2023-43668",
+    "CVE-2023-44981"
+  ],
+  "mechanism_contract": {
+    "mechanism_family_id": "bypass_via_missing_or_optional_identity_component",
+    "security_subject_or_principal": "Peer/client or user presenting identity/configuration keys",
+    "protected_target_or_security_object": "Cluster membership or security-sensitive configuration options",
+    "attacker_controlled_input_or_trigger": "User-controlled identity component (e.g., SASL instance part) or configuration key whose absence/value influences authorization",
+    "decisive_security_relation": "Authorization logic branches based on presence/value of the key; missing/optional component causes checks to be skipped",
+    "required_validation_or_authorization_condition": "Enforce presence and validation of the key/identity component before allowing privileged operation",
+    "security_sensitive_effect": "Join a cluster or toggle sensitive parameters without proper authorization"
+  },
+  "M1_plan_excerpt": "2) Bypass due to missing/optional identity component causing skipped authorization (ZooKeeper SASL instance part, InLong sensitive param checks)\n- Subject/principal: Cluster peer or client presenting an identity or configuration keys\n- Target resource: Cluster membership/data tree (ZooKeeper) or security-sensitive configuration (InLong)\n- Security relation: Authorization contingent on presence/value of a key/instance component\n- Validation/authorization boundary: Authorization check branches based on optional/missing key; missing value leads to skip\n- Propagation/context: User-controlled/missing key flows into authorization logic influencing whether checks execute\n- Vulnerable vs fixed: Fix enforces presence/validation of the key and prevents bypass\n- Representable by simple user-controlled-ID → operation taint template: Only partially; direct data-flow into sensitive actions still applies when the key value is used without robust validation, but full control-flow-based skip is harder to encode generically without repository context",
+  "A_level_evidence_records": [
+    {
+      "benchmark_id": "CWE-639::CVE-2023-43668",
+      "cve_id": "CVE-2023-43668",
+      "historical_advisory_path": "advisories/github-reviewed/2023/10/GHSA-rp6x-ggw6-8g56/GHSA-rp6x-ggw6-8g56.json",
+      "pre_cutoff_commit": "308f9cac9cc06441474024e0bdf71c1cc6149811",
+      "raw_advisory": "{\n  \"schema_version\": \"1.4.0\",\n  \"id\": \"GHSA-rp6x-ggw6-8g56\",\n  \"modified\": \"2023-11-14T21:13:48Z\",\n  \"published\": \"2023-10-16T09:30:19Z\",\n  \"aliases\": [\n    \"CVE-2023-43668\"\n  ],\n  \"summary\": \"Authorization Bypass in Apache InLong\",\n  \"details\": \"Authorization Bypass Through User-Controlled Key vulnerability in Apache InLong.This issue affects Apache InLong: from 1.4.0 through 1.8.0, \\n\\nsome sensitive params  checks will be bypassed, like \\\"autoDeserizalize\\\",\\\"allowLoadLocalInfile\\\"....\\n\\n.  \\n\\nUsers are advised to upgrade to Apache InLong's 1.9.0 or cherry-pick [1] to solve it.\\n\\n[1]  https://github.com/apache/inlong/pull/8604 \\n\\n\",\n  \"severity\": [\n    {\n      \"type\": \"CVSS_V3\",\n      \"score\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H\"\n    }\n  ],\n  \"affected\": [\n    {\n      \"package\": {\n        \"ecosystem\": \"Maven\",\n        \"name\": \"org.apache.inlong:manager-pojo\"\n      },\n      \"ranges\": [\n        {\n          \"type\": \"ECOSYSTEM\",\n          \"events\": [\n            {\n              \"introduced\": \"1.4.0\"\n            },\n            {\n              \"fixed\": \"1.9.0\"\n            }\n          ]\n        }\n      ]\n    }\n  ],\n  \"references\": [\n    {\n      \"type\": \"ADVISORY\",\n      \"url\": \"https://nvd.nist.gov/vuln/detail/CVE-2023-43668\"\n    },\n    {\n      \"type\": \"WEB\",\n      \"url\": \"https://github.com/apache/inlong/pull/8604\"\n    },\n    {\n      \"type\": \"WEB\",\n      \"url\": \"https://github.com/apache/inlong/commit/46c4e96a84839bd540f47c659c9d8576e393da02\"\n    },\n    {\n      \"type\": \"PACKAGE\",\n      \"url\": \"https://github.com/apache/inlong\"\n    },\n    {\n      \"type\": \"WEB\",\n      \"url\": \"https://lists.apache.org/thread/16gtk7rpdm1rof075ro83fkrnhbzn5sh\"\n    }\n  ],\n  \"database_specific\": {\n    \"cwe_ids\": [\n      \"CWE-502\",\n      \"CWE-639\"\n    ],\n    \"severity\": \"CRITICAL\",\n    \"github_reviewed\": true,\n    \"github_reviewed_at\": \"2023-10-17T14:23:26Z\",\n    \"nvd_published_at\": \"2023-10-16T09:15:10Z\"\n  }\n}",
+      "sha256_raw": "406069856f10346484be26cd48e15fa6efc4164ab516ffef931b976417db3daf"
+    },
+    {
+      "benchmark_id": "CWE-639::CVE-2023-44981",
+      "cve_id": "CVE-2023-44981",
+      "historical_advisory_path": "advisories/github-reviewed/2023/10/GHSA-7286-pgfv-vxvh/GHSA-7286-pgfv-vxvh.json",
+      "pre_cutoff_commit": "308f9cac9cc06441474024e0bdf71c1cc6149811",
+      "raw_advisory": "{\n  \"schema_version\": \"1.4.0\",\n  \"id\": \"GHSA-7286-pgfv-vxvh\",\n  \"modified\": \"2023-11-01T09:30:53Z\",\n  \"published\": \"2023-10-11T12:30:27Z\",\n  \"aliases\": [\n    \"CVE-2023-44981\"\n  ],\n  \"summary\": \"Authorization Bypass Through User-Controlled Key vulnerability in Apache ZooKeeper\",\n  \"details\": \"Authorization Bypass Through User-Controlled Key vulnerability in Apache ZooKeeper. If SASL Quorum Peer authentication is enabled in ZooKeeper (quorum.auth.enableSasl=true), the authorization is done by verifying that the instance part in SASL authentication ID is listed in zoo.cfg server list. The instance part in SASL auth ID is optional and if it's missing, like 'eve@EXAMPLE.COM', the authorization check will be skipped. As a result an arbitrary endpoint could join the cluster and begin propagating counterfeit changes to the leader, essentially giving it complete read-write access to the data tree. Quorum Peer authentication is not enabled by default.\\n\\nUsers are recommended to upgrade to version 3.9.1, 3.8.3, 3.7.2, which fixes the issue.\\n\\nAlternately ensure the ensemble election/quorum communication is protected by a firewall as this will mitigate the issue.\\n\\nSee the documentation for more details on correct cluster administration.\\n\",\n  \"severity\": [\n    {\n      \"type\": \"CVSS_V3\",\n      \"score\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N\"\n    }\n  ],\n  \"affected\": [\n    {\n      \"package\": {\n        \"ecosystem\": \"Maven\",\n        \"name\": \"org.apache.zookeeper:zookeeper\"\n      },\n      \"ranges\": [\n        {\n          \"type\": \"ECOSYSTEM\",\n          \"events\": [\n            {\n              \"introduced\": \"0\"\n            },\n            {\n              \"fixed\": \"3.7.2\"\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"package\": {\n        \"ecosystem\": \"Maven\",\n        \"name\": \"org.apache.zookeeper:zookeeper\"\n      },\n      \"ranges\": [\n        {\n          \"type\": \"ECOSYSTEM\",\n          \"events\": [\n            {\n              \"introduced\": \"3.8.0\"\n            },\n            {\n              \"fixed\": \"3.8.3\"\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"package\": {\n        \"ecosystem\": \"Maven\",\n        \"name\": \"org.apache.zookeeper:zookeeper\"\n      },\n      \"ranges\": [\n        {\n          \"type\": \"ECOSYSTEM\",\n          \"events\": [\n            {\n              \"introduced\": \"3.9.0\"\n            },\n            {\n              \"fixed\": \"3.9.1\"\n            }\n          ]\n        }\n      ]\n    }\n  ],\n  \"references\": [\n    {\n      \"type\": \"ADVISORY\",\n      \"url\": \"https://nvd.nist.gov/vuln/detail/CVE-2023-44981\"\n    },\n    {\n      \"type\": \"PACKAGE\",\n      \"url\": \"https://github.com/apache/zookeeper\"\n    },\n    {\n      \"type\": \"WEB\",\n      \"url\": \"https://lists.apache.org/thread/wf0yrk84dg1942z1o74kd8nycg6pgm5b\"\n    },\n    {\n      \"type\": \"WEB\",\n      \"url\": \"https://lists.debian.org/debian-lts-announce/2023/10/msg00029.html\"\n    },\n    {\n      \"type\": \"WEB\",\n      \"url\": \"https://www.debian.org/security/2023/dsa-5544\"\n    },\n    {\n      \"type\": \"WEB\",\n      \"url\": \"http://www.openwall.com/lists/oss-security/2023/10/11/4\"\n    }\n  ],\n  \"database_specific\": {\n    \"cwe_ids\": [\n      \"CWE-639\"\n    ],\n    \"severity\": \"CRITICAL\",\n    \"github_reviewed\": true,\n    \"github_reviewed_at\": \"2023-10-11T20:36:50Z\",\n    \"nvd_published_at\": \"2023-10-11T12:15:11Z\"\n  }\n}",
+      "sha256_raw": "4095ed7cad88744d8c0647e2f30189ac936378c1ad4fe9674eddd913b8e542f8"
+    }
+  ],
+  "generation_visibility_controls": {
+    "T2_codeql_mappings_visible": false,
+    "T2_encoded_status_visible": false,
+    "prior_queries_visible": false,
+    "prior_hit_results_visible": false,
+    "human_semantic_labels_visible": false,
+    "B_evidence_visible": false,
+    "C_evidence_visible": false,
+    "repository_source_visible": false,
+    "TEST_visible": false
+  }
+}

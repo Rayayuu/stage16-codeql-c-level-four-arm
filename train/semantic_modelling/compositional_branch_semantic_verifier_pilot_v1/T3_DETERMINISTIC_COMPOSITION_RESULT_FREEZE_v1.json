@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "stage": "T3_DETERMINISTIC_COMPOSITION_RESULT_FREEZE",
+  "scope": "CWE-639 TRAIN ONLY",
+  "status": "FROZEN_DETERMINISTIC_COMPOSITION_SUCCESS",
+  "required_final_artifact": "ONE CWE-LEVEL CODEQL QUERY",
+  "composition_method": "DETERMINISTIC_NO_MODEL_UNIFICATION",
+  "composition_harness_sha256": "854f66267291c2aa86ddf80eeb6507749f98dfd25cd8286ea92fdba2c57a03b3",
+  "composition_harness_freeze_sha256": "7b5513e377d566bb1e647a8ef4445db79d21bfbcb12ae5c5440fd74927eda320",
+  "final_query_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/compositional_branch_semantic_verifier_pilot_v1/deterministic_composition_v1/CWE-639_T3_DETERMINISTIC_COMPOSED.ql",
+  "final_query_sha256": "6364a2e74e1973e1bba37ffa0b7f6f478371a3aa7220b13de2d6b9938e3828ae",
+  "composition_manifest_sha256": "3ca19f6bc7ebb236ca5198a80b2caa10c84866688bc8fb300e894bf25ec75a16",
+  "branch_preservation_audit_sha256": "a84475277d7804b226adc50cd31eaf4404076661f3b59fd9a73c38e266e91f48",
+  "composition_stdout_log_sha256": "3ca19f6bc7ebb236ca5198a80b2caa10c84866688bc8fb300e894bf25ec75a16",
+  "accepted_family_count": 1,
+  "accepted_families": [
+    "improper_authentication_certificate_reuse"
+  ],
+  "accepted_branch_sha256": "d5982d4d72b403c6fa9b481b3b021f1089f760e9419e737b7a0c2637e5a35193",
+  "rejected_or_failed_families": [
+    "idor_user_controlled_identifier_to_resource_operation",
+    "bypass_via_missing_or_optional_identity_component"
+  ],
+  "accepted_branch_byte_for_byte_preserved": true,
+  "rejected_branch_substitution": false,
+  "generic_surrogate_inserted": false,
+  "semantic_rewriting_during_composition": false,
+  "manual_query_editing": false,
+  "model_calls_during_composition": 0,
+  "human_semantic_scoring_completed": false,
+  "human_semantic_scoring_required_before_codeql": true,
+  "codeql_execution": false,
+  "test_access": "FORBIDDEN",
+  "next_allowed_action": "PREPARE_FROZEN_HUMAN_SEMANTIC_SCORING_PACKET"
+}

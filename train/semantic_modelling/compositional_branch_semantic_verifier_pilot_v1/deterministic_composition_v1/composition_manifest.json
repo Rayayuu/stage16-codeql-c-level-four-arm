@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "stage": "T3_DETERMINISTIC_COMPOSITION",
+  "scope": "CWE-639 TRAIN ONLY",
+  "required_final_artifact": "ONE CWE-LEVEL CODEQL QUERY",
+  "composition_method": "DETERMINISTIC_NO_MODEL_UNIFICATION",
+  "model_calls": 0,
+  "semantic_rewriting_during_composition": false,
+  "manual_query_editing": false,
+  "accepted_families": [
+    "improper_authentication_certificate_reuse"
+  ],
+  "rejected_or_failed_families": [
+    {
+      "family": "idor_user_controlled_identifier_to_resource_operation",
+      "disposition": "INITIAL_GENERATION_OUTPUT_PROTOCOL_FAILURE"
+    },
+    {
+      "family": "bypass_via_missing_or_optional_identity_component",
+      "disposition": "UNENCODABLE_OR_REJECTED"
+    }
+  ],
+  "generic_surrogate_inserted": false,
+  "accepted_branch_source_sha256": "d5982d4d72b403c6fa9b481b3b021f1089f760e9419e737b7a0c2637e5a35193",
+  "accepted_branch_traceability_sha256": "437859469f1e553b89719a1267485813794b5dc616ce3bc7f57ae410aecf6733",
+  "final_query_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/compositional_branch_semantic_verifier_pilot_v1/deterministic_composition_v1/CWE-639_T3_DETERMINISTIC_COMPOSED.ql",
+  "final_query_sha256": "6364a2e74e1973e1bba37ffa0b7f6f478371a3aa7220b13de2d6b9938e3828ae",
+  "branch_preservation_audit_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/compositional_branch_semantic_verifier_pilot_v1/deterministic_composition_v1/branch_preservation_audit.json",
+  "branch_preservation_audit_sha256": "a84475277d7804b226adc50cd31eaf4404076661f3b59fd9a73c38e266e91f48",
+  "human_semantic_scoring_required_before_codeql": true,
+  "codeql_execution": false,
+  "test_access": "FORBIDDEN",
+  "next_allowed_action": "AUDIT_DETERMINISTIC_COMPOSITION_AND_PREPARE_HUMAN_SEMANTIC_SCORING"
+}

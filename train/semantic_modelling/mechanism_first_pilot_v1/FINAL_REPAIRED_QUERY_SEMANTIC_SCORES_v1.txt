@@ -1,0 +1,41 @@
+MECHANISM-FIRST CWE-639 FINAL REPAIRED-QUERY SEMANTIC SCORING v1
+
+PRIMARY SEMANTIC OUTCOME
+M0 mechanism coverage: 0/7
+M1 mechanism coverage: 0/7
+M0 semantic mismatches: 7/7
+M1 semantic mismatches: 7/7
+M0 generic-template matches: 7/7
+M1 generic-template matches: 7/7
+M0 generic-template collapse: YES
+M1 generic-template collapse: YES
+
+M1 PLAN DIAGNOSTIC
+Plan mechanism coverage: 6/7
+Plan misses: 1/7
+Plan-to-CodeQL translation losses: 6/7
+Upstream plan failures: 1/7
+
+REPAIR EFFECT ON SEMANTICS
+M0 semantic labels unchanged after repair: 7/7
+M1 semantic labels unchanged after repair: 7/7
+Semantic alignment delta M1-M0: 0
+
+OPERATIONAL OUTCOME
+M0: compiled 7/7, strict success 0/7
+M1: compiled 7/7, strict success 1/7
+
+DIAGNOSTIC
+CVE-2023-43668:
+M1 hit-based result = STRICT_SUCCESS
+M1 semantic label = WRONG_VULNERABILITY_MECHANISM
+
+INTERPRETATION
+Mechanism-first planning represented 6/7 actual mechanisms at the plan stage,
+but the repaired unified CodeQL query still collapsed to a generic web-input
+identifier/key -> sensitive-operation abstraction. Compilation repair restored
+executability but did not improve semantic alignment. The CVE-2023-43668 result
+shows that strict hit-based success can coexist with semantic mismatch.
+
+SCOPE
+TRAIN ONLY. CWE-639 pilot only. TEST not accessed.

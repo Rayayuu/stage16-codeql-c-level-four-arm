@@ -1,0 +1,103 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "pilot_cwe": "CWE-639",
+  "stage": "T2_PRE_CODEQL_SEMANTIC_SCORING",
+  "query_sha256": "0f3188139935f0cec116efab018b3d0035ebd01a9fc0b81d68ae80a194ac1631",
+  "contract_sha256": "65a4b3fd725a646b7300242253a482fbc0a9305fbb5ea8ae1de49dbe202a844b",
+  "cases": [
+    {
+      "cve": "CVE-2020-23449",
+      "label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "rationale": "T2 models request-derived IDs flowing to generic sensitive operations and suppresses results when an authentication context is present, but it does not encode the decisive equality/authorization relation between the requested user ID and the authenticated session identity.",
+      "t2_contract_family": "idor_user_controlled_identifier_to_resource_operation",
+      "t2_mechanism_encoding": "GENERIC_IDOR_FLOW_WITHOUT_DECISIVE_OWNERSHIP_OR_SESSION_RELATION",
+      "actual_mechanism": "Authorization depends on binding the requested target user identity to the authenticated session identity.",
+      "T1_pre_label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "T2_label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "semantic_change_vs_T1": "UNCHANGED"
+    },
+    {
+      "cve": "CVE-2021-4142",
+      "label": "WRONG_VULNERABILITY_MECHANISM",
+      "rationale": "The certificate-reuse mechanism is explicitly marked UNENCODABLE_OR_BOUNDED and no certificate type/OID/SCA-versus-identity validation appears in the query.",
+      "t2_contract_family": "improper_authentication_certificate_reuse",
+      "t2_mechanism_encoding": "NOT_ENCODED",
+      "actual_mechanism": "Authentication must distinguish the permitted identity certificate from an SCA certificate using certificate type/OID/attribute validation.",
+      "T1_pre_label": "WRONG_VULNERABILITY_MECHANISM",
+      "T2_label": "WRONG_VULNERABILITY_MECHANISM",
+      "semantic_change_vs_T1": "UNCHANGED"
+    },
+    {
+      "cve": "CVE-2023-2260",
+      "label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "rationale": "The generic IDOR branch does not model authenticated Principal propagation or the subject-to-organization/user/API-key/password target relation and scope.",
+      "t2_contract_family": "idor_user_controlled_identifier_to_resource_operation",
+      "t2_mechanism_encoding": "GENERIC_IDOR_FLOW_WITHOUT_SUBJECT_SCOPE_TARGET_RELATION",
+      "actual_mechanism": "The authenticated Principal must be propagated and enforced across organization/user/API-key/password operations with the correct subject-scope-target relation.",
+      "T1_pre_label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "T2_label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "semantic_change_vs_T1": "UNCHANGED"
+    },
+    {
+      "cve": "CVE-2023-30216",
+      "label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "rationale": "The query does not require the selected/exposed user to derive from the authenticated session user; auth-context presence is only used as an exclusion.",
+      "t2_contract_family": "idor_user_controlled_identifier_to_resource_operation",
+      "t2_mechanism_encoding": "GENERIC_IDOR_FLOW_WITHOUT_SESSION_IDENTITY_RELATION",
+      "actual_mechanism": "The selected or exposed user must derive from the authenticated session user rather than an externally supplied user identifier.",
+      "T1_pre_label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "T2_label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "semantic_change_vs_T1": "UNCHANGED"
+    },
+    {
+      "cve": "CVE-2023-32310",
+      "label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "rationale": "The query recognizes ID-like arguments and sensitive operations but does not encode ownership/authorization between requester and dashboard/message resource.",
+      "t2_contract_family": "idor_user_controlled_identifier_to_resource_operation",
+      "t2_mechanism_encoding": "GENERIC_IDOR_FLOW_WITHOUT_RESOURCE_OWNERSHIP_RELATION",
+      "actual_mechanism": "Dashboard/message operations require an ownership or authorization relation between requester and target resource ID.",
+      "T1_pre_label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "T2_label": "MISSING_RELATIONAL_CONTEXTUAL_SEMANTICS",
+      "semantic_change_vs_T1": "UNCHANGED"
+    },
+    {
+      "cve": "CVE-2023-43668",
+      "label": "WRONG_VULNERABILITY_MECHANISM",
+      "rationale": "The frozen plan grouped this with an optional/missing identity/configuration-key family, but the generated query contains no JDBC sensitive-parameter filtering or dangerous-parameter validation semantics.",
+      "t2_contract_family": "bypass_via_missing_or_optional_identity_component",
+      "t2_mechanism_encoding": "NOT_ENCODED",
+      "actual_mechanism": "Security-sensitive JDBC parameter keys must be filtered or replaced so dangerous parameters cannot bypass sensitive-parameter checks.",
+      "T1_pre_label": "WRONG_VULNERABILITY_MECHANISM",
+      "T2_label": "WRONG_VULNERABILITY_MECHANISM",
+      "semantic_change_vs_T1": "UNCHANGED"
+    },
+    {
+      "cve": "CVE-2023-44981",
+      "label": "WRONG_VULNERABILITY_MECHANISM",
+      "rationale": "The optional-identity-component family is marked UNENCODABLE_OR_BOUNDED and the query contains no ZooKeeper quorum SASL authentication-ID instance-component or skipped-authorization control-flow semantics.",
+      "t2_contract_family": "bypass_via_missing_or_optional_identity_component",
+      "t2_mechanism_encoding": "NOT_ENCODED",
+      "actual_mechanism": "ZooKeeper quorum SASL authorization must not be skipped when the optional instance component of the authentication ID is absent.",
+      "T1_pre_label": "WRONG_VULNERABILITY_MECHANISM",
+      "T2_label": "WRONG_VULNERABILITY_MECHANISM",
+      "semantic_change_vs_T1": "UNCHANGED"
+    }
+  ],
+  "summary": {
+    "T2_semantic_alignment": 0,
+    "T2_semantic_mismatch_count": 7,
+    "semantic_label_unchanged_vs_T1": 7,
+    "T2_generic_template_case_count": 5,
+    "T2_plan_to_CodeQL_translation_loss": 6,
+    "T2_upstream_plan_failure_count": 1,
+    "contract_families_claimed_unencodable_or_bounded": 2,
+    "faithfully_encoded_mechanism_family_count": 0,
+    "semantic_alignment_improvement_vs_T1": 0
+  },
+  "interpretation": "The structured-contract intervention changed failure transparency but did not improve semantic alignment before CodeQL evaluation. T2 explicitly marked two of three mechanism families UNENCODABLE_OR_BOUNDED instead of silently collapsing them. However, the one family claimed ENCODED remains a generic request-ID-to-sensitive-operation taint abstraction with an authentication-context exclusion heuristic, not an implemented ownership or session-identity relation. Therefore semantic alignment remains 0/7.",
+  "codeql_outcome_visible": false,
+  "model_execution": false,
+  "codeql_execution": false,
+  "test_access": "FORBIDDEN"
+}

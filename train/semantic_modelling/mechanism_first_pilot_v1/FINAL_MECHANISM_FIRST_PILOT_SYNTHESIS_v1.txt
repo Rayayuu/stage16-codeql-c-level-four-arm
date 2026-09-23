@@ -1,0 +1,40 @@
+MECHANISM-FIRST CWE-639 PILOT — FINAL SYNTHESIS
+
+RESEARCH QUESTION
+Can mechanism-first semantic planning reduce within-CWE generic-template
+over-generalization and improve semantic alignment while preserving compilation?
+
+RESULT
+M0 final semantic alignment: 0/7
+M1 final semantic alignment: 0/7
+M0 generic-template collapse: 7/7, YES
+M1 generic-template collapse: 7/7, YES
+
+M1 PLAN DIAGNOSTIC
+Mechanisms represented in plan: 6/7
+Plan-to-CodeQL translation losses: 6/7
+Upstream plan failures: 1/7
+
+COMPILATION REPAIR
+M0: 0/7 -> 7/7 compiled after 1 repair; strict success 0/7
+M1: 0/7 -> 7/7 compiled after 1 repair; strict success 1/7
+
+KEY DIAGNOSTIC
+CVE-2023-43668:
+M1 strict hit-based result = SUCCESS
+M1 semantic label = WRONG_VULNERABILITY_MECHANISM
+
+MAIN CONCLUSION
+Mechanism-first planning improved semantic reasoning at the plan stage but did
+not improve final CodeQL semantic alignment. The dominant observed bottleneck
+in this TRAIN pilot is preservation of mechanism-specific semantics during
+unification and CodeQL translation, not compilation and not mechanism reasoning
+alone.
+
+IMPORTANT
+Strict hit-based success does not imply semantic correctness.
+
+SCOPE
+CWE-639 TRAIN pilot only.
+TEST was not accessed.
+No generalization claim to other CWEs or TEST.

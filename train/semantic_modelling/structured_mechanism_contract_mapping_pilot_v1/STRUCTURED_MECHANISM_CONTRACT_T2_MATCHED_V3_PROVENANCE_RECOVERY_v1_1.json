@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "stage": "T2_MATCHED_V3_REPAIR_PROVENANCE_RECOVERY_V1_1",
+  "status": "RECOVERED_BEFORE_ANY_REPAIR_EXECUTION",
+  "failure_class": "PROVENANCE_METADATA_CARRIED_OVER_FROM_T1_TEMPLATE",
+  "old_v1": {
+    "run_root": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR",
+    "shared_state_sha256": "6047f1a3091880b07515012481c88b4c86c61c5dcaada39174f225c9290c9632",
+    "harness_freeze_sha256": "9655ce06ebec0f2e39a28b7dd3596c184abb874186d3770d181855e041d6bf08",
+    "modified": false
+  },
+  "root_cause": "Step 8 correctly replaced runner-critical query/result/compiler-feedback state but preserved three provenance fields from the T1 shared-state template: state_origin, source_initial_evaluation_sha256, and source_initial_freeze_sha256.",
+  "scientific_effect": {
+    "repair_executed_before_detection": false,
+    "model_call_consumed": false,
+    "codeql_execution": false,
+    "query_modified": false,
+    "initial_T2_result_changed": false,
+    "pre_CodeQL_semantic_score_changed": false,
+    "scientific_result_contaminated": false
+  },
+  "v1_1": {
+    "run_root": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1",
+    "shared_state_sha256": "3321044ab87110f0d5406667d9df2f83190856c58ec7ea15b0fab33bd76dbb7b",
+    "matched_evaluator_sha256": "f438219d741ed1bae13bae624ba574549a4bc1c481521419766ddf2b38aa25e4",
+    "matched_runner_sha256": "783d34aa3c1856a992a813fd134a11eb0bcb8893e4fd5957b46396d5ac9ba86f",
+    "source_initial_evaluation_sha256": "0bb82947000cc76474f4c7746b5110e38228dbacc8d85185391c5c94f63d6a89",
+    "source_initial_freeze_sha256": "f7517c6c49a5f7029e90fab4014c7e6e068d1cbc5b16daae462b40d4999ed0e5",
+    "state_origin": "REUSED_FROZEN_T2_INITIAL_EVALUATION_NO_CODEQL_RERUN"
+  },
+  "test_access": "FORBIDDEN"
+}

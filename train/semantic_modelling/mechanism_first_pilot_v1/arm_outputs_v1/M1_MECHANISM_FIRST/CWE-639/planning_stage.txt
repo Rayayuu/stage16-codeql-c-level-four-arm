@@ -1,0 +1,35 @@
+Inferred vulnerability mechanism families for CWE-639 (Authorization Bypass Through User-Controlled Key) from TRAIN advisories:
+
+1) Classic IDOR via user-supplied identifier in web request
+- Subject/principal: Authenticated or unauthenticated web user
+- Target resource: User profile/info (newbee-mall), dashboards/messages/shares (DataEase), sensitive indexes (alf.io)
+- Security relation: Ownership or authorization over the specific resource identified by an ID
+- Validation/authorization boundary: Server-side controller/service must verify the current principal’s right to act on the resource ID
+- Propagation/context: Identifier taken directly from HTTP request (query parameter, path variable, header/body) flows to service/DAO calls performing update/delete/modify operations
+- Vulnerable vs fixed: Vulnerable versions accept user-controlled IDs; fixed versions derive the ID from the authenticated context or add an ownership/authorization check before invoking the operation
+- Representable by user-controlled-ID → resource-operation taint template: Yes
+
+2) Bypass due to missing/optional identity component causing skipped authorization (ZooKeeper SASL instance part, InLong sensitive param checks)
+- Subject/principal: Cluster peer or client presenting an identity or configuration keys
+- Target resource: Cluster membership/data tree (ZooKeeper) or security-sensitive configuration (InLong)
+- Security relation: Authorization contingent on presence/value of a key/instance component
+- Validation/authorization boundary: Authorization check branches based on optional/missing key; missing value leads to skip
+- Propagation/context: User-controlled/missing key flows into authorization logic influencing whether checks execute
+- Vulnerable vs fixed: Fix enforces presence/validation of the key and prevents bypass
+- Representable by simple user-controlled-ID → operation taint template: Only partially; direct data-flow into sensitive actions still applies when the key value is used without robust validation, but full control-flow-based skip is harder to encode generically without repository context
+
+3) Improper authentication via certificate reuse (Candlepin)
+- Subject/principal: Holder of SCA certificate
+- Target resource: Candlepin service authenticated session
+- Security relation: Authentication based on certificate attributes
+- Validation/authorization boundary: Server must ensure correct mapping/constraints on certificate use
+- Propagation/context: Certificate-derived identity used as key for authorization/authentication
+- Vulnerable vs fixed: Fix tightens validation and scoping of certificate use
+- Representable by simple user-controlled-ID → operation taint template: Not directly (more about authn) but overlapping theme is trust in externally supplied identity key
+
+Unified CWE-level semantic abstraction for query:
+- Model user-controlled identifiers extracted from HTTP requests (Servlet API and common Java web annotations) as taint sources.
+- Report flows where such tainted identifiers are used as arguments to methods whose names indicate security-sensitive resource modification operations (delete/remove/update/modify), and where the argument position or variable name is ID-like (id/userId/...ID), indicating it functions as an access key to a resource.
+- Heuristically reduce false positives and better differentiate patched code by excluding cases where the enclosing method clearly accesses an authentication context (e.g., uses SecurityContextHolder or has a Principal/Authentication parameter), a common pattern in fixed code where the ID is derived/validated against the current principal.
+
+This abstraction avoids repository-specific constants while capturing the core CWE-639 pattern: using a user-controlled key to directly drive sensitive operations without proper authorization checks.

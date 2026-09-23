@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "stage": "T2_POST_REPAIR_TRAJECTORY_AUDIT_INTERPRETATION_ADDENDUM",
+  "original_audit": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/T2_POST_REPAIR_QUERY_SEMANTIC_TRAJECTORY_AUDIT_v1.json",
+    "sha256": "49ae0dd45ae96005f82a823c8ee9af03344acff27e16318872471e68e48e9459",
+    "modified": false
+  },
+  "issue": "The Step 10A feature detector stripped all string literals before matching. This produced false negatives for executable predicates whose CodeQL implementation uses string literals, including sensitive operation names, HttpServletRequest APIs, Principal/Authentication, and SecurityContextHolder.",
+  "corrected_executable_interpretation": {
+    "generic_sensitive_operation_logic": true,
+    "http_request_source_logic": true,
+    "auth_context_heuristic": true,
+    "ownership_relation": false,
+    "session_identity_relation": false,
+    "org_or_tenant_scope": false,
+    "certificate_oid_semantics": false,
+    "jdbc_sensitive_parameter_semantics": false,
+    "sasl_quorum_semantics": false
+  },
+  "scientific_interpretation": "The repaired query still implements the same generic IDOR-style abstraction: HTTP/request-derived identifier -> generic sensitive operation, plus an authentication-context exclusion heuristic. However, it does not encode the decisive principal-to-target ownership or session-identity relation, organization scope, certificate semantics, JDBC sensitive-parameter validation, or ZooKeeper SASL semantics.",
+  "semantic_score_changed_due_to_audit_bug": false,
+  "test_access": "FORBIDDEN"
+}

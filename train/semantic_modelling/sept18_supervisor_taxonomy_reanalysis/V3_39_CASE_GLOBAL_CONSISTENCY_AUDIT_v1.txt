@@ -1,0 +1,10 @@
+SEPT18 GLOBAL CONSISTENCY AUDIT
+rows=39
+reviewed=39
+missing_required_fields=0
+failure_cases=35
+strict_success_cases=4
+invalid_failure_categories=0
+strict_success_supervisor_category=1
+strict_success_non_taxonomy=3
+global_base_audit_pass=True

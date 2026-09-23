@@ -1,0 +1,249 @@
+{
+  "schema_version": "1.0",
+  "scope": "CWE-639 TRAIN ONLY",
+  "stage": "FINAL_STRUCTURED_MECHANISM_CONTRACT_MAPPING_INTEGRITY_AUDIT",
+  "status": "PASS",
+  "manifest": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/FINAL_STRUCTURED_MECHANISM_CONTRACT_MAPPING_MANIFEST_v1.json",
+    "sha256": "345c6be0f7d710fb40c7555c1fcf943a00b138d4882643f67e0511169b61f4c0"
+  },
+  "artifact_checks": {
+    "schema_recovery": {
+      "exists": true,
+      "sha256_match": true,
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/FINAL_SYNTHESIS_SCHEMA_RECOVERY_v1.json",
+      "expected_sha256": "f39ea012fe2dc9e234701b7d67316138ac80e7cc93ab69856ab0018c5b9e4f3f",
+      "actual_sha256": "f39ea012fe2dc9e234701b7d67316138ac80e7cc93ab69856ab0018c5b9e4f3f"
+    },
+    "structured_contract": {
+      "exists": true,
+      "sha256_match": true,
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/t2_generation_v1/CWE-639/structured_contract_mapping.json",
+      "expected_sha256": "65a4b3fd725a646b7300242253a482fbc0a9305fbb5ea8ae1de49dbe202a844b",
+      "actual_sha256": "65a4b3fd725a646b7300242253a482fbc0a9305fbb5ea8ae1de49dbe202a844b"
+    },
+    "pre_CodeQL_semantic_scores": {
+      "exists": true,
+      "sha256_match": true,
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/T2_PRE_CODEQL_SEMANTIC_SCORES_v1.json",
+      "expected_sha256": "1b7262f2ac9961718f315df0aed29e1416b46f87d945f67daf5f1b2cbd09b947",
+      "actual_sha256": "1b7262f2ac9961718f315df0aed29e1416b46f87d945f67daf5f1b2cbd09b947"
+    },
+    "pre_CodeQL_semantic_freeze": {
+      "exists": true,
+      "sha256_match": true,
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/T2_PRE_CODEQL_SEMANTIC_SCORING_FREEZE_v1.json",
+      "expected_sha256": "bf61e1b97bd6430024d7628dcf08022c85a098a6c9a8dec6ebf0e76899c04b63",
+      "actual_sha256": "bf61e1b97bd6430024d7628dcf08022c85a098a6c9a8dec6ebf0e76899c04b63"
+    },
+    "repair_outcome_freeze": {
+      "exists": true,
+      "sha256_match": true,
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/T2_MATCHED_V3_REPAIR_OUTCOME_FREEZE_v1_1.json",
+      "expected_sha256": "766d31507860206f3fc60949f0cfdad32f0911b99642bf1afd5c61b65a6d24ff",
+      "actual_sha256": "766d31507860206f3fc60949f0cfdad32f0911b99642bf1afd5c61b65a6d24ff"
+    },
+    "trajectory_audit": {
+      "exists": true,
+      "sha256_match": true,
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/T2_POST_REPAIR_QUERY_SEMANTIC_TRAJECTORY_AUDIT_v1.json",
+      "expected_sha256": "49ae0dd45ae96005f82a823c8ee9af03344acff27e16318872471e68e48e9459",
+      "actual_sha256": "49ae0dd45ae96005f82a823c8ee9af03344acff27e16318872471e68e48e9459"
+    },
+    "trajectory_interpretation_addendum": {
+      "exists": true,
+      "sha256_match": true,
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/T2_POST_REPAIR_TRAJECTORY_AUDIT_INTERPRETATION_ADDENDUM_v1.json",
+      "expected_sha256": "31a03cdae7f45f0ff997bfad6426d443fef8c7caab8ab273938635784eaa3ce7",
+      "actual_sha256": "31a03cdae7f45f0ff997bfad6426d443fef8c7caab8ab273938635784eaa3ce7"
+    },
+    "post_repair_semantic_scores_json": {
+      "exists": true,
+      "sha256_match": true,
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/T2_POST_REPAIR_SEMANTIC_SCORES_v1.json",
+      "expected_sha256": "6eeb07ba9d66125c6f42ec2ada6f7b6375c3e3379b6c14f299d1714c2440df2b",
+      "actual_sha256": "6eeb07ba9d66125c6f42ec2ada6f7b6375c3e3379b6c14f299d1714c2440df2b"
+    },
+    "post_repair_semantic_scores_csv": {
+      "exists": true,
+      "sha256_match": true,
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/T2_POST_REPAIR_SEMANTIC_SCORES_v1.csv",
+      "expected_sha256": "771ca6ab3358fb89e1a3f6e7462b2db4755be8a12f4cd96c51779b7c21604291",
+      "actual_sha256": "771ca6ab3358fb89e1a3f6e7462b2db4755be8a12f4cd96c51779b7c21604291"
+    },
+    "post_repair_semantic_scores_txt": {
+      "exists": true,
+      "sha256_match": true,
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/T2_POST_REPAIR_SEMANTIC_SCORES_v1.txt",
+      "expected_sha256": "a27821de9bcff1f3884f00d7737ff80de5f2e47bbb0db26d2342c29f814dc056",
+      "actual_sha256": "a27821de9bcff1f3884f00d7737ff80de5f2e47bbb0db26d2342c29f814dc056"
+    },
+    "final_query": {
+      "exists": true,
+      "sha256_match": true,
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter2.ql",
+      "expected_sha256": "1588edf8750d913766c2004e8c25e8ae28e158f99d26a55c305263018a0c88bc",
+      "actual_sha256": "1588edf8750d913766c2004e8c25e8ae28e158f99d26a55c305263018a0c88bc"
+    },
+    "final_aggregate": {
+      "exists": true,
+      "sha256_match": true,
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR_V1_1/query_evaluations/CWE-639/V3_LIBRARY_PLUS_AUTO_SKILL_repair2/aggregate.json",
+      "expected_sha256": "1a424d4ff2b6938bde1491532331576aa4727e4e44e0141d40314da57ed59013",
+      "actual_sha256": "1a424d4ff2b6938bde1491532331576aa4727e4e44e0141d40314da57ed59013"
+    },
+    "final_synthesis": {
+      "exists": true,
+      "sha256_match": true,
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/FINAL_STRUCTURED_MECHANISM_CONTRACT_MAPPING_SYNTHESIS_v1.json",
+      "expected_sha256": "14fd1d574da0f41f2810649c968e3f1afedb9c447b4734a8e7f4fb623b8859d4",
+      "actual_sha256": "14fd1d574da0f41f2810649c968e3f1afedb9c447b4734a8e7f4fb623b8859d4"
+    },
+    "supervisor_report": {
+      "exists": true,
+      "sha256_match": true,
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/FINAL_STRUCTURED_MECHANISM_CONTRACT_MAPPING_SUPERVISOR_REPORT_v1.txt",
+      "expected_sha256": "f8dd97473b1a5be0cac22c794b5db8ffefd69915870fab020b9ffdd537b03740",
+      "actual_sha256": "f8dd97473b1a5be0cac22c794b5db8ffefd69915870fab020b9ffdd537b03740"
+    },
+    "T1_post_repair_semantics": {
+      "exists": true,
+      "sha256_match": true,
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/semantic_preservation_translation_pilot_v1/T1_POST_REPAIR_SEMANTIC_SCORES_v1.json",
+      "expected_sha256": "b111971a004b4a2d18f646e2dc97209942e1a02ab191132f98464102a19a0dd8",
+      "actual_sha256": "b111971a004b4a2d18f646e2dc97209942e1a02ab191132f98464102a19a0dd8"
+    },
+    "T1_final_synthesis": {
+      "exists": true,
+      "sha256_match": true,
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/semantic_preservation_translation_pilot_v1/FINAL_SEMANTIC_PRESERVATION_TRANSLATION_SYNTHESIS_v1.json",
+      "expected_sha256": "7ccc707aa927e27584c3680bb4bacd0ec8e3e2c31aaf0bc89dc37dcfa99b7462",
+      "actual_sha256": "7ccc707aa927e27584c3680bb4bacd0ec8e3e2c31aaf0bc89dc37dcfa99b7462"
+    },
+    "M1_final_synthesis": {
+      "exists": true,
+      "sha256_match": true,
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/FINAL_MECHANISM_FIRST_PILOT_SYNTHESIS_v1.json",
+      "expected_sha256": "022fd57287f713b58fcf4c8aed46d42c903f06dfc5e5c36f22081ea6ddcd9004",
+      "actual_sha256": "022fd57287f713b58fcf4c8aed46d42c903f06dfc5e5c36f22081ea6ddcd9004"
+    }
+  },
+  "result_checks": {
+    "semantic_alignment": {
+      "expected": "0/7",
+      "actual": "0/7",
+      "match": true
+    },
+    "semantic_mismatch": {
+      "expected": "7/7",
+      "actual": "7/7",
+      "match": true
+    },
+    "translation_loss": {
+      "expected": "6/7",
+      "actual": "6/7",
+      "match": true
+    },
+    "upstream_plan_failure": {
+      "expected": "1/7",
+      "actual": "1/7",
+      "match": true
+    },
+    "initial_compilation": {
+      "expected": "0/7",
+      "actual": "0/7",
+      "match": true
+    },
+    "final_compilation": {
+      "expected": "7/7",
+      "actual": "7/7",
+      "match": true
+    },
+    "repair_count": {
+      "expected": 2,
+      "actual": 2,
+      "match": true
+    },
+    "strict_success": {
+      "expected": "0/7",
+      "actual": "0/7",
+      "match": true
+    },
+    "detection_failure": {
+      "expected": "7/7",
+      "actual": "7/7",
+      "match": true
+    },
+    "discrimination_failure": {
+      "expected": "0/7",
+      "actual": "0/7",
+      "match": true
+    },
+    "explicit_unencodable_or_bounded_families": {
+      "expected": "2/3",
+      "actual": "2/3",
+      "match": true
+    },
+    "faithfully_encoded_mechanism_families": {
+      "expected": "0/3",
+      "actual": "0/3",
+      "match": true
+    },
+    "semantic_improvement": {
+      "expected": false,
+      "actual": false,
+      "match": true
+    },
+    "failure_transparency_improvement": {
+      "expected": true,
+      "actual": true,
+      "match": true
+    }
+  },
+  "semantic_checks": {
+    "alignment_0": true,
+    "mismatch_7": true,
+    "labels_unchanged_7": true,
+    "translation_loss_6": true,
+    "upstream_plan_failure_1": true,
+    "faithful_families_0": true,
+    "unencodable_families_2": true,
+    "semantic_improvement_false": true,
+    "final_compilation_7": true,
+    "strict_success_0": true,
+    "detection_failure_7": true
+  },
+  "synthesis_checks": {
+    "scope_CWE639_TRAIN": true,
+    "status_final": true,
+    "T0_semantic_0_7": true,
+    "T1_semantic_0_7": true,
+    "T2_semantic_0_7": true,
+    "T2_compile_7_7": true,
+    "T2_transparency_true": true,
+    "test_forbidden": true
+  },
+  "final_verified_result": {
+    "T0_post_repair_semantic_alignment": "0/7",
+    "T1_post_repair_semantic_alignment": "0/7",
+    "T2_post_repair_semantic_alignment": "0/7",
+    "T2_initial_compilation": "0/7",
+    "T2_final_compilation": "7/7",
+    "T2_strict_success": "0/7",
+    "T2_detection_failure": "7/7",
+    "T2_translation_loss": "6/7",
+    "T2_unencodable_or_bounded_families": "2/3",
+    "T2_faithfully_encoded_families": "0/3",
+    "semantic_improvement": false,
+    "failure_transparency_improvement": true
+  },
+  "scientific_conclusion": "Within the seven CWE-639 TRAIN pairs, compilation was recoverable through matched V3 repair, while T0, T1, and T2 all remained at 0/7 semantic alignment. Structured contracts improved failure transparency but did not reduce mechanism-to-CodeQL semantic loss.",
+  "next_stage": "PREREGISTER_COMPOSITIONAL_BRANCH_GENERATION_WITH_SEMANTIC_VERIFIER",
+  "controls": {
+    "model_execution": false,
+    "codeql_execution": false,
+    "query_modification": false,
+    "scientific_rerun": false,
+    "test_access": "FORBIDDEN"
+  }
+}

@@ -1,0 +1,55 @@
+CWE-639 Structured Mechanism Contract Pilot — Final Summary
+
+Question
+Can an explicit structured mechanism contract preserve security semantics better
+when translating a mechanism-first plan into one CWE-level CodeQL query?
+
+T0 — original mechanism-first translation
+- Mechanism plan represented 6/7 actual mechanisms.
+- Post-repair semantic alignment: 0/7.
+- Translation loss: 6/7.
+- Final compilation: 7/7.
+- One strict hit-based success occurred, but semantic review showed that result
+  used the wrong vulnerability mechanism.
+
+T1 — prompt-only semantic preservation
+- Pre-CodeQL semantic alignment: 0/7.
+- Post-repair semantic alignment: 0/7.
+- Translation loss: 6/7.
+- Final compilation: 7/7.
+- Strict success: 0/7.
+- Detection failure: 7/7.
+
+T2 — structured mechanism contract
+- Generated three mechanism families.
+- One was claimed ENCODED.
+- Two were explicitly marked UNENCODABLE_OR_BOUNDED.
+- Human semantic review found 0/3 faithfully encoded families.
+- Pre-CodeQL semantic alignment: 0/7.
+- Initial compilation: 0/7.
+- Matched V3 repair recovered compilation to 7/7 after two repair rounds.
+- Strict success: 0/7.
+- Detection failure: 7/7.
+- Post-repair semantic alignment remained 0/7.
+
+Main interpretation
+The structured contract improved failure transparency but did not improve
+semantic preservation. The agent became more explicit about mechanisms it could
+not encode, but the final encoded branch still reduced the problem to a generic
+request-derived identifier -> sensitive operation pattern with an
+authentication-context exclusion heuristic.
+
+Across T0, T1, and T2, the strongest observed bottleneck is therefore semantic
+preservation during mechanism unification and CodeQL translation. Compilation
+is recoverable with V3 repair, but repairing compilation does not restore the
+missing ownership/session, certificate, JDBC filtering, or ZooKeeper SASL
+relations.
+
+Next experiment
+Use compositional branch generation: synthesize and verify mechanism-specific
+CodeQL sub-predicates independently, then unify them only after a semantic
+verifier confirms that each required subject-target-validation relation remains
+present in executable QL.
+
+Scope: CWE-639 TRAIN only.
+TEST was not accessed.

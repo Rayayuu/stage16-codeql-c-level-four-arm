@@ -1,0 +1,34 @@
+MECHANISM-FIRST PRE-CURRENT-CODEQL SEMANTIC SCORES v1
+
+CWE: CWE-639
+TRAIN cases: 7
+
+M0 final-query aligned coverage: 0/7
+M1 final-query aligned coverage: 0/7
+
+M0 semantic mismatch count: 7/7
+M1 semantic mismatch count: 7/7
+
+M0 generic-template count: 7/7
+M1 generic-template count: 7/7
+M0 generic-template collapse: YES
+M1 generic-template collapse: YES
+
+M1 plan mechanism coverage: 6/7
+M1 plan mechanism misses: 1/7
+
+M1 represented-in-plan but lost in final CodeQL: 6/7
+M1 upstream plan failures: 1/7
+
+Initial aligned-case improvement M1 - M0: 0
+
+INTERPRETATION:
+Mechanism-first planning broadened mechanism reasoning, but most of that semantic
+information was not preserved in the unified initial CodeQL query. The M1 query
+collapsed back to the same broad ID/key -> sensitive-operation family of abstraction.
+The immediate bottleneck is therefore semantic preservation during mechanism
+unification / CodeQL translation, not simply failure to reason about mechanisms.
+
+IMPORTANT LIMITATION:
+Historical V3 diagnostic fields were accidentally visible to the human scorer in
+Step 16A. Current M0/M1 CodeQL outcomes were NOT visible and had not been executed.

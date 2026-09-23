@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "stage": "T2_STRUCTURED_CONTRACT_GENERATION_FREEZE",
+  "status": "FROZEN_VALID_GENERATION",
+  "model_call_count": 1,
+  "runner": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/STRUCTURED_MECHANISM_CONTRACT_MAPPING_RUNNER_v1_1.py",
+    "sha256": "00c461b1f5f7ae1e5b89dbe95b2f7a86b208cc0fe77230fb6741a82f0727e832"
+  },
+  "harness_freeze": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/STRUCTURED_MECHANISM_CONTRACT_MAPPING_HARNESS_FREEZE_v1_1.json",
+    "sha256": "13f2f0dcfa61228eafc84e54d2c364666fe1f9562c2858161670f7c7c2aa1720"
+  },
+  "frozen_inputs": {
+    "M1_plan": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/arm_outputs_v1/M1_MECHANISM_FIRST/CWE-639/planning_stage.txt",
+      "sha256": "ea609259a9f8bbed4319249de29915e640fac59cf3631fc664452d092c16368f"
+    },
+    "A_level_evidence": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/synthesis_inputs/CWE-639_A_LEVEL_INPUT_v1.json",
+      "sha256": "c2b12964eab7af408e3ae46b2f2bfe1a5c5f8b4aafbc1a3e38b0e510c3a760cf"
+    }
+  },
+  "outputs": {
+    "structured_contract_mapping": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/t2_generation_v1/CWE-639/structured_contract_mapping.json",
+      "sha256": "65a4b3fd725a646b7300242253a482fbc0a9305fbb5ea8ae1de49dbe202a844b"
+    },
+    "query": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/t2_generation_v1/CWE-639/iter0.ql",
+      "sha256": "0f3188139935f0cec116efab018b3d0035ebd01a9fc0b81d68ae80a194ac1631"
+    },
+    "metadata": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/t2_generation_v1/CWE-639/T2_STRUCTURED_CONTRACT_GENERATION_METADATA.json",
+      "sha256": "36185c6ce17ae78f47c22dfef5d69cfc566ffde6cef8eb00868fe181262bc74a"
+    },
+    "process_log": {
+      "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/T2_STRUCTURED_CONTRACT_GENERATION_PROCESS_LOG_v1.txt",
+      "sha256": "36185c6ce17ae78f47c22dfef5d69cfc566ffde6cef8eb00868fe181262bc74a"
+    }
+  },
+  "contract_summary": {
+    "mechanism_contract_count": 3,
+    "codeql_mapping_count": 3,
+    "mechanism_family_ids": [
+      "idor_user_controlled_identifier_to_resource_operation",
+      "bypass_via_missing_or_optional_identity_component",
+      "improper_authentication_certificate_reuse"
+    ],
+    "encoded_status_counts": {
+      "ENCODED": 1,
+      "UNENCODABLE_OR_BOUNDED": 2
+    }
+  },
+  "static_protocol_audit": {
+    "status": "PASS",
+    "violations": {
+      "CVE_REFERENCES": [],
+      "PATH_OR_REPOSITORY_MARKERS": [],
+      "TEST_TOKEN_PRESENT": false
+    }
+  },
+  "blinding": {
+    "human_semantic_reference_visible": false,
+    "prior_T0_T1_semantic_scores_visible": false,
+    "prior_hit_results_visible": false,
+    "prior_repair_trajectory_visible": false,
+    "patch_or_bounded_source_evidence_visible": false,
+    "repository_source_visible": false
+  },
+  "controls": {
+    "manual_query_modification": false,
+    "codeql_execution": false,
+    "scientific_rerun": false,
+    "test_access": "FORBIDDEN"
+  }
+}

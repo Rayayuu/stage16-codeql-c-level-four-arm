@@ -1,0 +1,40 @@
+MECHANISM-FIRST EXPERIMENT PREREGISTRATION v1
+
+Pilot: CWE-639
+Scope: 7 TRAIN pairs only
+TEST: forbidden
+MAX_REPAIRS: 4
+Unit: one CWE-level query for all 7 TRAIN pairs
+
+M0 CONTROL:
+Current V3-style CWE-first semantic reasoning with compiler feedback,
+library-aware reasoning, and automatic skills.
+
+M1 MECHANISM-FIRST:
+Same evidence, model, tools, library reasoning, automatic skills, evaluator,
+and repair budget, but requires explicit mechanism decomposition before
+CodeQL generation.
+
+Critical anti-leakage rule:
+The frozen Sept18 human mechanism descriptions, root-cause categories, and
+template-collapse judgments are NOT provided to either generation arm.
+They are used only after execution as the semantic reference.
+
+Primary outcomes:
+1. Semantic alignment
+2. TRAIN mechanism coverage
+3. Semantic mismatch count
+4. Generic-template collapse
+
+Secondary outcomes:
+Compilation, strict hit-based success, detection/discrimination failures,
+hit counts, repair convergence, tokens, wall time, CodeQL time, library
+lookups, and skill retrieval.
+
+Important:
+Strict hit-based success is not equivalent to semantic correctness.
+CVE-2023-43668 is the diagnostic example from the frozen V3 analysis.
+
+Interpretation:
+A positive pilot supports mechanism-first planning on CWE-639 TRAIN only.
+It does not establish TEST generalization or cross-CWE effectiveness.

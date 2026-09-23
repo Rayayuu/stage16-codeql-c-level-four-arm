@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "stage": "T2_MATCHED_V3_REPAIR_HARNESS_FREEZE",
+  "status": "FROZEN_READY_FOR_MATCHED_REPAIR",
+  "source_query": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/CWE-639/iter0.ql",
+    "sha256": "0f3188139935f0cec116efab018b3d0035ebd01a9fc0b81d68ae80a194ac1631"
+  },
+  "initial_aggregate": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_STRUCTURED_CONTRACT_MAPPING/query_evaluations_t2_valid1/CWE-639/t2_initial/aggregate.json",
+    "sha256": "0bb82947000cc76474f4c7746b5110e38228dbacc8d85185391c5c94f63d6a89"
+  },
+  "shared_master": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR/shared_initial/CWE-639/iter0.ql",
+    "sha256": "0f3188139935f0cec116efab018b3d0035ebd01a9fc0b81d68ae80a194ac1631"
+  },
+  "shared_state": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR/shared_initial/CWE-639/SHARED_INITIAL_EVALUATION_STATE.json",
+    "sha256": "6047f1a3091880b07515012481c88b4c86c61c5dcaada39174f225c9290c9632"
+  },
+  "v3_iter0": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR/arms/V3_LIBRARY_PLUS_AUTO_SKILL/CWE-639/queries/iter0.ql",
+    "sha256": "0f3188139935f0cec116efab018b3d0035ebd01a9fc0b81d68ae80a194ac1631"
+  },
+  "matched_evaluator": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/STRUCTURED_MECHANISM_CONTRACT_T2_MATCHED_V3_EVALUATOR_v1.py",
+    "sha256": "6c85177a124b5607f259d6e9e40ff21a05c961764b017aad68546b859bd203a7"
+  },
+  "matched_runner": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/STRUCTURED_MECHANISM_CONTRACT_T2_MATCHED_V3_REPAIR_RUNNER_v1.py",
+    "sha256": "6d10648813df9db2f0c3f6c651106d3ba75f3b05b9e8ab7256b579e251eb3c0b"
+  },
+  "failure_audit": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/structured_mechanism_contract_mapping_pilot_v1/T2_INITIAL_COMPILATION_FAILURE_AUDIT_v1.json",
+    "sha256": "1421bd69e2c2b3f09c00390b8c2f6c67a72bc6c818bcb4f2f57a7488608538c2"
+  },
+  "repair_protocol": {
+    "support_arm": "V3_LIBRARY_PLUS_AUTO_SKILL",
+    "max_repairs": 4,
+    "initial_CodeQL_rerun": false,
+    "manual_query_modification": false
+  },
+  "frozen_pre_CodeQL_semantics": {
+    "semantic_alignment": "0/7",
+    "translation_loss": "6/7",
+    "failure_transparency_improvement": true
+  },
+  "controls": {
+    "model_execution": false,
+    "codeql_execution": false,
+    "repair_execution": false,
+    "scientific_rerun": false,
+    "test_access": "FORBIDDEN"
+  },
+  "self_check": {
+    "status": "PASS",
+    "checks": {
+      "run_root_exists": true,
+      "evaluator_exists": true,
+      "shared_state_exists": true,
+      "v3_iter0_exists": true,
+      "iter0_sha_frozen": true,
+      "state_path_matches": true,
+      "arm_path_matches": true,
+      "max_repairs_4": true,
+      "support_arm_present": true,
+      "eval_root_mapped": true,
+      "evaluator_mapped": true,
+      "arm_outcome_absent": true,
+      "state_query_sha_matches": true,
+      "state_initial_compiled_0": true,
+      "state_train_cases_7": true,
+      "compiler_feedback_present": true
+    },
+    "run_root": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR",
+    "eval_root": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/structured_mechanism_contract_mapping_runs_v1/T2_MATCHED_V3_REPAIR/query_evaluations",
+    "support_arm": "V3_LIBRARY_PLUS_AUTO_SKILL",
+    "max_repairs": 4,
+    "model_execution": false,
+    "codeql_execution": false,
+    "test_access": "FORBIDDEN"
+  }
+}

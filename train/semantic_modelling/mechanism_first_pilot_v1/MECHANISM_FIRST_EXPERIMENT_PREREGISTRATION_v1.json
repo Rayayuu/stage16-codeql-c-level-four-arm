@@ -1,0 +1,48 @@
+{
+  "version": "v1",
+  "pilot_cwe": "CWE-639",
+  "train_pairs": 7,
+  "test_access": "FORBIDDEN",
+  "max_repairs": 4,
+  "one_cwe_level_query": true,
+  "arms": {
+    "M0_CONTROL_CWE_FIRST": {
+      "library_aware": true,
+      "auto_skills": true,
+      "compiler_feedback": true,
+      "mandatory_mechanism_plan": false
+    },
+    "M1_MECHANISM_FIRST": {
+      "library_aware": true,
+      "auto_skills": true,
+      "compiler_feedback": true,
+      "mandatory_mechanism_plan": true
+    }
+  },
+  "anti_leakage": {
+    "sept18_human_mechanism_labels_visible_during_generation": false,
+    "sept18_root_cause_labels_visible_during_generation": false,
+    "sept18_template_collapse_labels_visible_during_generation": false,
+    "sept18_analysis_used_posthoc_for_semantic_scoring": true
+  },
+  "primary_outcomes": [
+    "semantic_alignment",
+    "mechanism_coverage",
+    "semantic_mismatch_count",
+    "generic_template_collapse"
+  ],
+  "secondary_outcomes": [
+    "compilation",
+    "strict_hit_success",
+    "detection_failure",
+    "discrimination_failure",
+    "hit_counts",
+    "repair_convergence",
+    "tokens",
+    "model_wall_time",
+    "codeql_time",
+    "library_lookup_count",
+    "skill_retrieval_count"
+  ],
+  "selection_artifact_sha256": "dec8d67139d2b62f6ed3a78d291ef31be311e61c59365bb34aa73ab52541575a"
+}

@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.1",
+  "scope": "TRAIN_ONLY",
+  "pilot_cwe": "CWE-639",
+  "stage": "T1_SEMANTIC_PRESERVATION_TRANSLATION_GENERATION",
+  "status": "FROZEN_VALID_GENERATION",
+  "query": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/semantic_preservation_translation_pilot_v1/t1_generation_v1/CWE-639/iter0.ql",
+    "sha256": "c7c92c88a4ecd6e91b322ca0b06b7e34dcf099a05a720fa2cb25a71de8fb4450"
+  },
+  "metadata": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/semantic_preservation_translation_pilot_v1/t1_generation_v1/CWE-639/T1_TRANSLATION_GENERATION_METADATA.json",
+    "sha256": "d654f1158bcc43bee6ed3e9ec0281960a7012cb112ef176fb6c5063a8b48fb05"
+  },
+  "harness": {
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/semantic_preservation_translation_pilot_v1/SEMANTIC_PRESERVATION_TRANSLATION_RUNNER_v1_1.py",
+    "sha256": "6cfaa71480539ebb6dba65829f6b7a3d1859ca0c77411bc9c3d33adff58a67ba"
+  },
+  "controls": {
+    "model_call_budget": 1,
+    "actual_model_call_count": 1,
+    "same_frozen_M1_plan": true,
+    "same_A_level_evidence": true,
+    "sept18_human_reference_visible": false,
+    "hit_results_visible": false,
+    "prior_codeql_results_visible": false,
+    "patch_or_source_BC_visible": false,
+    "manual_query_modification": false,
+    "codeql_execution": false,
+    "test_access": "FORBIDDEN"
+  },
+  "static_protocol_leakage_audit": {
+    "passed": true,
+    "violations": {},
+    "note": "Protocol-only leakage audit. No semantic label is assigned here."
+  },
+  "generation_cost": {
+    "wall_clock_sec": 76.297503,
+    "token_usage": {
+      "input_tokens": 8934,
+      "cached_input_tokens": 0,
+      "uncached_input_tokens": 8934,
+      "output_tokens": 7216,
+      "reasoning_tokens": 5632,
+      "total_tokens": 16150,
+      "model_call_count": 1
+    }
+  },
+  "recovery_history": {
+    "previous_invalid_harness_model_calls": 0,
+    "previous_invalid_harness_scientific_result": false,
+    "recovery_amendment_sha256": "0f34da00d03d57fce510b8fe94cb3bef383633221af6663bb0d063e9e52425cf"
+  }
+}

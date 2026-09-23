@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "pilot_cwe": "CWE-639",
+  "stage": "PRE_FIRST_VALID_CODEQL_EVALUATION",
+  "status": "FROZEN_INFRASTRUCTURE_AMENDMENT",
+  "trigger": {
+    "failed_step": "STEP_18_M0_INITIAL_EVALUATION",
+    "failure_class": "EVALUATOR_OUTPUT_NAMESPACE_COLLISION",
+    "scientific_outcome_accepted": false,
+    "codeql_actually_executed": false,
+    "model_execution": false,
+    "query_modified": false,
+    "repair_executed": false
+  },
+  "root_cause": "The frozen mechanism-first runner correctly redirected its in-process RUN_ROOT/EVAL_ROOT, but the separately launched replacement pack-aware evaluator independently hard-coded RESULT_ROOT/EVAL_ROOT to replacement_runs_v2/query_evaluations. The underlying evaluator's pre-execution overwrite guard therefore collided with the frozen September replacement-run CWE-639/shared_initial directory before run_codeql was called.",
+  "patch": {
+    "type": "PILOT_ONLY_EVALUATOR_NAMESPACE_WRAPPER",
+    "path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/MECHANISM_FIRST_PILOT_PACK_AWARE_EVALUATOR_v1.py",
+    "sha256": "2e435244abb855135ce7a0d4a6e1b6ebf34bb342d382eae2fd1ffeae3d5831e0",
+    "behavior": "Infer M0/M1 from the already-frozen query path and redirect only RESULT_ROOT/EVAL_ROOT to mechanism_first_pilot_runs_v1/<arm>/query_evaluations. Preserve the original evaluator, CodeQL command, TRAIN manifest, DB plan, query contents, and success semantics.",
+    "frozen_runner_modified": false,
+    "old_pack_evaluator_modified": false,
+    "original_evaluator_modified": false,
+    "query_modified": false,
+    "scientific_logic_modified": false
+  },
+  "integrity": {
+    "frozen_runner_sha256": "3499c92468e51894cae3b5e178461744396a31e01b49b4c264aea3493dd11a26",
+    "old_pack_evaluator_sha256": "30c5c4b34e95033ef8e7c84b23b8ff55f43b761b5358b216962bbdca165cc10d",
+    "original_evaluator_sha256": "ed796ebf8fd27ab20a4c29248a1c2a1d04de96f855a4f9987646712675ea7c91",
+    "old_collision_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/replacement_runs_v2/query_evaluations/CWE-639/shared_initial",
+    "old_collision_path_exists": true
+  },
+  "execution_policy": {
+    "runtime_injection_only": true,
+    "future_M0_and_M1_evaluations_use_same_new_evaluator": true,
+    "MAX_REPAIRS": 4,
+    "TEST_access": "FORBIDDEN",
+    "old_frozen_results_overwrite": false
+  }
+}

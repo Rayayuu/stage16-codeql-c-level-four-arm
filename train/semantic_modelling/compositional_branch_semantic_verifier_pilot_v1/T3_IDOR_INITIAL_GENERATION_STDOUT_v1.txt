@@ -1,0 +1,17 @@
+Traceback (most recent call last):
+  File "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/compositional_branch_semantic_verifier_pilot_v1/COMPOSITIONAL_BRANCH_GENERATION_RUNNER_v1_1.py", line 790, in <module>
+    main()
+  File "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/compositional_branch_semantic_verifier_pilot_v1/COMPOSITIONAL_BRANCH_GENERATION_RUNNER_v1_1.py", line 777, in main
+    asyncio.run(
+  File "/usr/lib/python3.12/asyncio/runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 687, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/compositional_branch_semantic_verifier_pilot_v1/COMPOSITIONAL_BRANCH_GENERATION_RUNNER_v1_1.py", line 592, in generate_branch
+    raise RuntimeError(
+RuntimeError: EXPECTED_ONE_TOOL_CALL_GOT_2

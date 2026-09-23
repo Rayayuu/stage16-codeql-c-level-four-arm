@@ -1,0 +1,347 @@
+========================================================================================================================
+CASE_INDEX=1/7
+CVE=CVE-2020-23449
+OUTCOME=DISCRIMINATION_FAILURE
+VULNERABLE_HITS=22
+PATCHED_HITS=22
+ADVISORY_GROUND_TRUTH=newbee-mall all versions are affected by incorrect access control to remotely gain privileges through NewBeeMallIndexConfigServiceImpl.java. Unauthorized changes can be made to any user information through the userID.
+VULNERABLE_CODE=[src/main/java/ltd/newbee/mall/service/impl/NewBeeMallUserServiceImpl.java]         MallUser user = mallUserMapper.selectByPrimaryKey(mallUser.getUserId());
+[src/main/java/ltd/newbee/mall/service/impl/NewBeeMallUserServiceImpl.java]         if (user != null) {
+[src/main/java/ltd/newbee/mall/service/impl/NewBeeMallUserServiceImpl.java]             user.setNickName(mallUser.getNickName());
+[src/main/java/ltd/newbee/mall/service/impl/NewBeeMallUserServiceImpl.java]             user.setAddress(mallUser.getAddress());
+[src/main/java/ltd/newbee/mall/service/impl/NewBeeMallUserServiceImpl.java]             user.setIntroduceSign(mallUser.getIntroduceSign());
+[src/main/java/ltd/newbee/mall/service/impl/NewBeeMallUserServiceImpl.java]             if (mallUserMapper.updateByPrimaryKeySelective(user) > 0) {
+[src/main/java/ltd/newbee/mall/service/impl/NewBeeMallUserServiceImpl.java]                 user = mallUserMapper.selectByPrimaryKey(mallUser.getUserId());
+[src/main/java/ltd/newbee/mall/service/impl/NewBeeMallUserServiceImpl.java]                 BeanUtil.copyProperties(user, newBeeMallUserVO);
+PATCHED_CODE=[src/main/java/ltd/newbee/mall/service/impl/NewBeeMallUserServiceImpl.java]         NewBeeMallUserVO userTemp = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
+[src/main/java/ltd/newbee/mall/service/impl/NewBeeMallUserServiceImpl.java]         MallUser userFromDB = mallUserMapper.selectByPrimaryKey(userTemp.getUserId());
+[src/main/java/ltd/newbee/mall/service/impl/NewBeeMallUserServiceImpl.java]         if (userFromDB != null) {
+[src/main/java/ltd/newbee/mall/service/impl/NewBeeMallUserServiceImpl.java]             userFromDB.setNickName(mallUser.getNickName());
+[src/main/java/ltd/newbee/mall/service/impl/NewBeeMallUserServiceImpl.java]             userFromDB.setAddress(mallUser.getAddress());
+[src/main/java/ltd/newbee/mall/service/impl/NewBeeMallUserServiceImpl.java]             userFromDB.setIntroduceSign(mallUser.getIntroduceSign());
+[src/main/java/ltd/newbee/mall/service/impl/NewBeeMallUserServiceImpl.java]             if (mallUserMapper.updateByPrimaryKeySelective(userFromDB) > 0) {
+[src/main/java/ltd/newbee/mall/service/impl/NewBeeMallUserServiceImpl.java]                 userFromDB = mallUserMapper.selectByPrimaryKey(mallUser.getUserId());
+[src/main/java/ltd/newbee/mall/service/impl/NewBeeMallUserServiceImpl.java]                 BeanUtil.copyProperties(userFromDB, newBeeMallUserVO);
+PATCH_SHAPE=MODIFICATION
+WHAT_AGENT_WANTED_TO_DETECT=Detect user-controlled identifiers flowing into identifier-like parameters of resource access or modification methods.
+RESULT_OF_AUTO_SKILL=Auto-Skill retrieval primarily supplied CodeQL API/type/receiver compatibility guidance. Final V3 query compiled for this case. Retrieved skills: AUTO_FINAL_FUNCTIONAL_REPLACE_TYPEDECL_WITH_REFTYPE; AUTO_FINAL_ATOMIC_BIND_REFTYPE_BEFORE_NAME_CHECKS; AUTO_FINAL_ATOMIC_METHODCALL_GETQUALIFIER; AUTO_FINAL_FUNCTIONAL_BIND_REFTYPE_FOR_TYPE_SOURCES
+EVALUATION_RESULT=compiled=True; vulnerable_hits=22; patched_hits=22; outcome=DISCRIMINATION_FAILURE
+OLD_ROOT_CAUSE=LLM can model the code, but failed to model the code in CodeQL
+OLD_WHY_FAILED=The agent correctly identifies an IDOR-style authorization problem, but the actual fix binds the update target to the authenticated user's identity stored in the HTTP session instead of trusting mallUser.getUserId(). The security property is relational: requested user id must correspond to the session user. The final CodeQL query only tracks user-controlled identifiers into id-like resource-access parameters and cannot model this session-identity ownership relation, leaving 22 hits in both revisions.
+STRICT_SUCCESS_SEMANTIC_REVIEW=[NOT AVAILABLE]
+SEMANTIC_ALIGNMENT_STATUS=N/A - failure case
+EVIDENCE_STATUS=advisory=AVAILABLE; code=BOTH_REMOVED_AND_ADDED_LINES_PRESENT
+
+========================================================================================================================
+CASE_INDEX=2/7
+CVE=CVE-2021-4142
+OUTCOME=DISCRIMINATION_FAILURE
+VULNERABLE_HITS=344
+PATCHED_HITS=344
+ADVISORY_GROUND_TRUTH=The Candlepin component of Red Hat Satellite was affected by an improper authentication flaw. Few factors could allow an attacker to use the SCA (simple content access) certificate for authentication with Candlepin.
+VULNERABLE_CODE=[server/src/main/java/org/candlepin/auth/ConsumerAuth.java]     private Provider<I18n> i18nProvider;
+[server/src/test/java/org/candlepin/auth/SSLAuthTest.java] import static org.junit.Assert.assertEquals;
+[server/src/test/java/org/candlepin/auth/SSLAuthTest.java] import static org.junit.Assert.assertNull;
+[server/src/test/java/org/candlepin/auth/SSLAuthTest.java] import org.junit.Before;
+[server/src/test/java/org/candlepin/auth/SSLAuthTest.java] import org.junit.Test;
+[server/src/test/java/org/candlepin/auth/SSLAuthTest.java] import javax.inject.Provider;
+[server/src/test/java/org/candlepin/auth/SSLAuthTest.java]     @Mock private Provider<I18n> i18nProvider;
+[server/src/test/java/org/candlepin/auth/SSLAuthTest.java]     @Before
+[server/src/test/java/org/candlepin/auth/SSLAuthTest.java]      * @throws Exception
+[server/src/test/java/org/candlepin/auth/SSLAuthTest.java]     public void noCert() throws Exception {
+[server/src/test/java/org/candlepin/auth/SSLAuthTest.java]      *
+[server/src/test/java/org/candlepin/auth/SSLAuthTest.java]      * @throws Exception
+[server/src/test/java/org/candlepin/auth/SSLAuthTest.java]     public void correctUserName() throws Exception {
+[server/src/test/java/org/candlepin/auth/SSLAuthTest.java]      *
+[server/src/test/java/org/candlepin/auth/SSLAuthTest.java]      * @throws Exception
+[server/src/test/java/org/candlepin/auth/SSLAuthTest.java]     public void noUuidOnCert() throws Exception {
+[server/src/test/java/org/candlepin/auth/SSLAuthTest.java]      *
+[server/src/test/java/org/candlepin/auth/SSLAuthTest.java]      * @throws Exception
+[server/src/test/java/org/candlepin/auth/SSLAuthTest.java]     public void noValidConsumerEntity() throws Exception {
+PATCHED_CODE=[server/src/main/java/org/candlepin/auth/ConsumerAuth.java]     protected Provider<I18n> i18nProvider;
+[server/src/main/java/org/candlepin/auth/SSLAuth.java] import org.candlepin.common.exceptions.NotAuthorizedException;
+[server/src/main/java/org/candlepin/auth/SSLAuth.java] import org.candlepin.util.OIDUtil;
+[server/src/main/java/org/candlepin/auth/SSLAuth.java]         this.checkForInvalidCertificateType(identityCert);
+[server/src/main/java/org/candlepin/auth/SSLAuth.java] 
+[server/src/main/java/org/candlepin/auth/SSLAuth.java]     // Disallow the use of an Entitlement or SCA certificate in place of an Identity certificate
+[server/src/main/java/org/candlepin/auth/SSLAuth.java]     private void checkForInvalidCertificateType(X509Certificate cert) {
+[server/src/main/java/org/candlepin/auth/SSLAuth.java]         byte[] entitlementVersionExtension = cert.getExtensionValue(OIDUtil.REDHAT_OID + "." +
+[server/src/main/java/org/candlepin/auth/SSLAuth.java]             OIDUtil.TOPLEVEL_NAMESPACES.get(OIDUtil.ENTITLEMENT_VERSION_KEY));
+[server/src/main/java/org/candlepin/auth/SSLAuth.java]         byte[] entitlementDataExtension = cert.getExtensionValue(OIDUtil.REDHAT_OID + "." +
+[server/src/main/java/org/candlepin/auth/SSLAuth.java]             OIDUtil.TOPLEVEL_NAMESPACES.get(OIDUtil.ENTITLEMENT_DATA_KEY));
+[server/src/main/java/org/candlepin/auth/SSLAuth.java]         byte[] entitlementTypeExtension = cert.getExtensionValue(OIDUtil.REDHAT_OID + "." +
+[server/src/main/java/org/candlepin/auth/SSLAuth.java]             OIDUtil.TOPLEVEL_NAMESPACES.get(OIDUtil.ENTITLEMENT_TYPE_KEY));
+[server/src/main/java/org/candlepin/auth/SSLAuth.java] 
+[server/src/main/java/org/candlepin/auth/SSLAuth.java]         if (entitlementVersionExtension != null || entitlementDataExtension != null ||
+[server/src/main/java/org/candlepin/auth/SSLAuth.java]             entitlementTypeExtension != null) {
+[server/src/main/java/org/candlepin/auth/SSLAuth.java]             throw new NotAuthorizedException(this.i18nProvider.get().tr("Invalid Certificate Type"));
+[server/src/main/java/org/candlepin/auth/SSLAuth.java]         }
+[server/src/main/java/org/candlepin/auth/SSLAuth.java]     }
+[server/src/test/java/org/candlepin/auth/SSLAuthTest.java] import static org.junit.jupiter.api.Assertions.assertEquals;
+[server/src/test/java/org/candlepin/auth/SSLAuthTest.java] import static org.junit.jupiter.api.Assertions.assertNull;
+[server/src/test/java/org/candlepin/auth/SSLAuthTest.java] import static org.junit.jupiter.api.Assertions.assertThrows;
+[server/src/test/java/org/candlepin/auth/SSLAuthTest.java] import static org.mockito.ArgumentMatchers.any;
+[server/src/test/java/org/candlepin/auth/SSLAuthTest.java] import org.candlepin.common.exceptions.NotAuthorizedException;
+[server/src/test/java/org/candlepin/auth/SSLAuthTest.java] import org.candlepin.guice.I18nProvider;
+[server/src/test/java/org/candlepin/auth/SSLAuthTest.java] import org.junit.jupiter.api.BeforeEach;
+[server/src/test/java/org/candlepin/auth/SSLAuthTest.java] import org.junit.jupiter.api.Test;
+[server/src/test/java/org/candlepin/auth/SSLAuthTest.java] import org.xnap.commons.i18n.I18nFactory;
+[server/src/test/java/org/candlepi
+...[TRUNCATED]
+PATCH_SHAPE=MODIFICATION
+WHAT_AGENT_WANTED_TO_DETECT=Detect user-controlled identifiers flowing into identifier-like parameters of resource access or modification methods.
+RESULT_OF_AUTO_SKILL=Auto-Skill retrieval primarily supplied CodeQL API/type/receiver compatibility guidance. Final V3 query compiled for this case. Retrieved skills: AUTO_FINAL_FUNCTIONAL_REPLACE_TYPEDECL_WITH_REFTYPE; AUTO_FINAL_ATOMIC_BIND_REFTYPE_BEFORE_NAME_CHECKS; AUTO_FINAL_ATOMIC_METHODCALL_GETQUALIFIER; AUTO_FINAL_FUNCTIONAL_BIND_REFTYPE_FOR_TYPE_SOURCES
+EVALUATION_RESULT=compiled=True; vulnerable_hits=344; patched_hits=344; outcome=DISCRIMINATION_FAILURE
+OLD_ROOT_CAUSE=Failed to correctly reason about the program
+OLD_WHY_FAILED=The vulnerability is an authentication flaw in which an Entitlement or SCA certificate could be accepted where an Identity certificate was required. The patch explicitly checks certificate OID extensions and rejects invalid certificate types. The final CWE-639 query instead searches for user-controlled resource identifiers flowing into ID-like method parameters, which does not model the actual authentication mechanism.
+STRICT_SUCCESS_SEMANTIC_REVIEW=[NOT AVAILABLE]
+SEMANTIC_ALIGNMENT_STATUS=N/A - failure case
+EVIDENCE_STATUS=advisory=AVAILABLE; code=BOTH_REMOVED_AND_ADDED_LINES_PRESENT
+
+========================================================================================================================
+CASE_INDEX=3/7
+CVE=CVE-2023-2260
+OUTCOME=DISCRIMINATION_FAILURE
+VULNERABLE_HITS=683
+PATCHED_HITS=688
+ADVISORY_GROUND_TRUTH=Improper Authorization of Index Containing Sensitive Information in GitHub repository alfio-event/alf.io prior to 2.0-M4-2304.
+VULNERABLE_CODE=[src/main/java/alfio/config/authentication/support/UserCreatorBeforeLoginFilter.java]                 int orgId = userManager.createOrganization(organizationModification);
+[src/main/java/alfio/config/authentication/support/UserCreatorBeforeLoginFilter.java]                 userManager.insertUser(orgId, username, "", "", username, Role.OWNER, User.Type.DEMO, req.getParameter("password"), null, null);
+[src/main/java/alfio/controller/api/admin/UsersApiController.java]             userManager.bulkInsertApiKeys(request.organizationId, request.role, request.descriptions);
+[src/main/java/alfio/controller/api/admin/UsersApiController.java]     public String insertOrganization(@RequestBody OrganizationModification om) {
+[src/main/java/alfio/controller/api/admin/UsersApiController.java]         userManager.createOrganization(om);
+[src/main/java/alfio/controller/api/admin/UsersApiController.java]             Role.valueOf(userModification.getRole()), principal.getName());
+[src/main/java/alfio/controller/api/admin/UsersApiController.java]             userModification.getValidToAsDateTime(), userModification.getDescription());
+[src/main/java/alfio/controller/api/admin/UsersApiController.java]         userManager.deleteUser(userId, principal.getName());
+[src/main/java/alfio/controller/api/admin/UsersApiController.java]         userManager.enable(userId, principal.getName(), enable);
+[src/main/java/alfio/controller/api/admin/UsersApiController.java]             .ifSuccess(() -> userManager.updateCurrentUserPassword(principal.getName(), passwordModification.newPassword));
+[src/main/java/alfio/controller/api/admin/UsersApiController.java]         User user = userManager.findUserByUsername(principal.getName());
+[src/main/java/alfio/controller/api/admin/UsersApiController.java]         userManager.updateUserContactInfo(user.getId(), userModification.getFirstName(), userModification.getLastName(), userModification.getEmailAddress());
+[src/main/java/alfio/controller/api/admin/UsersApiController.java]         UserWithPassword userWithPassword = userManager.resetPassword(userId, principal.getName());
+[src/main/java/alfio/controller/api/v1/admin/OrganizationsApiV1Controller.java]     public ResponseEntity<Organization> createOrganization(@RequestBody OrganizationModification om) {
+[src/main/java/alfio/controller/api/v1/admin/OrganizationsApiV1Controller.java]         int orgId = userManager.createOrganization(om);
+[src/main/java/alfio/controller/api/v1/admin/OrganizationsApiV1Controller.java]     public OrganizationApiKey createApiKeyForOrganization(@PathVariable("id") int organizationId) {
+[src/main/java/alfio/controller/api/v1/admin/OrganizationsApiV1Controller.java]         var user = userManager.insertUser(organizationId, null, null, null, null, Role.fromRoleName("ROLE_API_CLIENT"), User.Type.API_KEY, null, "Auto-generated API Key");
+[src/main/java/alfio/manager/user/UserManager.java]     public int createOrganization(OrganizationModification om) {
+[src/main/java/alfio/manager/user/UserManager.java]         var currentOrg = organizationRepository.getById(requireNonNull(om.getId()));
+[src/main/java/alfio/manager/user/UserManager.java]     public void editUser(int 
+...[TRUNCATED]
+PATCHED_CODE=[src/main/java/alfio/config/authentication/support/UserCreatorBeforeLoginFilter.java]                 int orgId = userManager.createOrganization(organizationModification, null);
+[src/main/java/alfio/config/authentication/support/UserCreatorBeforeLoginFilter.java]                 userManager.insertUser(orgId, username, "", "", username, Role.OWNER, User.Type.DEMO, req.getParameter("password"), null, null, null);
+[src/main/java/alfio/controller/api/admin/UsersApiController.java]             userManager.bulkInsertApiKeys(request.organizationId, request.role, request.descriptions, principal);
+[src/main/java/alfio/controller/api/admin/UsersApiController.java]     public String insertOrganization(@RequestBody OrganizationModification om, Principal principal) {
+[src/main/java/alfio/controller/api/admin/UsersApiController.java]         userManager.createOrganization(om, principal);
+[src/main/java/alfio/controller/api/admin/UsersApiController.java]             Role.valueOf(userModification.getRole()), principal);
+[src/main/java/alfio/controller/api/admin/UsersApiController.java]             userModification.getValidToAsDateTime(), userModification.getDescription(), principal);
+[src/main/java/alfio/controller/api/admin/UsersApiController.java]         userManager.deleteUser(userId, principal);
+[src/main/java/alfio/controller/api/admin/UsersApiController.java]         userManager.enable(userId, enable, principal);
+[src/main/java/alfio/controller/api/admin/UsersApiController.java]             .ifSuccess(() -> userManager.updateCurrentUserPassword(passwordModification.newPassword, principal));
+[src/main/java/alfio/controller/api/admin/UsersApiController.java]         userManager.updateCurrentUserContactInfo(userModification.getFirstName(), userModification.getLastName(), userModification.getEmailAddress(), principal);
+[src/main/java/alfio/controller/api/admin/UsersApiController.java]         UserWithPassword userWithPassword = userManager.resetPassword(userId, principal);
+[src/main/java/alfio/controller/api/v1/admin/OrganizationsApiV1Controller.java]     public ResponseEntity<Organization> createOrganization(@RequestBody OrganizationModification om, Principal principal) {
+[src/main/java/alfio/controller/api/v1/admin/OrganizationsApiV1Controller.java]         int orgId = userManager.createOrganization(om, principal);
+[src/main/java/alfio/controller/api/v1/admin/OrganizationsApiV1Controller.java]     public OrganizationApiKey createApiKeyForOrganization(@PathVariable("id") int organizationId, Principal principal) {
+[src/main/java/alfio/controller/api/v1/admin/OrganizationsApiV1Controller.java]         var user = userManager.insertUser(organizationId, null, null, null, null, Role.fromRoleName("ROLE_API_CLIENT"), User.Type.API_KEY, null, "Auto-generated API Key", principal);
+[src/main/java/alfio/manager/user/UserManager.java]     @Transactional(readOnly = true)
+[src/main/java/alfio/manager/user/UserManager.java]     @Transactional(readOnly = true)
+[src/main/java/alfio/manager/user/UserManager.java]     @Transactional(readOnly = true)
+[src/main/java/alfio/manager/user/UserManager.java]     @Transactional(readOnly = true)
+[src/main/java/alfio/manager/user/UserM
+...[TRUNCATED]
+PATCH_SHAPE=MODIFICATION
+WHAT_AGENT_WANTED_TO_DETECT=Detect user-controlled identifiers flowing into identifier-like parameters of resource access or modification methods.
+RESULT_OF_AUTO_SKILL=Auto-Skill retrieval primarily supplied CodeQL API/type/receiver compatibility guidance. Final V3 query compiled for this case. Retrieved skills: AUTO_FINAL_FUNCTIONAL_REPLACE_TYPEDECL_WITH_REFTYPE; AUTO_FINAL_ATOMIC_BIND_REFTYPE_BEFORE_NAME_CHECKS; AUTO_FINAL_ATOMIC_METHODCALL_GETQUALIFIER; AUTO_FINAL_FUNCTIONAL_BIND_REFTYPE_FOR_TYPE_SOURCES
+EVALUATION_RESULT=compiled=True; vulnerable_hits=683; patched_hits=688; outcome=DISCRIMINATION_FAILURE
+OLD_ROOT_CAUSE=LLM can model the code, but failed to model the code in CodeQL
+OLD_WHY_FAILED=The vulnerability is genuinely authorization-related, and the patch propagates the authenticated Principal through organization, user, API-key, password, and other administrative operations so authorization can be evaluated against the acting subject. The final query captures only user-controlled identifiers reaching id-like parameters and cannot express the relationship among Principal, organization scope, target resource, and permitted operation. It therefore continues to report hundreds of paths in both revisions.
+STRICT_SUCCESS_SEMANTIC_REVIEW=[NOT AVAILABLE]
+SEMANTIC_ALIGNMENT_STATUS=N/A - failure case
+EVIDENCE_STATUS=advisory=AVAILABLE; code=BOTH_REMOVED_AND_ADDED_LINES_PRESENT
+
+========================================================================================================================
+CASE_INDEX=4/7
+CVE=CVE-2023-30216
+OUTCOME=DETECTION_FAILURE
+VULNERABLE_HITS=0
+PATCHED_HITS=0
+ADVISORY_GROUND_TRUTH=Insecure permissions in the updateUserInfo function of newbee-mall before commit 1f2c2dfy allows attackers to obtain user account information.
+VULNERABLE_CODE=[src/main/java/ltd/newbee/mall/service/impl/NewBeeMallUserServiceImpl.java]                 userFromDB = mallUserMapper.selectByPrimaryKey(mallUser.getUserId());
+PATCHED_CODE=[NOT AVAILABLE]
+PATCH_SHAPE=PURE_DELETE_OR_DELETE_ONLY_JAVA_DIFF
+WHAT_AGENT_WANTED_TO_DETECT=Detect user-controlled identifiers flowing into identifier-like parameters of resource access or modification methods.
+RESULT_OF_AUTO_SKILL=Auto-Skill retrieval primarily supplied CodeQL API/type/receiver compatibility guidance. Final V3 query compiled for this case. Retrieved skills: AUTO_FINAL_FUNCTIONAL_REPLACE_TYPEDECL_WITH_REFTYPE; AUTO_FINAL_ATOMIC_BIND_REFTYPE_BEFORE_NAME_CHECKS; AUTO_FINAL_ATOMIC_METHODCALL_GETQUALIFIER; AUTO_FINAL_FUNCTIONAL_BIND_REFTYPE_FOR_TYPE_SOURCES
+EVALUATION_RESULT=compiled=True; vulnerable_hits=0; patched_hits=0; outcome=DETECTION_FAILURE
+OLD_ROOT_CAUSE=LLM can model the code, but failed to model the code in CodeQL
+OLD_WHY_FAILED=The V3 query uses a generic taint heuristic from request identifiers to ID-named resource-access parameters. The actual security property depends on ownership/session identity and which user object controls the post-update read. That relational authorization condition is not captured by the generic source/sink model.
+STRICT_SUCCESS_SEMANTIC_REVIEW=[NOT AVAILABLE]
+SEMANTIC_ALIGNMENT_STATUS=N/A - failure case
+EVIDENCE_STATUS=advisory=AVAILABLE; code=REMOVED_LINES_PRESENT; NO_ADDED_JAVA_LINES IN CANONICAL DIFF
+
+========================================================================================================================
+CASE_INDEX=5/7
+CVE=CVE-2023-32310
+OUTCOME=DISCRIMINATION_FAILURE
+VULNERABLE_HITS=156
+PATCHED_HITS=156
+ADVISORY_GROUND_TRUTH=### Impact
+The api interface for DataEase delete dashboard and delete system messages is vulnerable to IDOR.
+
+The interface to delete the dashboard:
+1. Create two users: user1 and user2
+2. User1 creates a dashboard named pan1
+3. User2 creates a dashboard named pan2
+4. Both user1 and user2 share their dashboards with the demo user
+5. User1 wants to delete his dashboard. We hijack the request with burpsuite. The request will probably look like this: POST /api/share/removePanelShares/440efa7f-efd8-11ed-bec7-1144724bc08c HTTP/1.1. 440efa7f-efd8-11ed-bec7-1144724bc08c is the ID of pan1
+6. We replace this ID with the ID of pan2 and continue the execution (i.e. we delete the shares of others)
+7. Successfully remove the shared link
+![image](https://user-images.githubusercontent.com/985347/238271028-d23a9ca3-cd77-42a2-9199-a28ef03f5bf0.png)
+
+The interface to delete system messages:
+1. Our request to delete a message is shown below
+![image](https://user-images.githubusercontent.com/985347/238271474-1bf6be85-7a39-436d-b209-ac88bf52b591.png)
+2. We can delete all messages by simply enumerating the message ID, regardless of whether the message belongs to the requester or not.
+3. The interface for marking read messages is also affected
+
+Affected versions: <= 1.18.6
+
+### Patches
+The vulnerability has been fixed in v1.18.7.
+
+### Workarounds
+It is recommended to upgrade the version to v1.18.7.
+
+### References
+If you have any questions or comments about this advisory:
+
+Open an issue in https://github.com/dataease/dataease
+Email us at [wei@fit2cloud.com](mailto:wei@fit2cloud.com)
+VULNERABLE_CODE=[backend/src/main/java/io/dataease/service/panel/ShareService.java] import io.dataease.commons.utils.DeLogUtils;
+[backend/src/main/java/io/dataease/service/panel/ShareService.java] import io.dataease.ext.ExtPanelShareMapper;
+[backend/src/main/java/io/dataease/service/panel/ShareService.java]         if (CollectionUtils.isEmpty(panelShareOutDTOS) || ObjectUtils.isEmpty(panelGroup) || StringUtils.isBlank(panelGroup.getName())) {
+PATCHED_CODE=[backend/src/main/java/io/dataease/service/panel/ShareService.java] import io.dataease.commons.utils.DeLogUtils;
+[backend/src/main/java/io/dataease/service/panel/ShareService.java] import io.dataease.ext.ExtPanelShareMapper;
+[backend/src/main/java/io/dataease/service/panel/ShareService.java]         if (CollectionUtils.isEmpty(panelShareOutDTOS) || ObjectUtils.isEmpty(panelGroup)) {
+[backend/src/main/java/io/dataease/service/panel/ShareService.java]             return;
+[backend/src/main/java/io/dataease/service/panel/ShareService.java]         }
+[backend/src/main/java/io/dataease/service/panel/ShareService.java]         if (StringUtils.isBlank(panelGroup.getName())) {
+PATCH_SHAPE=MODIFICATION
+WHAT_AGENT_WANTED_TO_DETECT=Detect user-controlled identifiers flowing into identifier-like parameters of resource access or modification methods.
+RESULT_OF_AUTO_SKILL=Auto-Skill retrieval primarily supplied CodeQL API/type/receiver compatibility guidance. Final V3 query compiled for this case. Retrieved skills: AUTO_FINAL_FUNCTIONAL_REPLACE_TYPEDECL_WITH_REFTYPE; AUTO_FINAL_ATOMIC_BIND_REFTYPE_BEFORE_NAME_CHECKS; AUTO_FINAL_ATOMIC_METHODCALL_GETQUALIFIER; AUTO_FINAL_FUNCTIONAL_BIND_REFTYPE_FOR_TYPE_SOURCES
+EVALUATION_RESULT=compiled=True; vulnerable_hits=156; patched_hits=156; outcome=DISCRIMINATION_FAILURE
+OLD_ROOT_CAUSE=Other / insufficient evidence
+OLD_WHY_FAILED=The advisory clearly describes IDOR in dashboard-share and message operations, but the retained canonical Java patch slice available here only exposes a small conditional restructuring in ShareService and does not show the ownership or requester-to-resource authorization check described by the advisory. The evidence is therefore insufficient to determine confidently whether the final query failed because of program reasoning or inability to encode the ownership relation in CodeQL.
+STRICT_SUCCESS_SEMANTIC_REVIEW=[NOT AVAILABLE]
+SEMANTIC_ALIGNMENT_STATUS=N/A - failure case
+EVIDENCE_STATUS=advisory=AVAILABLE; code=BOTH_REMOVED_AND_ADDED_LINES_PRESENT
+
+========================================================================================================================
+CASE_INDEX=6/7
+CVE=CVE-2023-43668
+OUTCOME=STRICT_SUCCESS
+VULNERABLE_HITS=446
+PATCHED_HITS=0
+ADVISORY_GROUND_TRUTH=Authorization Bypass Through User-Controlled Key vulnerability in Apache InLong.This issue affects Apache InLong: from 1.4.0 through 1.8.0, 
+
+some sensitive params  checks will be bypassed, like "autoDeserizalize","allowLoadLocalInfile"....
+
+.  
+
+Users are advised to upgrade to Apache InLong's 1.9.0 or cherry-pick [1] to solve it.
+
+[1]  https://github.com/apache/inlong/pull/8604
+VULNERABLE_CODE=[inlong-manager/manager-pojo/src/main/java/org/apache/inlong/manager/pojo/sink/mysql/MySQLSinkDTO.java]                     if (SENSITIVE_REMOVE_PARAM_MAP.contains(key)) {
+[inlong-manager/manager-pojo/src/main/java/org/apache/inlong/manager/pojo/sink/mysql/MySQLSinkDTO.java]                     if (SENSITIVE_REPLACE_PARAM_MAP.containsKey(key)) {
+[inlong-manager/manager-pojo/src/main/java/org/apache/inlong/manager/pojo/sink/mysql/MySQLSinkDTO.java]                         value = SENSITIVE_REPLACE_PARAM_MAP.get(key);
+[inlong-manager/manager-pojo/src/main/java/org/apache/inlong/manager/pojo/sink/mysql/MySQLSinkDTO.java]                     }
+[inlong-manager/manager-pojo/src/test/java/org/apache/inlong/manager/pojo/sink/mysql/MySQLSinkDTOTest.java]                 "jdbc:mysql://127.0.0.1:3306?autoDeserialize=false&allowLoadLocalInfile=false&allowUrlInLocalInfile=false&autoReconnect=true",
+[inlong-manager/manager-pojo/src/test/java/org/apache/inlong/manager/pojo/sink/mysql/MySQLSinkDTOTest.java]                 "jdbc:mysql://127.0.0.1:3306?autoReconnect=true&autoDeserialize=false&allowLoadLocalInfile=false&allowUrlInLocalInfile=false",
+[inlong-manager/manager-pojo/src/test/java/org/apache/inlong/manager/pojo/sink/mysql/MySQLSinkDTOTest.java]                 "jdbc:mysql://127.0.0.1:3306?autoDeserialize=false&allowLoadLocalInfile=false&autoReconnect=true&allowUrlInLocalInfile=false",
+[inlong-manager/manager-pojo/src/test/java/org/apache/inlong/manager/pojo/sink/mysql/MySQLSinkDTOTest.java]                 "jdbc:mysql://127.0.0.1:3306?autoDeserialize=false&allowLoadLocalInfile=false&autoReconnect=true&allowUrlInLocalInfile=false",
+[inlong-manager/manager-pojo/src/test/java/org/apache/inlong/manager/pojo/sink/mysql/MySQLSinkDTOTest.java]                 "jdbc:mysql://127.0.0.1:3306?autoDeserialize=false&allowLoadLocalInfile=false&allowUrlInLocalInfile=false&autoReconnect=true",
+[inlong-manager/manager-pojo/src/test/java/org/apache/inlong/manager/pojo/sink/mysql/MySQLSinkDTOTest.java]                 "jdbc:mysql://127.0.0.1:3306?autoReconnect=true&autoDeserialize=false&allowLoadLocalInfile=false&allowUrlInLocalInfile=false",
+[inlong-manager/manager-pojo/src/test/java/org/apache/inlong/manager/pojo/sink/mysql/MySQLSinkDTOTest.java]                 "jdbc:mysql://127.0.0.1:3306?autoDeserialize=false&allowLoadLocalInfile=false&autoReconnect=true&allowUrlInLocalInfile=false",
+[inlong-manager/manager-pojo/src/test/java/org/apache/inlong/manager/pojo/sink/mysql/MySQLSinkDTOTest.java]                 "jdbc:mysql://127.0.0.1:3306?autoDeserialize=false&allowLoadLocalInfile=false&autoReconnect=true&allowUrlInLocalInfile=false",
+[inlong-manager/manager-pojo/src/test/java/org/apache/inlong/manager/pojo/sink/mysql/MySQLSinkDTOTest.java]                 "jdbc:mysql://127.0.0.1:3306?autoDeserialize=false&allowLoadLocalInfile=false&allowUrlInLocalInfile=false",
+PATCHED_CODE=[inlong-manager/manager-pojo/src/main/java/org/apache/inlong/manager/pojo/sink/mysql/MySQLSinkDTO.java]                     if (SENSITIVE_REMOVE_PARAM_MAP.contains(key) || SENSITIVE_REPLACE_PARAM_MAP.containsKey(key)) {
+[inlong-manager/manager-pojo/src/main/java/org/apache/inlong/manager/pojo/sink/mysql/MySQLSinkDTO.java]                 SENSITIVE_REPLACE_PARAM_MAP.forEach((key, value) -> paramList.add(key + "=" + value));
+[inlong-manager/manager-pojo/src/test/java/org/apache/inlong/manager/pojo/sink/mysql/MySQLSinkDTOTest.java]                 "jdbc:mysql://127.0.0.1:3306?autoReconnect=true&autoDeserialize=false&allowUrlInLocalInfile=false&allowLoadLocalInfile=false",
+[inlong-manager/manager-pojo/src/test/java/org/apache/inlong/manager/pojo/sink/mysql/MySQLSinkDTOTest.java]                 "jdbc:mysql://127.0.0.1:3306?autoReconnect=true&autoDeserialize=false&allowUrlInLocalInfile=false&allowLoadLocalInfile=false",
+[inlong-manager/manager-pojo/src/test/java/org/apache/inlong/manager/pojo/sink/mysql/MySQLSinkDTOTest.java]                 "jdbc:mysql://127.0.0.1:3306?autoReconnect=true&autoDeserialize=false&allowUrlInLocalInfile=false&allowLoadLocalInfile=false",
+[inlong-manager/manager-pojo/src/test/java/org/apache/inlong/manager/pojo/sink/mysql/MySQLSinkDTOTest.java]                 "jdbc:mysql://127.0.0.1:3306?autoReconnect=true&autoDeserialize=false&allowUrlInLocalInfile=false&allowLoadLocalInfile=false",
+[inlong-manager/manager-pojo/src/test/java/org/apache/inlong/manager/pojo/sink/mysql/MySQLSinkDTOTest.java]                 "jdbc:mysql://127.0.0.1:3306?autoReconnect=true&autoDeserialize=false&allowUrlInLocalInfile=false&allowLoadLocalInfile=false",
+[inlong-manager/manager-pojo/src/test/java/org/apache/inlong/manager/pojo/sink/mysql/MySQLSinkDTOTest.java]                 "jdbc:mysql://127.0.0.1:3306?autoReconnect=true&autoDeserialize=false&allowUrlInLocalInfile=false&allowLoadLocalInfile=false",
+[inlong-manager/manager-pojo/src/test/java/org/apache/inlong/manager/pojo/sink/mysql/MySQLSinkDTOTest.java]                 "jdbc:mysql://127.0.0.1:3306?autoReconnect=true&autoDeserialize=false&allowUrlInLocalInfile=false&allowLoadLocalInfile=false",
+[inlong-manager/manager-pojo/src/test/java/org/apache/inlong/manager/pojo/sink/mysql/MySQLSinkDTOTest.java]                 "jdbc:mysql://127.0.0.1:3306?autoReconnect=true&autoDeserialize=false&allowUrlInLocalInfile=false&allowLoadLocalInfile=false",
+[inlong-manager/manager-pojo/src/test/java/org/apache/inlong/manager/pojo/sink/mysql/MySQLSinkDTOTest.java]                 "jdbc:mysql://127.0.0.1:3306?autoDeserialize=false&allowUrlInLocalInfile=false&allowLoadLocalInfile=false",
+PATCH_SHAPE=MODIFICATION
+WHAT_AGENT_WANTED_TO_DETECT=Detect user-controlled identifiers flowing into identifier-like parameters of resource access or modification methods.
+RESULT_OF_AUTO_SKILL=Auto-Skill retrieval primarily supplied CodeQL API/type/receiver compatibility guidance. Final V3 query compiled for this case. Retrieved skills: AUTO_FINAL_FUNCTIONAL_REPLACE_TYPEDECL_WITH_REFTYPE; AUTO_FINAL_ATOMIC_BIND_REFTYPE_BEFORE_NAME_CHECKS; AUTO_FINAL_ATOMIC_METHODCALL_GETQUALIFIER; AUTO_FINAL_FUNCTIONAL_BIND_REFTYPE_FOR_TYPE_SOURCES
+EVALUATION_RESULT=compiled=True; vulnerable_hits=446; patched_hits=0; outcome=STRICT_SUCCESS
+OLD_ROOT_CAUSE=N/A - strict success control
+OLD_WHY_FAILED=[NOT AVAILABLE]
+STRICT_SUCCESS_SEMANTIC_REVIEW=The strict metric succeeds (446 vulnerable, 0 patched), but the final query is an IDOR-style identifier-flow query while the patch concerns sensitive JDBC parameter-key filtering. Keep this as a success control but manually review whether the hits correspond to the intended mechanism or are an incidental correlation.
+SEMANTIC_ALIGNMENT_STATUS=STRICT SUCCESS - semantic alignment requires review
+EVIDENCE_STATUS=advisory=AVAILABLE; code=BOTH_REMOVED_AND_ADDED_LINES_PRESENT
+
+========================================================================================================================
+CASE_INDEX=7/7
+CVE=CVE-2023-44981
+OUTCOME=DETECTION_FAILURE
+VULNERABLE_HITS=0
+PATCHED_HITS=0
+ADVISORY_GROUND_TRUTH=Authorization Bypass Through User-Controlled Key vulnerability in Apache ZooKeeper. If SASL Quorum Peer authentication is enabled in ZooKeeper (quorum.auth.enableSasl=true), the authorization is done by verifying that the instance part in SASL authentication ID is listed in zoo.cfg server list. The instance part in SASL auth ID is optional and if it's missing, like 'eve@EXAMPLE.COM', the authorization check will be skipped. As a result an arbitrary endpoint could join the cluster and begin propagating counterfeit changes to the leader, essentially giving it complete read-write access to the data tree. Quorum Peer authentication is not enabled by default.
+
+Users are recommended to upgrade to version 3.9.1, 3.8.3, 3.7.2, which fixes the issue.
+
+Alternately ensure the ensemble election/quorum communication is protected by a firewall as this will mitigate the issue.
+
+See the documentation for more details on correct cluster administration.
+VULNERABLE_CODE=[zookeeper-server/src/main/java/org/apache/zookeeper/server/quorum/auth/SaslQuorumServerCallbackHandler.java]     private final Map<String, String> credentials = new HashMap<>();
+[zookeeper-server/src/main/java/org/apache/zookeeper/server/quorum/auth/SaslQuorumServerCallbackHandler.java]         credentials.clear();
+[zookeeper-server/src/main/java/org/apache/zookeeper/server/quorum/auth/SaslQuorumServerCallbackHandler.java]             Map<String, ?> options = entry.getOptions();
+[zookeeper-server/src/main/java/org/apache/zookeeper/server/quorum/auth/SaslQuorumServerCallbackHandler.java]             // Populate DIGEST-MD5 user -> password map with JAAS configuration entries from the "QuorumServer" section.
+[zookeeper-server/src/main/java/org/apache/zookeeper/server/quorum/auth/SaslQuorumServerCallbackHandler.java]             // Usernames are distinguished from other options by prefixing the username with a "user_" prefix.
+[zookeeper-server/src/main/java/org/apache/zookeeper/server/quorum/auth/SaslQuorumServerCallbackHandler.java]             for (Map.Entry<String, ?> pair : options.entrySet()) {
+[zookeeper-server/src/main/java/org/apache/zookeeper/server/quorum/auth/SaslQuorumServerCallbackHandler.java]                 String key = pair.getKey();
+[zookeeper-server/src/main/java/org/apache/zookeeper/server/quorum/auth/SaslQuorumServerCallbackHandler.java]                 if (key.startsWith(USER_PREFIX)) {
+[zookeeper-server/src/main/java/org/apache/zookeeper/server/quorum/auth/SaslQuorumServerCallbackHandler.java]                     String userName = key.substring(USER_PREFIX.length());
+[zookeeper-server/src/main/java/org/apache/zookeeper/server/quorum/auth/SaslQuorumServerCallbackHandler.java]                     credentials.put(userName, (String) pair.getValue());
+[zookeeper-server/src/main/java/org/apache/zookeeper/server/quorum/auth/SaslQuorumServerCallbackHandler.java]         if (authzFlag) {
+[zookeeper-server/src/main/java/org/apache/zookeeper/server/quorum/auth/SaslQuorumServerCallbackHandler.java]                 LOG.error("SASL authorization completed, {} is not authorized to connect", components[1]);
+[zookeeper-server/src/test/java/org/apache/zookeeper/server/quorum/auth/QuorumKerberosAuthTest.java]                                      + KerberosTestUtils.getServerPrincipal()
+[zookeeper-server/src/test/java/org/apache/zookeeper/server/quorum/auth/QuorumKerberosAuthTest.java]                                      + KerberosTestUtils.getLearnerPrincipal()
+[zookeeper-server/src/test/java/org/apache/zookeeper/server/quorum/auth/QuorumKerberosAuthTest.java]         String learnerPrincipal = KerberosTestUtils.getLearnerPrincipal();
+[zookeeper-server/src/test/java/org/apache/zookeeper/server/quorum/auth/QuorumKerberosAuthTest.java]         String serverPrincipal = KerberosTestUtils.getServerPrincipal();
+[zookeeper-server/src/test/java/org/apache/zookeeper/server/quorum/auth/QuorumKerberosAuthTest.java]         learnerPrincipal = learnerPrincipal.substring(0, learnerPrincipal.lastIndexOf("@"));
+[zookeeper-server/src/test/java/org/apache/zookeeper/server/quorum/auth/QuorumKerberosAuthTest.java]         serverPrincipal = serverPrincipal.subst
+...[TRUNCATED]
+PATCHED_CODE=[zookeeper-server/src/main/java/org/apache/zookeeper/server/quorum/auth/SaslQuorumServerCallbackHandler.java] import java.util.Collections;
+[zookeeper-server/src/main/java/org/apache/zookeeper/server/quorum/auth/SaslQuorumServerCallbackHandler.java] import org.apache.zookeeper.server.auth.DigestLoginModule;
+[zookeeper-server/src/main/java/org/apache/zookeeper/server/quorum/auth/SaslQuorumServerCallbackHandler.java]     private final boolean isDigestAuthn;
+[zookeeper-server/src/main/java/org/apache/zookeeper/server/quorum/auth/SaslQuorumServerCallbackHandler.java]     private final Map<String, String> credentials;
+[zookeeper-server/src/main/java/org/apache/zookeeper/server/quorum/auth/SaslQuorumServerCallbackHandler.java] 
+[zookeeper-server/src/main/java/org/apache/zookeeper/server/quorum/auth/SaslQuorumServerCallbackHandler.java]         Map<String, String> credentials = new HashMap<>();
+[zookeeper-server/src/main/java/org/apache/zookeeper/server/quorum/auth/SaslQuorumServerCallbackHandler.java]         boolean isDigestAuthn = true;
+[zookeeper-server/src/main/java/org/apache/zookeeper/server/quorum/auth/SaslQuorumServerCallbackHandler.java] 
+[zookeeper-server/src/main/java/org/apache/zookeeper/server/quorum/auth/SaslQuorumServerCallbackHandler.java]             if (entry.getLoginModuleName().equals(DigestLoginModule.class.getName())) {
+[zookeeper-server/src/main/java/org/apache/zookeeper/server/quorum/auth/SaslQuorumServerCallbackHandler.java]                 Map<String, ?> options = entry.getOptions();
+[zookeeper-server/src/main/java/org/apache/zookeeper/server/quorum/auth/SaslQuorumServerCallbackHandler.java]                 // Populate DIGEST-MD5 user -> password map with JAAS configuration entries from the "QuorumServer" section.
+[zookeeper-server/src/main/java/org/apache/zookeeper/server/quorum/auth/SaslQuorumServerCallbackHandler.java]                 // Usernames are distinguished from other options by prefixing the username with a "user_" prefix.
+[zookeeper-server/src/main/java/org/apache/zookeeper/server/quorum/auth/SaslQuorumServerCallbackHandler.java]                 for (Map.Entry<String, ?> pair : options.entrySet()) {
+[zookeeper-server/src/main/java/org/apache/zookeeper/server/quorum/auth/SaslQuorumServerCallbackHandler.java]                     String key = pair.getKey();
+[zookeeper-server/src/main/java/org/apache/zookeeper/server/quorum/auth/SaslQuorumServerCallbackHandler.java]                     if (key.startsWith(USER_PREFIX)) {
+[zookeeper-server/src/main/java/org/apache/zookeeper/server/quorum/auth/SaslQuorumServerCallbackHandler.java]                         String userName = key.substring(USER_PREFIX.length());
+[zookeeper-server/src/main/java/org/apache/zookeeper/server/quorum/auth/SaslQuorumServerCallbackHandler.java]                         credentials.put(userName, (String) pair.getValue());
+[zookeeper-server/src/main/java/org/apache/zookeeper/server/quorum/auth/SaslQuorumServerCallbackHandler.java]                     }
+[zookeeper-server/src/main/java/org/apache/zookeeper/server/quorum/auth/SaslQuorumServerCallbackHandler.java]             } else {
+[zookeeper-server/src/main/java/org/apache/zookeeper/server/quorum/a
+...[TRUNCATED]
+PATCH_SHAPE=MODIFICATION
+WHAT_AGENT_WANTED_TO_DETECT=Detect user-controlled identifiers flowing into identifier-like parameters of resource access or modification methods.
+RESULT_OF_AUTO_SKILL=Auto-Skill retrieval primarily supplied CodeQL API/type/receiver compatibility guidance. Final V3 query compiled for this case. Retrieved skills: AUTO_FINAL_FUNCTIONAL_REPLACE_TYPEDECL_WITH_REFTYPE; AUTO_FINAL_ATOMIC_BIND_REFTYPE_BEFORE_NAME_CHECKS; AUTO_FINAL_ATOMIC_METHODCALL_GETQUALIFIER; AUTO_FINAL_FUNCTIONAL_BIND_REFTYPE_FOR_TYPE_SOURCES
+EVALUATION_RESULT=compiled=True; vulnerable_hits=0; patched_hits=0; outcome=DETECTION_FAILURE
+OLD_ROOT_CAUSE=Failed to correctly reason about the program
+OLD_WHY_FAILED=The vulnerability is a ZooKeeper quorum SASL authorization bypass: when the instance component of the authentication ID is absent, the authorization check can be skipped. The patch changes SASL/certificate-style authentication and authorization handling. This is not an insecure direct object reference or a user-controlled resource identifier flow, so the final CWE-639 ID-taint query models the wrong security mechanism and yields 0/0.
+STRICT_SUCCESS_SEMANTIC_REVIEW=[NOT AVAILABLE]
+SEMANTIC_ALIGNMENT_STATUS=N/A - failure case
+EVIDENCE_STATUS=advisory=AVAILABLE; code=BOTH_REMOVED_AND_ADDED_LINES_PRESENT

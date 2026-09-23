@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "pilot_cwe": "CWE-639",
+  "status": "FROZEN_VALID1_RECOVERY_NAMESPACE",
+  "reason": "A prior invalid partial M0 evaluation left two CodeQL logs under query_evaluations/CWE-639/shared_initial without aggregate.json or pair_results.csv. Those artifacts are preserved and must never be deleted, overwritten, reused as a valid outcome, or used for repair.",
+  "recovery": {
+    "new_namespace": "query_evaluations_valid1",
+    "new_evaluator_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/MECHANISM_FIRST_PILOT_PACK_AWARE_EVALUATOR_VALID1_v1.py",
+    "new_evaluator_sha256": "79ce723420cba76437e396780ad17735ebff774bf9ba97a51723f739c49a7751",
+    "M0_result_root": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M0_CONTROL_CWE_FIRST/query_evaluations_valid1",
+    "M1_result_root": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M1_MECHANISM_FIRST/query_evaluations_valid1",
+    "same_namespace_policy_for_both_treatment_arms": true,
+    "same_frozen_iter0_queries": true,
+    "query_modification": false,
+    "scientific_logic_modification": false,
+    "MAX_REPAIRS": 4
+  },
+  "partial_attempt": {
+    "freeze_path": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/semantic_modelling/mechanism_first_pilot_v1/M0_INVALID_PARTIAL_INITIAL_EVALUATION_FREEZE_v1.json",
+    "freeze_sha256": "2c5dc8a00cddb044a9b28057c10f6c7228d7fed5e009218dfacc05413907d1bc",
+    "directory": "/home/ray001/codeql_cwe_expansion/stage16_temporal_generalization_gpt5/train/compilation_improvement/corrected_replacement_protocol_v2/replacement_qlpack/mechanism_first_pilot_runs_v1/M0_CONTROL_CWE_FIRST/query_evaluations/CWE-639/shared_initial",
+    "preserved_byte_identically": true,
+    "valid_scientific_outcome": false,
+    "repair_feedback_allowed": false
+  },
+  "integrity": {
+    "frozen_runner_sha256": "3499c92468e51894cae3b5e178461744396a31e01b49b4c264aea3493dd11a26",
+    "prior_pilot_evaluator_sha256": "2e435244abb855135ce7a0d4a6e1b6ebf34bb342d382eae2fd1ffeae3d5831e0",
+    "original_evaluator_sha256": "ed796ebf8fd27ab20a4c29248a1c2a1d04de96f855a4f9987646712675ea7c91"
+  },
+  "future_execution_rule": "For both M0 and M1, runtime runner EVAL_ROOT must be set to <arm>/query_evaluations_valid1 and EVALUATOR must be set to this VALID1 wrapper before calling the unchanged original evaluate_shared_initial/run_arm logic.",
+  "test_access": "FORBIDDEN"
+}

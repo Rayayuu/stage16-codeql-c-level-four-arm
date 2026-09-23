@@ -1,0 +1,83 @@
+========================================================================================================================
+CVE=CVE-2019-10362
+OUTCOME=DISCRIMINATION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=Jenkins Configuration as Code exported configuration values without escaping them, so specially formed values could be interpreted as variable interpolation when the configuration was imported, allowing disclosure of environment-variable values.
+B_QUERY_SECURITY_PROPERTY=Untrusted data from servlet request inputs, environment variables, or system properties must not flow to generic writer/output operations or filesystem-path construction/write operations without appropriate escaping, encoding, or canonicalization.
+C_CONCRETE_MISMATCH=The generated query treats CWE-116 as generic taint from servlet/environment/system inputs to writers or filesystem paths. The actual mechanism depends on configuration serialization followed by variable interpolation during import; that application-specific serialization/interpolation path is not represented.
+NEW_ROOT_CAUSE_CATEGORY=Incomplete vulnerability mechanism
+CATEGORY_RATIONALE=The general concept of missing escaping is related, but the query omits the configuration-export/import and interpolation mechanism that makes the vulnerability exploitable.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_COLLAPSE_CANDIDATE=YES
+TEMPLATE_COLLAPSE_EVIDENCE=Actual mechanism is configuration serialization plus variable interpolation, while the single CWE-level query reduces it to generic untrusted-data-to-output/filesystem flow.
+
+========================================================================================================================
+CVE=CVE-2020-13654
+OUTCOME=DISCRIMINATION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=XWiki's property displayer mishandled escaping when rendering property values. The vulnerability therefore depends on XWiki-specific property-display/rendering semantics.
+B_QUERY_SECURITY_PROPERTY=Untrusted data from servlet request inputs, environment variables, or system properties must not flow to generic writer/output operations or filesystem-path construction/write operations without appropriate escaping, encoding, or canonicalization.
+C_CONCRETE_MISMATCH=The query models only servlet/environment/system inputs reaching generic writers or filesystem operations. It does not model the XWiki property-displayer object or the framework-specific rendering path in which escaping is required.
+NEW_ROOT_CAUSE_CATEGORY=Incomplete vulnerability mechanism
+CATEGORY_RATIONALE=The query is directionally about escaping but omits the application-specific intermediate object and rendering mechanism described by the advisory.
+CONFIDENCE=MEDIUM_HIGH
+GENERIC_TEMPLATE_COLLAPSE_CANDIDATE=YES
+TEMPLATE_COLLAPSE_EVIDENCE=The XWiki-specific property-display mechanism is collapsed into the generic CWE-116 taint template.
+
+========================================================================================================================
+CVE=CVE-2021-21684
+OUTCOME=DETECTION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=A crafted Git SHA-1 checksum supplied through Jenkins commit notifications could later be displayed in a build cause without proper escaping, producing stored XSS. The fix rejects SHA-1 values with an invalid format and sanitizes existing values when displayed.
+B_QUERY_SECURITY_PROPERTY=Untrusted data from servlet request inputs, environment variables, or system properties must not flow to generic writer/output operations or filesystem-path construction/write operations without appropriate escaping, encoding, or canonicalization.
+C_CONCRETE_MISMATCH=The generic query does not represent the full commit-notification -> stored build-cause -> UI display path and therefore produced no vulnerable hit. It also has no explicit model of the SHA-1 format validation or display sanitization introduced by the fix.
+NEW_ROOT_CAUSE_CATEGORY=Incomplete vulnerability mechanism
+CATEGORY_RATIONALE=The immediate failure is that the application-specific source, stored intermediate object, and display path are absent from the query abstraction; this is stronger evidence than merely a missing sanitizer model because the vulnerable version itself was not detected.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_COLLAPSE_CANDIDATE=YES
+TEMPLATE_COLLAPSE_EVIDENCE=A multi-stage stored-XSS mechanism is reduced to a generic direct taint-to-output template.
+
+========================================================================================================================
+CVE=CVE-2022-23620
+OUTCOME=DISCRIMINATION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=XWiki serialized an SSX document reference directly into a filesystem location without escaping filesystem syntax such as '../', allowing the reference to influence where export content was written.
+B_QUERY_SECURITY_PROPERTY=Untrusted data from servlet request inputs, environment variables, or system properties must not flow to generic writer/output operations or filesystem-path construction/write operations without appropriate escaping, encoding, or canonicalization.
+C_CONCRETE_MISMATCH=The query broadly models untrusted data reaching filesystem paths, which is close to the vulnerable behavior, but it does not distinguish the patched behavior because it lacks the specific escaping/canonicalization semantics applied to the document reference. This is consistent with hits remaining in both vulnerable and patched versions.
+NEW_ROOT_CAUSE_CATEGORY=Missing validation semantics
+CATEGORY_RATIONALE=The vulnerable behavior is represented at a high level, but the security transformation that should separate vulnerable from fixed code is not semantically modeled.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_COLLAPSE_CANDIDATE=YES
+TEMPLATE_COLLAPSE_EVIDENCE=The query keeps only the generic filesystem-flow shape and drops the document-reference escaping semantics.
+
+========================================================================================================================
+CVE=CVE-2022-29599
+OUTCOME=DISCRIMINATION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=Apache Maven's Commandline class could emit double-quoted command-line strings without correctly escaping embedded content, allowing shell injection when the resulting command string was interpreted.
+B_QUERY_SECURITY_PROPERTY=Untrusted data from servlet request inputs, environment variables, or system properties must not flow to generic writer/output operations or filesystem-path construction/write operations without appropriate escaping, encoding, or canonicalization.
+C_CONCRETE_MISMATCH=The generated query looks for flows into generic writers or filesystem-path operations and has no shell-command or command-line serialization sink. The actual security boundary is shell quoting/escaping, not generic output or filesystem handling.
+NEW_ROOT_CAUSE_CATEGORY=Incomplete vulnerability mechanism
+CATEGORY_RATIONALE=The vulnerability is still an escaping problem, but the query omits the relevant shell-command sink and quoting semantics, so the concrete mechanism is only partially represented.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_COLLAPSE_CANDIDATE=YES
+TEMPLATE_COLLAPSE_EVIDENCE=Shell-command quoting is collapsed into the same generic output/filesystem CWE-116 template.
+
+========================================================================================================================
+CVE=CVE-2022-45143
+OUTCOME=DISCRIMINATION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=Tomcat's JsonErrorReportValve inserted type, message, or description values into JSON output without escaping them; some values could contain user-controlled data and manipulate or invalidate the JSON.
+B_QUERY_SECURITY_PROPERTY=Untrusted data from servlet request inputs, environment variables, or system properties must not flow to generic writer/output operations or filesystem-path construction/write operations without appropriate escaping, encoding, or canonicalization.
+C_CONCRETE_MISMATCH=The generated query can represent user-controlled data reaching output operations, but it does not model JSON-specific escaping as the security transformation that distinguishes the patched implementation. The identical 1511/1511 hit counts are consistent with this missing semantic distinction.
+NEW_ROOT_CAUSE_CATEGORY=Missing validation semantics
+CATEGORY_RATIONALE=The broad vulnerable behavior is captured, but the JSON escaping/sanitization semantics needed to recognize the fix are absent.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_COLLAPSE_CANDIDATE=YES
+TEMPLATE_COLLAPSE_EVIDENCE=JSON-specific escaping is flattened into generic taint-to-output, preventing discrimination of the fix.
+
+========================================================================================================================
+CVE=CVE-2023-26472
+OUTCOME=DISCRIMINATION_FAILURE
+A_ACTUAL_VULNERABILITY_MECHANISM=XWiki allowed crafted icon-theme content to execute wiki/Groovy content with the rights of IconThemeSheet's author. The security issue depends on execution context and privilege propagation, not merely on unescaped data reaching a writer or filesystem path.
+B_QUERY_SECURITY_PROPERTY=Untrusted data from servlet request inputs, environment variables, or system properties must not flow to generic writer/output operations or filesystem-path construction/write operations without appropriate escaping, encoding, or canonicalization.
+C_CONCRETE_MISMATCH=The generated query searches for generic untrusted-data-to-output/filesystem flows, whereas the actual security property concerns execution of attacker-controlled wiki content under another author's privileges. The query therefore models a substantially different mechanism.
+NEW_ROOT_CAUSE_CATEGORY=Wrong vulnerability mechanism
+CATEGORY_RATIONALE=The final CWE-116 abstraction targets output/filesystem escaping, while the advisory describes a privileged execution-context problem.
+CONFIDENCE=HIGH
+GENERIC_TEMPLATE_COLLAPSE_CANDIDATE=YES
+TEMPLATE_COLLAPSE_EVIDENCE=A privilege/execution-context vulnerability is forced into the same generic CWE-116 escaping template, providing strong evidence of semantic template collapse for this case.

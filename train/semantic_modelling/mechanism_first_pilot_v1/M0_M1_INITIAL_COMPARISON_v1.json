@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0",
+  "scope": "TRAIN_ONLY",
+  "pilot_cwe": "CWE-639",
+  "stage": "INITIAL_QUERY_COMPARISON",
+  "M0_CONTROL_CWE_FIRST": {
+    "compiled": "0/7",
+    "strict_success": "0/7",
+    "compilation_failure": "7/7",
+    "semantic_alignment": "0/7",
+    "codeql_runtime_sec": 210.36
+  },
+  "M1_MECHANISM_FIRST": {
+    "compiled": "0/7",
+    "strict_success": "0/7",
+    "compilation_failure": "7/7",
+    "semantic_alignment": "0/7",
+    "plan_mechanism_coverage": "6/7",
+    "plan_to_codeql_translation_loss": "6/7",
+    "codeql_runtime_sec": 209.03
+  },
+  "differences": {
+    "compiled_pair_delta_M1_minus_M0": 0,
+    "strict_success_delta_M1_minus_M0": 0,
+    "semantic_alignment_delta_M1_minus_M0": 0,
+    "codeql_runtime_sec_delta_M1_minus_M0": -1.33
+  },
+  "interpretation": "At initial-query stage, mechanism-first planning did not improve compilation, strict success, or final-query semantic alignment relative to the matched CWE-first control. However, M1's plan represented 6/7 mechanisms before the unified CodeQL query collapsed back to a generic ID/key-to-sensitive-operation abstraction. This single-CWE TRAIN pilot therefore localizes a candidate bottleneck at semantic preservation/translation rather than showing a positive end-to-end outcome.",
+  "limitations": [
+    "Single CWE-639 TRAIN pilot only.",
+    "No TEST access.",
+    "No repair comparison has been executed yet.",
+    "Historical V3 human diagnostic labels were visible during the human semantic audit deviation documented earlier.",
+    "Matched model-call count does not imply perfectly matched token/compute cost."
+  ],
+  "integrity": {
+    "M0_initial_freeze_sha256": "b37cfc5230a92111260461468bc693d583ac7d12b4ce879ab56af8c43c3c2374",
+    "M1_initial_freeze_sha256": "e768ac1c399a929f336fe4e537cf07fcf7f38ffb9fa69f308ec33e9b4eea621c",
+    "pre_codeql_semantic_scores_sha256": "af8714c27e966fb646b2a857d29e26385b13de2c5450275003362dff22184204"
+  },
+  "test_access": "FORBIDDEN"
+}
